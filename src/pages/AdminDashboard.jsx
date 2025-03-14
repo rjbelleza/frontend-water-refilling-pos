@@ -1,9 +1,11 @@
+import Header from "../layouts/Header";
 
 const AdminDashboard = () => {
 
     return (
-        <div>
-            dashboard
+        <div className="h-screen">
+            <Header />
+            
         </div>
     );
 }
