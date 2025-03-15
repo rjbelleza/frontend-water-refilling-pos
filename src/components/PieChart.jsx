@@ -1,29 +1,39 @@
-import { Doughnut } from 'react-chartjs-2';
+import React from 'react';
+import ReactApexChart from 'react-apexcharts';
 
-const VerticalHalfDonut = () => {
-  const data = {
-    labels: ['Used', 'Remaining'],
-    datasets: [{
-      data: [65, 35],
-      backgroundColor: ['#4CAF50', '#e0e0e0'],
-      borderWidth: 0,
+const PieChart = () => {
+  // Chart configuration
+  const chartOptions = {
+    series: [44, 55, 13, 43], // Your data values
+    labels: ['Team A', 'Team B', 'Team C', 'Team D'], // Your labels
+    chart: {
+      type: 'pie',
+      height: 350,
+    },
+    colors: ['#3B82F6', '#6366F1', '#10B981', '#F59E0B'], // Custom colors
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
     }]
   };
 
-  const options = {
-    rotation: -90, // Start from top
-    circumference: 180, // Half-circle
-    cutout: '70%', // Donut hole
-    plugins: {
-      legend: { position: 'bottom' }
-    }
-  };
-
   return (
-    <div style={{ width: 300, height: 150 }}> {/* Half-height container */}
-      <Doughnut data={data} options={options} />
+    <div>
+      <ReactApexChart 
+        options={chartOptions} 
+        series={chartOptions.series} 
+        type="pie" 
+        height={350} 
+      />
     </div>
   );
 };
 
-export default VerticalHalfDonut;
+export default PieChart;
