@@ -147,26 +147,30 @@ const TransactionTable = () => {
         </button>
       </div>
 
+
       {/* Action buttons */}
-      <div className="flex space-x-4 mb-6">
-        <button
-          onClick={removeTransaction}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
-        >
-          Remove Transaction
-        </button>
-        <button
-          onClick={resetTable}
-          className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-500 cursor-pointer"
-        >
-          Reset Table
-        </button>
-        <button
-          onClick={emptyTable}
-          className="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary-500 cursor-pointer"
-        >
-          Empty Table
-        </button>
+      <div className="flex items-between justify-between space-x-4 mb-6">
+        <h1 className="text-2xl font-bold mb-3">Transaction History</h1>
+        <div className='flex gap-3 items-center'>
+          <button 
+              onClick={removeTransaction}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
+            >
+              Remove Transaction
+            </button>
+            <button
+              onClick={resetTable}
+              className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-500 cursor-pointer"
+            >
+              Reset Table
+            </button>
+            <button
+              onClick={emptyTable}
+              className="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary-500 cursor-pointer"
+            >
+              Empty Table
+            </button>
+        </div>
       </div>
 
       {/* Table */}
