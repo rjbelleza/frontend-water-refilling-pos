@@ -74,7 +74,7 @@ const SalesOverview = () => {
   };
 
   return (
-    <div style={{ width: '100%', margin: 'auto', paddingTop: '20px', backgroundColor: '#938BA1', 
+    <div style={{ width: '100%', margin: 'auto', paddingTop: '20px', backgroundColor: 'rgb(213, 237, 236)', 
         borderRadius: '10px', padding: '20px' }}>
       <h2 className='font-bold'>Sales Overview</h2>
       <Line data={data} options={options} />
