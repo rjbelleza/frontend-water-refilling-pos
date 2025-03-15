@@ -5,10 +5,9 @@ export const dummyUser = [
 
 export const adminSidemenuBtn = [
     {menu: 'Dashboard', path: '/admin-dashboard'},
-    {menu: 'Reports / Analytics', path: '/reports'},
     {menu: 'Inventory', path: '/inventory'},
     {menu: 'Transactions', path: '/transactions'},
-    {menu: 'Activity Logs', path: '/activity-logs'},
+    {menu: 'Reports / Analytics', path: '/reports'},
     {menu: 'User List', path: '/user-list'},
 ];
 

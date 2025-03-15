@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import Reports from "./pages/Reports";
 import Inventory from "./pages/Inventory";
-import OrderHistory from "./pages/OrderHistory";
+import Transaction from "./pages/Transaction";
 import UserList from "./pages/UserList";
 
 const App = () => {
@@ -15,7 +15,7 @@ const App = () => {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/inventory" element={<Inventory />} />
-        <Route path="/order-history" element={<OrderHistory />} />
+        <Route path="/transactions" element={<Transaction />} />
         <Route path="/user-list" element={<UserList />} />
       </Routes>
     </Router>
