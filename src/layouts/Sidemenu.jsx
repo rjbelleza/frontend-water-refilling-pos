@@ -21,9 +21,9 @@ const Sidemenu = ({user, menuButtons}) => {
                 {menuButtons.map((e, index) => (
                     <button 
                         key={index} 
-                        onClick={() => navigate(menuButtons.path)}
+                        onClick={() => navigate(e.path)}
                         className={`h-11 w-full rounded-md hover:bg-light hover:text-primary-500 
-                                    font-medium cursor-pointer 
+                                    font-medium cursor-pointer transition-all ease-in-out
                                     ${location.pathname === e.path ? 
                                         'bg-light text-primary-500' : 
                                         'bg-primary text-white'}`
