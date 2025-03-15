@@ -5,8 +5,6 @@ const Sidemenu = ({user, menuButtons}) => {
     const [focus, setFocus] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-
-    console.log(menuButtons.path)
  
     return (
         <div className="h-full w-60 bg-primary-500 fixed left-0 mt-15">
