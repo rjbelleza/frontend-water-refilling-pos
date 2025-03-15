@@ -22,11 +22,33 @@ const InventoryTable = () => {
     price: 0,
   });
 
-  // Handle form input changes
+  // State for the remove/edit section
+  const [selectedId, setSelectedId] = useState('');
+  const [editItem, setEditItem] = useState({
+    productName: '',
+    quantity: 0,
+    price: 0,
+  });
+
+  // Handle form input changes for new item
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewItem({
       ...newItem,
+      [name]: name === 'price' || name === 'quantity' ? parseFloat(value) || 0 : value, // Parse values
+    });
+  };
+
+  // Handle input change for selected ID
+  const handleSelectedIdChange = (e) => {
+    setSelectedId(e.target.value);
+  };
+
+  // Handle input changes for edit item
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditItem({
+      ...editItem,
       [name]: name === 'price' || name === 'quantity' ? parseFloat(value) || 0 : value, // Parse values
     });
   };
@@ -54,9 +76,40 @@ const InventoryTable = () => {
   };
 
   // Remove an item from the inventory
-  const removeItem = (id) => {
-    const updatedData = inventoryData.filter((item) => item.id !== id);
+  const removeItem = () => {
+    if (!selectedId) {
+      alert('Please enter an ID to remove.');
+      return;
+    }
+
+    const updatedData = inventoryData.filter((item) => item.id !== parseInt(selectedId));
     setInventoryData(updatedData);
+    setSelectedId(''); // Reset the selected ID
+  };
+
+  // Edit an item in the inventory
+  const editItemInInventory = () => {
+    if (!selectedId) {
+      alert('Please enter an ID to edit.');
+      return;
+    }
+
+    const updatedData = inventoryData.map((item) => {
+      if (item.id === parseInt(selectedId)) {
+        return {
+          ...item,
+          productName: editItem.productName,
+          quantity: editItem.quantity,
+          price: editItem.price,
+          stockStatus: calculateStockStatus(editItem.quantity), // Recalculate stock status
+        };
+      }
+      return item;
+    });
+
+    setInventoryData(updatedData);
+    setSelectedId(''); // Reset the selected ID
+    setEditItem({ productName: '', quantity: 0, price: 0 }); // Reset the edit form
   };
 
   // Define columns for the table
@@ -92,21 +145,6 @@ const InventoryTable = () => {
             >
               {stockStatus}
             </span>
-          );
-        },
-      },
-      {
-        header: 'Actions',
-        accessorKey: 'id', // Use the row ID for actions
-        cell: (info) => {
-          const id = info.getValue(); // Get the row ID
-          return (
-            <button
-              onClick={() => removeItem(id)}
-              className="text-white bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-            >
-              Remove
-            </button>
           );
         },
       },
@@ -170,8 +208,75 @@ const InventoryTable = () => {
         </button>
       </div>
 
+       {/* Remove/Edit Section */}
+       <div className="mb-6 p-4 border border-gray-200 rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Remove or Edit Inventory</h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-[13px] ml-2">Enter ID</label>
+            <input
+              type="number"
+              value={selectedId}
+              onChange={handleSelectedIdChange}
+              className="p-2 border border-gray-300 rounded"
+              placeholder="Enter ID"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-[13px] ml-2">Product Name</label>
+            <input
+              type="text"
+              name="productName"
+              value={editItem.productName}
+              onChange={handleEditInputChange}
+              className="p-2 border border-gray-300 rounded"
+              placeholder="Product Name"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-[13px] ml-2">Quantity</label>
+            <input
+              type="number"
+              name="quantity"
+              value={editItem.quantity}
+              onChange={handleEditInputChange}
+              className="p-2 border border-gray-300 rounded"
+              placeholder="Quantity"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-[13px] ml-2">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={editItem.price}
+              onChange={handleEditInputChange}
+              className="p-2 border border-gray-300 rounded"
+              placeholder="Price"
+            />
+          </div>
+        </div>
+        <div className="mt-4 flex gap-4">
+          <button
+            onClick={removeItem}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Remove Item
+          </button>
+          <button
+            onClick={editItemInInventory}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Edit Item
+          </button>
+        </div>
+      </div>
+
       {/* React Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto mb-6">
         <table className="w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
             {table.getHeaderGroups().map((headerGroup) => (

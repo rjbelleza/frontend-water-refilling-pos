@@ -6,7 +6,7 @@ const LineChart = () => {
   const chartOptions = {
     series: [{
       name: 'Sales',
-      data: [30, 40, 35, 50, 49, 60, 70, 91, 125] // Your data values
+      data: [40012, 30768, 35678, 17890, 28759, 23460, 37870, 34591, 13425, 45643, 24516, 13241] // Your data values
     }],
     chart: {
       height: 350,
@@ -17,11 +17,11 @@ const LineChart = () => {
     },
     stroke: {
       curve: 'smooth', // Smooth lines
-      width: 2
+      width: 3
     },
     colors: ['#3B82F6'], // Custom color
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'], // X-axis labels
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // X-axis labels
     },
     markers: {
       size: 5,
@@ -31,7 +31,7 @@ const LineChart = () => {
     tooltip: {
       enabled: true,
       y: {
-        formatter: (value) => `$${value}K` // Custom tooltip format
+        formatter: (value) => `₱${value}` // Custom tooltip format
       }
     }
   };
