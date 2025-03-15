@@ -5,6 +5,8 @@ const Sidemenu = ({user, menuButtons}) => {
     const [focus, setFocus] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+
+    console.log(menuButtons.path)
  
     return (
         <div className="h-full w-60 bg-primary-500 fixed left-0 mt-15">
@@ -20,8 +22,12 @@ const Sidemenu = ({user, menuButtons}) => {
                     <button 
                         key={index} 
                         onClick={() => navigate(menuButtons.path)}
-                        className={`h-11 w-full bg-primary text-white rounded-md hover:bg-light hover:text-primary-500 
-                                   font-medium cursor-pointer ${location.pathname === menuButtons.path && 'bg-light'}`}>
+                        className={`h-11 w-full rounded-md hover:bg-light hover:text-primary-500 
+                                    font-medium cursor-pointer 
+                                    ${location.pathname === e.path ? 
+                                        'bg-light text-primary-500' : 
+                                        'bg-primary text-white'}`
+                                }>
                         {e.menu}
                     </button>
                 ))}
