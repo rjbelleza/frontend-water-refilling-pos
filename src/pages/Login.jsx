@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link } from "react-router"; // Fixed import
 import { useUser } from "../components/UserContext";
 
 const Login = () => {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // Add a loading state
+    const [showPassword, setShowPassword] = useState(false); // Add show/hide password state
     const navigate = useNavigate();
     const { login } = useUser();  
 
     const handleLogin = async (e) => {
         e.preventDefault(); 
+        setError(""); // Clear previous errors
+        setLoading(true); // Set loading to true
 
         try {
             // Fetch the users from data.json
@@ -39,6 +43,8 @@ const Login = () => {
         } catch (error) {
             console.error('Error fetching users:', error);
             setError('An error occurred. Please try again.'); 
+        } finally {
+            setLoading(false); // Set loading to false
         }
     };
 
@@ -46,12 +52,12 @@ const Login = () => {
         <div 
             className="h-screen w-screen flex justify-center items-center bg-[url('/images/login-background.png')]
                     bg-cover bg-center"
-            
         >
             <form
                 onSubmit={handleLogin} 
                 className="flex flex-col gap-10 h-[470px] w-[400px] bg-white rounded-sm p-4
-                    shadow-[1px_1px_5px_black]">
+                    shadow-[1px_1px_5px_black]"
+            >
                 <div className="flex justify-between items-center">
                     <p className="font-bold text-[30px] text-left pl-4 text-primary">Login</p>
                     <img src="/images/Aqua2.png" alt="Logo" className="h-12 mr-5" />
@@ -64,15 +70,39 @@ const Login = () => {
                         value={username}
                         type="text" 
                         className="h-[40px] font-medium w-full bg-white rounded-xl 
-                                border-3 hover:border-4 border-primary px-4" />
+                                border-3 hover:border-4 border-primary px-4" 
+                    />
 
                     <label className="mt-6 ml-2 font-medium">Password</label>
-                    <input 
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        type="password" 
-                        className="h-[40px] font-medium w-full bg-white rounded-xl 
-                                   border-3 hover:border-4 border-primary px-4" />
+                    <div className="relative">
+                        <input 
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            type={showPassword ? "text" : "password"} // Toggle input type
+                            className="h-[40px] font-medium w-full bg-white rounded-xl 
+                                   border-3 hover:border-4 border-primary px-4 pr-10" 
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)} // Toggle show/hide
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                        >
+                            {/* Use local icons for show/hide password */}
+                            {showPassword ? (
+                                <img 
+                                    src="src/assets/icons/hide.png" // Path to your "hide" icon
+                                    alt="Hide Password"
+                                    className="h-5 w-5"
+                                />
+                            ) : (
+                                <img 
+                                    src="src/assets/icons/show.png" // Path to your "show" icon
+                                    alt="Show Password"
+                                    className="h-5 w-5"
+                                />
+                            )}
+                        </button>
+                    </div>
 
                     <div className="flex flex-col justify-center items-center w-full h-[20px]">
                         <p className="text-red-600 text-[13px] mt-3">{error}</p>
@@ -89,8 +119,12 @@ const Login = () => {
                     </div>
                     <button 
                         type="submit"
+                        disabled={loading} // Disable button while loading
                         className="h-[50px] w-full bg-primary text-white font-bold rounded-md cursor-pointer
-                            hover:bg-primary-500">LOGIN</button>
+                            hover:bg-primary-500 disabled:bg-gray-400"
+                    >
+                        {loading ? "Logging in..." : "LOGIN"}
+                    </button>
                 </div>
             </form>
         </div>

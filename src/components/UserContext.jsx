@@ -5,7 +5,8 @@ const UserContext = createContext();
 
 // Create a provider component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Initialize as null or {}
+  const [user, setUser] = useState(null); // Initialize as null
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   // Load user from localStorage on initial render
   useEffect(() => {
@@ -18,6 +19,7 @@ export const UserProvider = ({ children }) => {
         localStorage.removeItem('user'); // Clear invalid data
       }
     }
+    setLoading(false); // Set loading to false after checking localStorage
   }, []);
 
   // Function to log in the user
@@ -38,7 +40,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout, hasRole }}>
+    <UserContext.Provider value={{ user, login, logout, hasRole, loading }}>
       {children}
     </UserContext.Provider>
   );
