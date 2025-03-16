@@ -8,27 +8,30 @@ const Login = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const { login } = useUser();  
-    const { user } = useUser(); 
 
-      
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+
         try {
-        // Fetch the users from data.json
-        const response = await fetch('/data/data.json'); // Adjust the path if needed
-        const data = await response.json();
-    
-        // Find the user with matching credentials
-        const user = data.users.find(
-            (u) => (u.username === username || u.email === username) && u.password === password
-        );
-    
-        if (user) {
-            login(user); // Save user credentials and role
-        } else {
-            setError('Invalid credentials');
-        }
+            // Fetch the users from data.json
+            const response = await fetch('/data/data.json'); // Adjust the path if needed
+            const data = await response.json();
+
+            // Find the user with matching credentials
+            const user = data.users.find(
+                (u) => (u.username === username || u.email === username) && u.password === password
+            );
+
+            // Redirect based on the user's role
+            if (user.role === "admin") {
+                navigate("/admin-dashboard"); // Redirect to admin dashboard
+            } else if (user.role === "staff") {
+                navigate("/staff-dashboard"); // Redirect to staff dashboard
+            } else {
+                setError('Unauthorized role'); // Handle unknown roles
+            }
         } catch (error) {
-        console.error('Error fetching users:', error);
+            console.error('Error fetching users:', error);
         }
     };
 

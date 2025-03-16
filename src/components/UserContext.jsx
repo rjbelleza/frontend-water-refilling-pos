@@ -1,21 +1,24 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Create a context for user credentials
 const UserContext = createContext();
 
 // Create a provider component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState("");
-
+  const [user, setUser] = useState(null); // Initialize as null or {}
 
   // Load user from localStorage on initial render
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        localStorage.removeItem('user'); // Clear invalid data
+      }
     }
   }, []);
-
 
   // Function to log in the user
   const login = (credentials) => {
@@ -23,17 +26,15 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(credentials)); // Save to local storage
   };
 
-
   // Function to log out the user
   const logout = () => {
-    setUser("");
+    setUser(null);
     localStorage.removeItem('user'); // Clear local storage
   };
 
-  
   // Function to check if the user has a specific role
   const hasRole = (requiredRole) => {
-    return user?.role === requiredRole;
+    return user && user.role === requiredRole; // Ensure user is defined
   };
 
   return (

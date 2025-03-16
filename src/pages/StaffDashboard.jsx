@@ -1,10 +1,14 @@
+import { useUser } from "../components/UserContext";
 
 const StaffDashboard = () => {
+    const { user } = useUser();
 
     return (
-        <div>
-            welcome to staff dashboard
-        </div>
+        <>
+            {user && (
+                <p>Welcome, {user.name}!</p>
+            )}
+        </>
     );
 }
 
