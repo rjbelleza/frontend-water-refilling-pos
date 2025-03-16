@@ -7,11 +7,22 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState("");
 
+
+  // Load user from localStorage on initial render
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+
   // Function to log in the user
   const login = (credentials) => {
     setUser(credentials);
     localStorage.setItem('user', JSON.stringify(credentials)); // Save to local storage
   };
+
 
   // Function to log out the user
   const logout = () => {
@@ -19,8 +30,14 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem('user'); // Clear local storage
   };
 
+  
+  // Function to check if the user has a specific role
+  const hasRole = (requiredRole) => {
+    return user?.role === requiredRole;
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, hasRole }}>
       {children}
     </UserContext.Provider>
   );

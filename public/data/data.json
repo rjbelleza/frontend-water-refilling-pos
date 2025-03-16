@@ -1,0 +1,21 @@
+{
+    "users": [
+      { 
+        "id": 1, 
+        "name": "Ken Takakura", 
+        "username": "kentakakura", 
+        "email": "ken@gmail.com", 
+        "password": "password",
+        "role": "admin"
+      },
+      { 
+        "id": 2, 
+        "name": "Jane Doe", 
+        "username": "janedoe", 
+        "email": "jane@gmail.com", 
+        "password": "password",
+        "role": "staff"
+      }
+    ]
+  }
+  

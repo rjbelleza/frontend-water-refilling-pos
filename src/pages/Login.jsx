@@ -10,12 +10,27 @@ const Login = () => {
     const { login } = useUser();  
     const { user } = useUser(); 
 
-
-    const handleLogin = () => {
-        const credentials = { username, password };
-        login(credentials); // Save credentials in context
-      };
-
+      
+    const handleLogin = async () => {
+        try {
+        // Fetch the users from data.json
+        const response = await fetch('/data/data.json'); // Adjust the path if needed
+        const data = await response.json();
+    
+        // Find the user with matching credentials
+        const user = data.users.find(
+            (u) => (u.username === username || u.email === username) && u.password === password
+        );
+    
+        if (user) {
+            login(user); // Save user credentials and role
+        } else {
+            setError('Invalid credentials');
+        }
+        } catch (error) {
+        console.error('Error fetching users:', error);
+        }
+    };
 
     return (
         <div className="h-screen w-screen flex justify-center items-center bg-gray-200">

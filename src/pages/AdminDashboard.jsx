@@ -8,7 +8,16 @@ import { useUser } from "../components/UserContext";
 
 
 const AdminDashboard = () => {
-    const { user } = useUser();
+    const { user, hasRole } = useUser();
+
+
+    if (!user) {
+        return <div>Please log in to access this page.</div>;
+    }
+
+    if (!hasRole('admin')) {
+        return <div>You do not have permission to access this page.</div>;
+    }
 
     return (
         <div className="h-screen">
