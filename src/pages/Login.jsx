@@ -10,11 +10,11 @@ const Login = () => {
     const { login } = useUser();  
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
+        e.preventDefault(); 
 
         try {
             // Fetch the users from data.json
-            const response = await fetch('/data/data.json'); // Adjust the path if needed
+            const response = await fetch('/data/data.json'); 
             const data = await response.json();
 
             // Find the user with matching credentials
@@ -27,18 +27,18 @@ const Login = () => {
 
                 // Redirect based on the user's role
                 if (user.role === "admin") {
-                    navigate("/admin-dashboard"); // Redirect to admin dashboard
+                    navigate("/admin-dashboard"); 
                 } else if (user.role === "staff") {
-                    navigate("/staff-dashboard"); // Redirect to staff dashboard
+                    navigate("/staff-inventory"); 
                 } else {
-                    setError('Unauthorized role'); // Handle unknown roles
+                    setError('Unauthorized role'); 
                 }
             } else {
-                setError('Invalid credentials'); // Handle invalid credentials
+                setError('Invalid credentials'); 
             }
         } catch (error) {
             console.error('Error fetching users:', error);
-            setError('An error occurred. Please try again.'); // Handle fetch errors
+            setError('An error occurred. Please try again.'); 
         }
     };
 

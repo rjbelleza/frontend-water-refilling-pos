@@ -5,8 +5,9 @@ import Reports from "./pages/Reports";
 import Inventory from "./pages/Inventory";
 import Transaction from "./pages/Transaction";
 import UserList from "./pages/UserList";
-import StaffDashboard from "./pages/StaffDashboard";
 import ProtectedRoute from "./ProtectedRoute";
+import StaffInventory from "./pages/StaffInventory";
+import StaffTransaction from "./pages/StaffTransaction";
 
 const App = () => {
 
@@ -25,13 +26,8 @@ const App = () => {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/transactions" element={<Transaction />} />
         <Route path="/user-list" element={<UserList />} />
-        <Route 
-          path="/staff-dashboard" 
-          element={
-            <ProtectedRoute requiredRole="staff">
-              <StaffDashboard />
-            </ProtectedRoute>
-          } />
+        <Route path="/staff-inventory" element={<StaffInventory />} />
+        <Route path="/staff-transaction" element={<StaffTransaction />} />
       </Routes>
     </Router>
   );
