@@ -8,6 +8,7 @@ import UserList from "./pages/UserList";
 import ProtectedRoute from "./ProtectedRoute";
 import StaffInventory from "./pages/StaffInventory";
 import StaffTransaction from "./pages/StaffTransaction";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 const App = () => {
 
@@ -15,6 +16,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route 
           path="/admin-dashboard" 
           element={
@@ -22,12 +24,48 @@ const App = () => {
               <AdminDashboard />
             </ProtectedRoute>
           } />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/transactions" element={<Transaction />} />
-        <Route path="/user-list" element={<UserList />} />
-        <Route path="/staff-inventory" element={<StaffInventory />} />
-        <Route path="/staff-transaction" element={<StaffTransaction />} />
+        <Route 
+          path="/reports" 
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Reports />
+            </ProtectedRoute>
+          } />
+        <Route 
+          path="/inventory" 
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Inventory />
+            </ProtectedRoute>
+          } />
+        <Route 
+          path="/transactions" 
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Transaction />
+            </ProtectedRoute>
+          } />
+        <Route 
+          path="/user-list" 
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <UserList />
+            </ProtectedRoute>
+          } />
+        <Route 
+          path="/staff-inventory" 
+          element={
+            <ProtectedRoute requiredRole="staff">
+              <StaffInventory />
+            </ProtectedRoute>
+          } />
+        <Route 
+          path="/staff-transaction" 
+          element={
+            <ProtectedRoute requiredRole="staff">
+              <StaffTransaction />
+            </ProtectedRoute>
+          } />
       </Routes>
     </Router>
   );

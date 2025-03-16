@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useUser } from "../components/UserContext";
 
 const Login = () => {
@@ -83,7 +83,9 @@ const Login = () => {
                             <input type="checkbox" className=" h-[15px] w-[15px]" />
                             <p>Remember me</p>
                         </div>
-                        <p className="cursor-pointer hover:font-medium"><u>Forgot Password?</u></p>
+                        <Link to="/forgot-password">
+                            <p className="cursor-pointer hover:font-medium"><u>Forgot Password?</u></p>
+                        </Link>
                     </div>
                     <button 
                         type="submit"
