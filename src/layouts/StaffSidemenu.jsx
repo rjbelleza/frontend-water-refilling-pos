@@ -31,7 +31,7 @@ const MenuButtons = () => {
                 onClick={() => navigate("/staff-inventory")}
                 className={`h-11 w-full rounded-md hover:bg-light hover:text-primary-500 
                             font-medium cursor-pointer transition-all ease-in-out
-                            ${location.pathname === "/inventory" ? focus.focused : focus.unfocused}
+                            ${location.pathname === "/staff-inventory" ? focus.focused : focus.unfocused}
                          `}
                 >Inventory
             </button>
@@ -39,7 +39,7 @@ const MenuButtons = () => {
                 onClick={() => navigate("/staff-transaction")}
                 className={`h-11 w-full rounded-md hover:bg-light hover:text-primary-500 
                             font-medium cursor-pointer transition-all ease-in-out
-                            ${location.pathname === "/reports" ? focus.focused : focus.unfocused}
+                            ${location.pathname === "/staff-transaction" ? focus.focused : focus.unfocused}
                          `}
                 >Transaction Records
             </button>

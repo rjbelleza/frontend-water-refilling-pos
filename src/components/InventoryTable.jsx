@@ -219,7 +219,6 @@ const InventoryTable = () => {
               value={selectedId}
               onChange={handleSelectedIdChange}
               className="p-2 border border-gray-300 rounded"
-              placeholder="Enter ID"
             />
           </div>
 
@@ -231,7 +230,6 @@ const InventoryTable = () => {
               value={editItem.productName}
               onChange={handleEditInputChange}
               className="p-2 border border-gray-300 rounded"
-              placeholder="Product Name"
             />
           </div>
 

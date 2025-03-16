@@ -43,12 +43,19 @@ const Login = () => {
     };
 
     return (
-        <div className="h-screen w-screen flex justify-center items-center bg-gray-200">
+        <div 
+            className="h-screen w-screen flex justify-center items-center bg-[url('/images/login-background.png')]
+                    bg-cover bg-center"
+            
+        >
             <form
                 onSubmit={handleLogin} 
                 className="flex flex-col gap-10 h-[470px] w-[400px] bg-white rounded-sm p-4
                     shadow-[1px_1px_5px_black]">
-                <p className="font-bold text-[30px] text-left pl-4 text-primary">Login</p>
+                <div className="flex justify-between items-center">
+                    <p className="font-bold text-[30px] text-left pl-4 text-primary">Login</p>
+                    <img src="/images/Aqua2.png" alt="Logo" className="h-12 mr-5" />
+                </div>
 
                 <div className="flex flex-col w-full h-full gap-2 px-5">
                     <label className="ml-2 font-medium">Email or Username</label>
