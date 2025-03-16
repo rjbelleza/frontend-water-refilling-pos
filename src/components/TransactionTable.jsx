@@ -21,6 +21,9 @@ const TransactionTable = () => {
     date: '',
   });
 
+  // State for the search term
+  const [searchTerm, setSearchTerm] = useState('');
+
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,6 +79,11 @@ const TransactionTable = () => {
   const resetTable = () => {
     setData(initialData);
   };
+
+  // Filter data based on search term
+  const filteredData = data.filter((row) =>
+    row.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-5">
@@ -147,11 +155,17 @@ const TransactionTable = () => {
         </button>
       </div>
 
-
-      {/* Action buttons */}
+      {/* Action buttons and search bar */}
       <div className="flex items-between justify-between space-x-4 mb-6">
         <h1 className="text-2xl font-bold mb-3">Transaction History</h1>
         <div className='flex gap-3 items-center'>
+          <input
+            type="text"
+            placeholder="Search by customer name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border border-gray-300 rounded"
+          />
           <button 
               onClick={removeTransaction}
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
@@ -174,41 +188,43 @@ const TransactionTable = () => {
       </div>
 
       {/* Table */}
-      <table className="w-full border-collapse border border-gray-200">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-3 border border-gray-200">Customer Name</th>
-            <th className="p-3 border border-gray-200">Bottle Size</th>
-            <th className="p-3 border border-gray-200">Quantity</th>
-            <th className="p-3 border border-gray-200">Price</th>
-            <th className="p-3 border border-gray-200">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row) => (
-            <tr
-              key={row.id}
-              onClick={() => setSelectedId(row.id)}
-              className={`cursor-pointer ${
-                selectedId === row.id ? 'bg-gray-200' : 'hover:bg-gray-50'
-              }`}
-            >
-              <td className="p-3 border border-gray-200">{row.customerName}</td>
-              <td className="p-3 border border-gray-200">{row.bottleSize}</td>
-              <td className="p-3 border border-gray-200">{row.quantity}</td>
-              <td className="p-3 border border-gray-200">${row.price}</td>
-              <td className="p-3 border border-gray-200">{row.date}</td>
+      <div className="overflow-y-auto max-h-[400px] border border-gray-200 rounded-lg">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-gray-100 sticky top-0">
+              <th className="p-3 border border-gray-200">Customer Name</th>
+              <th className="p-3 border border-gray-200">Bottle Size</th>
+              <th className="p-3 border border-gray-200">Quantity</th>
+              <th className="p-3 border border-gray-200">Price</th>
+              <th className="p-3 border border-gray-200">Date</th>
             </tr>
-          ))}
-          {data.length === 0 && (
-            <tr>
-              <td colSpan="5" className="p-3 border border-gray-200 text-center">
-                No transactions available
-              </td>
-            </tr>
-          )}
-        </tbody>      
-      </table>
+          </thead>
+          <tbody>
+            {filteredData.map((row) => (
+              <tr
+                key={row.id}
+                onClick={() => setSelectedId(row.id)}
+                className={`cursor-pointer ${
+                  selectedId === row.id ? 'bg-gray-200' : 'hover:bg-gray-50'
+                }`}
+              >
+                <td className="p-3 border border-gray-200">{row.customerName}</td>
+                <td className="p-3 border border-gray-200">{row.bottleSize}</td>
+                <td className="p-3 border border-gray-200">{row.quantity}</td>
+                <td className="p-3 border border-gray-200">${row.price}</td>
+                <td className="p-3 border border-gray-200">{row.date}</td>
+              </tr>
+            ))}
+            {filteredData.length === 0 && (
+              <tr>
+                <td colSpan="5" className="p-3 border border-gray-200 text-center">
+                  No transactions available
+                </td>
+              </tr>
+            )}
+          </tbody>      
+        </table>
+      </div>
     </div>
   );
 };

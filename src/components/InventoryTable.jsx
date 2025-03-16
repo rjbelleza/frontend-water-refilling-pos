@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useReactTable, getCoreRowModel } from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
 
 const InventoryTable = () => {
   // Function to calculate stock status
@@ -29,6 +29,9 @@ const InventoryTable = () => {
     quantity: 0,
     price: 0,
   });
+
+  // State for the search term
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Handle form input changes for new item
   const handleInputChange = (e) => {
@@ -149,7 +152,7 @@ const InventoryTable = () => {
         },
       },
     ],
-    [inventoryData] // Ensure it re-renders when data changes
+    []
   );
 
   // Use React Table
@@ -157,6 +160,11 @@ const InventoryTable = () => {
     columns,
     data: inventoryData,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      globalFilter: searchTerm, // Add global filter for search
+    },
+    onGlobalFilterChange: setSearchTerm, // Update search term
   });
 
   return (
@@ -208,8 +216,8 @@ const InventoryTable = () => {
         </button>
       </div>
 
-       {/* Remove/Edit Section */}
-       <div className="mb-6 p-4 border border-gray-200 rounded-lg">
+      {/* Remove/Edit Section */}
+      <div className="mb-6 p-4 border border-gray-200 rounded-lg">
         <h2 className="text-xl font-semibold mb-4">Remove / Edit Inventory</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="flex flex-col gap-2">
@@ -257,7 +265,7 @@ const InventoryTable = () => {
             />
           </div>
         </div>
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 flex gap-4 mb-10">
           <button
             onClick={removeItem}
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -271,6 +279,17 @@ const InventoryTable = () => {
             Edit Item
           </button>
         </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by product name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded w-full md:w-1/3"
+        />
       </div>
 
       {/* React Table */}
