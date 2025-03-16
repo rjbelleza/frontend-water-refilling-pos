@@ -13,7 +13,8 @@ export const UserProvider = ({ children }) => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser); // Automatically log in the user
       } catch (error) {
         console.error("Error parsing user data:", error);
         localStorage.removeItem('user'); // Clear invalid data
@@ -23,15 +24,20 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   // Function to log in the user
-  const login = (credentials) => {
+  const login = (credentials, rememberMe = false) => {
     setUser(credentials);
-    localStorage.setItem('user', JSON.stringify(credentials)); // Save to local storage
+    if (rememberMe) {
+      localStorage.setItem('user', JSON.stringify(credentials)); // Save to local storage
+    } else {
+      sessionStorage.setItem('user', JSON.stringify(credentials)); // Save to session storage
+    }
   };
 
   // Function to log out the user
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user'); // Clear local storage
+    sessionStorage.removeItem('user'); // Clear session storage
   };
 
   // Function to check if the user has a specific role

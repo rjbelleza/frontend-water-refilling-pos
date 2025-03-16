@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router"; // Fixed import
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router"; 
 import { useUser } from "../components/UserContext";
 
 const Login = () => {
@@ -8,8 +8,18 @@ const Login = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false); // Add a loading state
     const [showPassword, setShowPassword] = useState(false); // Add show/hide password state
+    const [rememberMe, setRememberMe] = useState(false); // Add "Remember Me" state
     const navigate = useNavigate();
     const { login } = useUser();  
+
+    // Check for saved credentials on initial load
+    useEffect(() => {
+        const savedUsername = localStorage.getItem("rememberedUsername");
+        if (savedUsername) {
+            setUserName(savedUsername);
+            setRememberMe(true); // Pre-check the "Remember Me" checkbox
+        }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault(); 
@@ -27,7 +37,14 @@ const Login = () => {
             );
 
             if (user) {
-                login(user); // Save user credentials and role in context
+                login(user, rememberMe); // Save user credentials and role in context
+
+                // Save username to local storage if "Remember Me" is checked
+                if (rememberMe) {
+                    localStorage.setItem("rememberedUsername", username);
+                } else {
+                    localStorage.removeItem("rememberedUsername");
+                }
 
                 // Redirect based on the user's role
                 if (user.role === "admin") {
@@ -78,25 +95,25 @@ const Login = () => {
                         <input 
                             onChange={(e) => setPassword(e.target.value)}
                             value={password}
-                            type={showPassword ? "text" : "password"} // Toggle input type
+                            type={showPassword ? "text" : "password"} 
                             className="h-[40px] font-medium w-full bg-white rounded-xl 
                                    border-3 hover:border-4 border-primary px-4 pr-10" 
                         />
                         <button
                             type="button"
-                            onClick={() => setShowPassword(!showPassword)} // Toggle show/hide
+                            onClick={() => setShowPassword(!showPassword)} 
                             className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                         >
-                            {/* Use local icons for show/hide password */}
+                            
                             {showPassword ? (
                                 <img 
-                                    src="src/assets/icons/hide.png" // Path to your "hide" icon
+                                    src="src/assets/icons/hide.png" 
                                     alt="Hide Password"
                                     className="h-5 w-5"
                                 />
                             ) : (
                                 <img 
-                                    src="src/assets/icons/show.png" // Path to your "show" icon
+                                    src="src/assets/icons/show.png" 
                                     alt="Show Password"
                                     className="h-5 w-5"
                                 />
@@ -110,7 +127,12 @@ const Login = () => {
 
                     <div className="flex items-center justify-between gap-2 h-[50px] w-full mb-2">
                         <div className="flex items-center gap-2">
-                            <input type="checkbox" className=" h-[15px] w-[15px]" />
+                            <input 
+                                type="checkbox" 
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)} // Toggle "Remember Me"
+                                className="h-[15px] w-[15px]" 
+                            />
                             <p>Remember me</p>
                         </div>
                         <Link to="/forgot-password">
