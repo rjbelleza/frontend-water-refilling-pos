@@ -33,6 +33,9 @@ const InventoryTable = () => {
   // State for the search term
   const [searchTerm, setSearchTerm] = useState('');
 
+  // State for the stock status filter
+  const [stockStatusFilter, setStockStatusFilter] = useState('all'); // 'all', 'Low Stock', 'In Stock'
+
   // Handle form input changes for new item
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -155,10 +158,20 @@ const InventoryTable = () => {
     []
   );
 
+  // Filter data based on search term and stock status
+  const filteredData = useMemo(() => {
+    return inventoryData.filter((item) => {
+      const matchesSearchTerm = item.productName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStockStatus =
+        stockStatusFilter === 'all' || item.stockStatus === stockStatusFilter;
+      return matchesSearchTerm && matchesStockStatus;
+    });
+  }, [inventoryData, searchTerm, stockStatusFilter]);
+
   // Use React Table
   const table = useReactTable({
     columns,
-    data: inventoryData,
+    data: filteredData, // Use filtered data
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: {
@@ -281,8 +294,8 @@ const InventoryTable = () => {
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="mb-6">
+      {/* Search Bar and Stock Status Filter */}
+      <div className="mb-6 flex flex-col md:flex-row gap-4">
         <input
           type="text"
           placeholder="Search by product name..."
@@ -290,6 +303,15 @@ const InventoryTable = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="p-2 border border-gray-300 rounded w-full md:w-1/3"
         />
+        <select
+          value={stockStatusFilter}
+          onChange={(e) => setStockStatusFilter(e.target.value)}
+          className="p-2 border border-gray-300 rounded w-full md:w-1/4"
+        >
+          <option value="all">All Stock Status</option>
+          <option value="Low Stock">Low Stock</option>
+          <option value="In Stock">In Stock</option>
+        </select>
       </div>
 
       {/* React Table */}

@@ -65,7 +65,7 @@ const MenuButtons = () => {
                             font-medium cursor-pointer transition-all ease-in-out
                             ${location.pathname === "/user-list" ? focus.focused : focus.unfocused}
                           `}
-                >User List
+                >User Management
             </button>
         </>
     );
