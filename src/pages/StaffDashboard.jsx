@@ -1,4 +1,5 @@
 import { useUser } from "../components/UserContext";
+import Header from "../layouts/Header";
 
 const StaffDashboard = () => {
     const { user } = useUser();
@@ -6,7 +7,9 @@ const StaffDashboard = () => {
     return (
         <>
             {user && (
-                <p>Welcome, {user.name}!</p>
+                <div>
+                    <Header />
+                </div>
             )}
         </>
     );

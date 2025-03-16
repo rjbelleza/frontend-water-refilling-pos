@@ -22,16 +22,23 @@ const Login = () => {
                 (u) => (u.username === username || u.email === username) && u.password === password
             );
 
-            // Redirect based on the user's role
-            if (user.role === "admin") {
-                navigate("/admin-dashboard"); // Redirect to admin dashboard
-            } else if (user.role === "staff") {
-                navigate("/staff-dashboard"); // Redirect to staff dashboard
+            if (user) {
+                login(user); // Save user credentials and role in context
+
+                // Redirect based on the user's role
+                if (user.role === "admin") {
+                    navigate("/admin-dashboard"); // Redirect to admin dashboard
+                } else if (user.role === "staff") {
+                    navigate("/staff-dashboard"); // Redirect to staff dashboard
+                } else {
+                    setError('Unauthorized role'); // Handle unknown roles
+                }
             } else {
-                setError('Unauthorized role'); // Handle unknown roles
+                setError('Invalid credentials'); // Handle invalid credentials
             }
         } catch (error) {
             console.error('Error fetching users:', error);
+            setError('An error occurred. Please try again.'); // Handle fetch errors
         }
     };
 
