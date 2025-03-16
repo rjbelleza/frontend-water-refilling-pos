@@ -1,7 +1,7 @@
 import Header from "../layouts/Header";
-import Sidemenu from "../layouts/Sidemenu";
-import { dummyUser, adminSidemenuBtn, sampleOverview } from '../components/Dummy'; 
 import TransactionTable from "../components/TransactionTable";
+import AdminSidemenu from "../layouts/AdminSidemenu";
+import { user } from "../pages/AdminDashboard";
 
 const Transaction = () => {
 
@@ -9,7 +9,7 @@ const Transaction = () => {
         <div className="h-screen">
             <Header /> 
             <div className="flex w-[98%]">
-                <Sidemenu user={dummyUser} menuButtons={adminSidemenuBtn} />
+                <AdminSidemenu user={user} />
                 <div className="ml-65 mt-[75px] w-full">
                     <TransactionTable />
                 </div> 
