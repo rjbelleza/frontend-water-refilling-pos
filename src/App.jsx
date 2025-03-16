@@ -5,6 +5,7 @@ import Reports from "./pages/Reports";
 import Inventory from "./pages/Inventory";
 import Transaction from "./pages/Transaction";
 import UserList from "./pages/UserList";
+import StaffDashboard from "./pages/StaffDashboard";
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/transactions" element={<Transaction />} />
         <Route path="/user-list" element={<UserList />} />
+        <Route path="/staff-dashboard" element={<StaffDashboard />} />
       </Routes>
     </Router>
   );

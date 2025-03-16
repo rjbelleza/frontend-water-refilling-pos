@@ -10,7 +10,7 @@ const UserListPage = () => {
       email: 'john.doe@example.com',
       phone: '+1234567890',
       registrationDate: '2023-01-15',
-      role: 'User',
+      role: 'Admin',
       totalSpend: 1500,
     },
     {
@@ -19,7 +19,7 @@ const UserListPage = () => {
       email: 'jane.smith@example.com',
       phone: '+9876543210',
       registrationDate: '2023-03-22',
-      role: 'Admin',
+      role: 'Staff',
       totalSpend: 4500,
     },
     {
@@ -28,7 +28,7 @@ const UserListPage = () => {
       email: 'alice.johnson@example.com',
       phone: '+1122334455',
       registrationDate: '2023-05-10',
-      role: 'Moderator',
+      role: 'Staff',
       totalSpend: 3000,
     },
   ];

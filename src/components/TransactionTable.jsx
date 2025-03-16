@@ -82,7 +82,7 @@ const TransactionTable = () => {
 
       {/* Form for adding new transactions */}
       <div className="mb-20 p-4 border border-gray-200 rounded-lg">
-        <h2 className="text-xl font-semibold mb-8">Add New Transaction</h2>
+        <h2 className="text-xl font-semibold mb-8">Record New Transaction</h2>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <div className='flex flex-col gap-2'>
             <label className='text-[13px] ml-2'>Customer Name</label>

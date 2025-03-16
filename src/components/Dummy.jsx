@@ -1,6 +1,7 @@
 
 export const dummyUser = [
-    {id: 1, name: 'Kei Tsukishima', email: 'dummy@gmail.com', username: 'dummyuser', password: 'password', role: 'admin'}
+    {id: 1, name: 'Kei Tsukishima', email: 'dummy@gmail.com', username: 'dummyuser', password: 'password', role: 'admin'},
+    {id: 2, name: 'Steve Crafter', email: 'crafter@gmail.com', username: 'stevecraft', password: 'password', role: 'staff'},
 ];
 
 export const adminSidemenuBtn = [
