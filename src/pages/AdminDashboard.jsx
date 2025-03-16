@@ -4,17 +4,11 @@ import LineChart from "../components/SalesOverview";
 import PieChart from "../components/PieChart";
 import AdminSidemenu from "../layouts/AdminSidemenu";
 import { sampleOverview } from "../components/Dummy";
+import { useUser } from "../components/UserContext";
 
-export const user = {
-    "id": 1, 
-    "name": "Ken Takakura", 
-    "username": "kentakakura", 
-    "email": "ken@gmail.com", 
-    "password": "password",
-    "role": "admin"
-};
 
 const AdminDashboard = () => {
+    const { user } = useUser();
 
     return (
         <div className="h-screen">

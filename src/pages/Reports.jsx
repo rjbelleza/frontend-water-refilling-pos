@@ -1,9 +1,10 @@
 import Header from "../layouts/Header";
 import ReportsTable from "../components/ReportsTable";
 import AdminSidemenu from "../layouts/AdminSidemenu";
-import { user } from "../pages/AdminDashboard";
+import { useUser } from "../components/UserContext";
 
 const Reports = () => {
+    const { user } = useUser();
 
     return (
         <div className="h-screen">

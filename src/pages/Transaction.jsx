@@ -1,9 +1,11 @@
 import Header from "../layouts/Header";
 import TransactionTable from "../components/TransactionTable";
 import AdminSidemenu from "../layouts/AdminSidemenu";
-import { user } from "../pages/AdminDashboard";
+import { useUser } from "../components/UserContext";
+
 
 const Transaction = () => {
+    const { user } = useUser();
 
     return (
         <div className="h-screen">

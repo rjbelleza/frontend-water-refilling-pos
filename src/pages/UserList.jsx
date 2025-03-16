@@ -1,9 +1,11 @@
 import Header from "../layouts/Header";
 import UserListTable from "../components/UserListTable";
 import AdminSidemenu from "../layouts/AdminSidemenu";
-import { user } from "../pages/AdminDashboard";
+import { useUser } from "../components/UserContext";
+
 
 const UserList = () => {
+    const { user } = useUser();
 
     return (
         <div className="h-screen">

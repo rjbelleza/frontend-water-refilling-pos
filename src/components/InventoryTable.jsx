@@ -210,7 +210,7 @@ const InventoryTable = () => {
 
        {/* Remove/Edit Section */}
        <div className="mb-6 p-4 border border-gray-200 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Remove or Edit Inventory</h2>
+        <h2 className="text-xl font-semibold mb-4">Remove / Edit Inventory</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="flex flex-col gap-2">
             <label className="text-[13px] ml-2">Enter ID</label>

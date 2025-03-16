@@ -1,41 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { dummyUser } from "../components/Dummy";
+import { useUser } from "../components/UserContext";
 
 const Login = () => {
-    const [user, setUser] = useState("");
+    const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { login } = useUser();  
+    const { user } = useUser(); 
 
-   const handleLogin = (e) => {
-    e.preventDefault();
 
-    if(!user || !password) {
-        setError("Fields cannot be empty!")
-    }
+    const handleLogin = () => {
+        const credentials = { username, password };
+        login(credentials); // Save credentials in context
+      };
 
-    dummyUser.forEach((e) => {
-        if((user !== e.email || user !== e.username) && password !== e.password) {
-            setError("Invalid Credentials!");
-            setUser("");
-            setPassword("");
-        }
-        else {
-            if(e.role === "admin") {
-                navigate("/admin-dashboard");
-            }
-            else if(e.role === "staff") {
-                navigate("/staff-dashboard");
-            }
-            else {
-                setError("Invalid Role!");
-                setUser("");
-                setPassword("");
-            }
-        }
-    })
-   }
 
     return (
         <div className="h-screen w-screen flex justify-center items-center bg-gray-200">
@@ -48,8 +28,8 @@ const Login = () => {
                 <div className="flex flex-col w-full h-full gap-2 px-5">
                     <label className="ml-2 font-medium">Email or Username</label>
                     <input 
-                        onChange={(e) => setUser(e.target.value)}
-                        value={user}
+                        onChange={(e) => setUserName(e.target.value)}
+                        value={username}
                         type="text" 
                         className="h-[40px] font-medium w-full bg-white rounded-xl 
                                 border-3 hover:border-4 border-primary px-4" />
