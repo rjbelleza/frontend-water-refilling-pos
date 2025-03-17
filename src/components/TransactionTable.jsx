@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 const TransactionTable = () => {
   // Initial data for water refilling transactions
   const initialData = [
-    { id: 1, customerName: 'John Doe', bottleSize: '5 Gallons', quantity: 2, price: 100, date: '2023-10-01' },
-    { id: 2, customerName: 'Jane Smith', bottleSize: '10 Liters', quantity: 1, price: 50, date: '2023-10-02' },
-    { id: 3, customerName: 'Alice Johnson', bottleSize: '20 Liters', quantity: 3, price: 150, date: '2023-10-03' },
+    { id: 1, customerName: 'John Doe', bottleSize: '5 Gallons', quantity: 2, price: 100, date: '2023-10-01', deliveryStatus: 'Delivered', orderType: 'In Store' },
+    { id: 2, customerName: 'Jane Smith', bottleSize: '10 Liters', quantity: 1, price: 50, date: '2023-10-02', deliveryStatus: 'In Transit', orderType: 'Delivery' },
+    { id: 3, customerName: 'Alice Johnson', bottleSize: '20 Liters', quantity: 3, price: 150, date: '2023-10-03', deliveryStatus: 'Pending', orderType: 'In Store' },
   ];
 
   // State for the table data
   const [data, setData] = useState(initialData);
   const [selectedId, setSelectedId] = useState(null);
+  const [editStatusId, setEditStatusId] = useState(null); // Track which row's status is being edited
+  const [updatedStatus, setUpdatedStatus] = useState(''); // Store the updated status
 
   // State for the new transaction form
   const [newTransaction, setNewTransaction] = useState({
@@ -19,10 +21,15 @@ const TransactionTable = () => {
     quantity: 0,
     price: 0,
     date: '',
+    deliveryStatus: 'Pending', // Default status
+    orderType: 'In Store', // Default order type
   });
 
   // State for the search term
   const [searchTerm, setSearchTerm] = useState('');
+
+  // State for the delivery status filter
+  const [deliveryStatusFilter, setDeliveryStatusFilter] = useState('All'); // Default filter
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -59,6 +66,8 @@ const TransactionTable = () => {
       quantity: 0,
       price: 0,
       date: '',
+      deliveryStatus: 'Pending', // Reset to default status
+      orderType: 'In Store', // Reset to default order type
     });
   };
 
@@ -80,10 +89,30 @@ const TransactionTable = () => {
     setData(initialData);
   };
 
-  // Filter data based on search term
-  const filteredData = data.filter((row) =>
-    row.customerName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter data based on search term and delivery status
+  const filteredData = data.filter((row) => {
+    const matchesSearchTerm = row.customerName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDeliveryStatus = deliveryStatusFilter === 'All' || row.deliveryStatus === deliveryStatusFilter;
+    return matchesSearchTerm && matchesDeliveryStatus;
+  });
+
+  // Enable editing for a specific row's delivery status
+  const enableEditStatus = (id, currentStatus) => {
+    setEditStatusId(id);
+    setUpdatedStatus(currentStatus);
+  };
+
+  // Save the updated delivery status
+  const saveUpdatedStatus = () => {
+    if (editStatusId && updatedStatus) {
+      const updatedData = data.map((row) =>
+        row.id === editStatusId ? { ...row, deliveryStatus: updatedStatus } : row
+      );
+      setData(updatedData);
+      setEditStatusId(null); // Exit edit mode
+      setUpdatedStatus(''); // Clear the updated status
+    }
+  };
 
   return (
     <div className="p-5">
@@ -91,7 +120,7 @@ const TransactionTable = () => {
       {/* Form for adding new transactions */}
       <div className="mb-20 p-4 border border-gray-200 rounded-lg">
         <h2 className="text-xl font-semibold mb-8">Record New Transaction</h2>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
           <div className='flex flex-col gap-2'>
             <label className='text-[13px] ml-2'>Customer Name</label>
             <input
@@ -146,6 +175,33 @@ const TransactionTable = () => {
               className="p-2 border border-gray-300 rounded"
             />
           </div>
+
+          <div className='flex flex-col gap-2'>
+            <label className='text-[13px] ml-2'>Delivery Status</label>
+            <select
+              name="deliveryStatus"
+              value={newTransaction.deliveryStatus}
+              onChange={handleInputChange}
+              className="p-2 border border-gray-300 rounded"
+            >
+              <option value="Pending">Pending</option>
+              <option value="In Transit">In Transit</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <label className='text-[13px] ml-2'>Order Type</label>
+            <select
+              name="orderType"
+              value={newTransaction.orderType}
+              onChange={handleInputChange}
+              className="p-2 border border-gray-300 rounded"
+            >
+              <option value="In Store">In Store</option>
+              <option value="Delivery">Delivery</option>
+            </select>
+          </div>
         </div>
         <button
           onClick={addNewTransaction}
@@ -166,9 +222,19 @@ const TransactionTable = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-2 border border-gray-300 rounded"
           />
+          <select
+            value={deliveryStatusFilter}
+            onChange={(e) => setDeliveryStatusFilter(e.target.value)}
+            className="p-2 border border-gray-300 rounded"
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="In Transit">In Transit</option>
+            <option value="Delivered">Delivered</option>
+          </select>
           <button 
               onClick={removeTransaction}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
+              className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
             >
               Remove Transaction
             </button>
@@ -197,6 +263,9 @@ const TransactionTable = () => {
               <th className="p-3 border border-gray-200">Quantity</th>
               <th className="p-3 border border-gray-200">Price</th>
               <th className="p-3 border border-gray-200">Date</th>
+              <th className="p-3 border border-gray-200">Delivery Status</th>
+              <th className="p-3 border border-gray-200">Order Type</th>
+              <th className="p-3 border border-gray-200">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -213,11 +282,44 @@ const TransactionTable = () => {
                 <td className="p-3 border border-gray-200">{row.quantity}</td>
                 <td className="p-3 border border-gray-200">${row.price}</td>
                 <td className="p-3 border border-gray-200">{row.date}</td>
+                <td className="p-3 border border-gray-200">
+                  {editStatusId === row.id ? (
+                    <select
+                      value={updatedStatus}
+                      onChange={(e) => setUpdatedStatus(e.target.value)}
+                      className="p-1 border border-gray-300 rounded"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="In Transit">In Transit</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                  ) : (
+                    row.deliveryStatus
+                  )}
+                </td>
+                <td className="p-3 border border-gray-200">{row.orderType}</td>
+                <td className="p-3 border border-gray-200">
+                  {editStatusId === row.id ? (
+                    <button
+                      onClick={saveUpdatedStatus}
+                      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700 cursor-pointer"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => enableEditStatus(row.id, row.deliveryStatus)}
+                      className="bg-[#009688] ml-8 text-white px-2 py-1 rounded hover:bg-[#7B878F] cursor-pointer"
+                    >
+                      Edit Status
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
             {filteredData.length === 0 && (
               <tr>
-                <td colSpan="5" className="p-3 border border-gray-200 text-center">
+                <td colSpan="8" className="p-3 border border-gray-200 text-center">
                   No transactions available
                 </td>
               </tr>
