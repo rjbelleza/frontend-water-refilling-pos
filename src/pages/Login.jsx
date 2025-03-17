@@ -67,9 +67,13 @@ const Login = () => {
 
     return (
         <div 
-            className="h-screen w-screen flex justify-center items-center bg-[url('/images/login-background.png')]
+            className="h-screen w-screen flex flex-col justify-center items-center bg-[url('/images/login-background.png')]
                     bg-cover bg-center"
         >
+        <div className="flex flex-col items-center justify-center text-[20px] mb-10">
+            <h1 className="font-bold">Aqua Springs</h1>
+            <h1 className="text-[15px]">POS System</h1>
+        </div>
             <form
                 onSubmit={handleLogin} 
                 className="flex flex-col gap-10 h-[470px] w-[400px] bg-white rounded-sm p-4
