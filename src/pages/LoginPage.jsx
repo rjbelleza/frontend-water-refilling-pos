@@ -56,7 +56,7 @@ const LoginPage = () => {
                         type="submit"
                         className="h-[50px] w-full bg-primary text-white font-bold rounded-md cursor-pointer
                             hover:bg-primary-500 disabled:bg-gray-400"
-                    >
+                    >LOGIN
                     </button>
                 </div>
             </form>
