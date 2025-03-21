@@ -29,28 +29,51 @@ const SideMenuBtn = () => {
         <div className="flex flex-col gap-3 w-full text-white font-light">
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-indigo-800"></div>
-                <p>Dashboard</p>
+                <div className="h-full w-2 bg-indigo-500"></div>
+                <div className="flex justify-between w-full">
+                    <p>Dashboard</p>
+                    <img src="src/assets/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
+                </div>
             </button>
-            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 cursor-pointer
-                               rounded-tr-full rounded-br-full hover:bg-primary hover:scale-103 transition-all">
+            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                <div className="h-full w-2 bg-purple-500"></div>
+                <div className="flex justify-between w-full">
+                    <p>Sales</p>
+                    <img src="src/assets/icons/sales.png" className="h-7 bg-purple-500 rounded-full mr-3 p-1" />
+                </div>
+            </button>
+            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-violet-500"></div>
-                <p>Sales</p>
+                <div className="flex justify-between w-full">
+                    <p>Inventory</p>
+                    <img src="src/assets/icons/inventory.png" className="h-7 bg-violet-500 rounded-full mr-3 p-1" />
+                </div>
             </button>
-            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 cursor-pointer
-                               rounded-tr-full rounded-br-full hover:bg-primary hover:scale-103 transition-all">
+            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-pink-500"></div>
-                <p>Inventory</p>
+                <div className="flex justify-between w-full">
+                    <p>Expenses</p>
+                    <img src="src/assets/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
+                </div>
             </button>
-            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 cursor-pointer
-                               rounded-tr-full rounded-br-full hover:bg-primary hover:scale-103 transition-all">
+            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-rose-500"></div>
-                <p>Transactions</p>
+                <div className="flex justify-between w-full">
+                    <p>Reports</p>
+                    <img src="src/assets/icons/reports.png" className="h-7 bg-rose-500 rounded-full mr-3 p-1" />
+                </div>
             </button>
-            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 cursor-pointer
-                               rounded-tr-full rounded-br-full hover:bg-primary hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-slate-600"></div>
-                <p>Users</p>
+            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                <div className="h-full w-2 bg-slate-500"></div>
+                <div className="flex justify-between w-full">
+                    <p>Users</p>
+                    <img src="src/assets/icons/users.png" className="h-7 bg-slate-500 rounded-full mr-3 p-1" />
+                </div>
             </button>
         </div>
     );
