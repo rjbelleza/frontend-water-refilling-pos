@@ -28,7 +28,7 @@ const SideMenuBtn = () => {
     return (
         <div className="flex flex-col gap-3 w-full text-white font-light">
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-indigo-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Dashboard</p>
@@ -36,7 +36,7 @@ const SideMenuBtn = () => {
                 </div>
             </button>
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-purple-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Sales</p>
@@ -44,7 +44,7 @@ const SideMenuBtn = () => {
                 </div>
             </button>
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-violet-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Inventory</p>
@@ -52,7 +52,7 @@ const SideMenuBtn = () => {
                 </div>
             </button>
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-pink-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Expenses</p>
@@ -60,7 +60,7 @@ const SideMenuBtn = () => {
                 </div>
             </button>
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-rose-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Reports</p>
@@ -68,7 +68,7 @@ const SideMenuBtn = () => {
                 </div>
             </button>
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-primary hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-slate-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Users</p>
