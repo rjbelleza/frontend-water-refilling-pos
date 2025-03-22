@@ -12,8 +12,11 @@ const AdminDashboard = () => {
                 <AdminSidemenu />
                 <div className="h-full w-full ml-63 mt-2 mr-2 rounded-md">
                     <Breadcrumb />
-                    <div className="h-fit w-full bg-white mt-2 rounded-md">
-                        <Card1 />
+                    <div className="grid grid-cols-4 gap-6 h-full w-full bg-white mt-2 rounded-md p-5">
+                        <Card1 url="card-bg1.png" category="Total Sales" value="₱70,000.00" range="Last 30 days" color="#f257a0" />
+                        <Card1 url="card-bg2.png" category="Total Expenses" value="₱20,000.00" range="Last 30 days" color="#c157f2" />
+                        <Card1 url="card-bg3.png" category="Inventory Level" value="In Stock" range="Current inventory" color="#575cf2" />
+                        <Card1 url="card-bg4.png" category="Net Profit" value="₱50,000.00" range="From Last 30 days" color="#57c4f2" />
                     </div>
                 </div>
             </div>
