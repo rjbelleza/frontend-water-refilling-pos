@@ -1,29 +1,58 @@
+import { format } from "date-fns";
+import { useState, useEffect } from "react";
 
 const RecentTransactionsTable = ({sales}) => {
+    const [count, setCount] = useState(0);
+    let amount = 0;
+
+
+    {/* Sum of total amount */}
+    sales.forEach(sale => {
+        amount+=sale.total;
+    });
+
+    
+    useEffect(() => {
+        if (sales) {
+            setCount(sales.length);
+        } else {
+            setCount(0);
+        }
+    }, [sales]);
+
 
     return (
         <div className="h-[310px] w-full overflow-auto">
             <table className="w-full">
-                <thead className="bg-white sticky top-0 z-100">
-                    <tr className="grid grid-cols-3 mb-2 p-3 border-3 border-blue-400 rounded-md">
-                        <th className="text-left">Customer</th>
-                        <th>Total Amount</th>
-                        <th>Time</th>
+                <thead className="sticky top-0 z-100">
+                    <tr className="grid grid-cols-3 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-md">
+                        <th className="text-left text-gray-800">Customer</th>
+                        <th className="text-gray-800">Amount</th>
+                        <th className="text-gray-800">Time</th>
                     </tr>
                 </thead>
                 <tbody className="space-y-1">
                     {sales ? sales.map(sale => (
                                 <tr key={sale.id} className="grid grid-cols-3 p-4 border-1 border-blue-400 rounded-md">
                                     <td>{sale.customer}</td>
-                                    <td className="text-left ml-14">₱{parseFloat(sale.total).toFixed(2)}</td>
-                                    <td className="text-right">{sale.time}</td>
+                                    <td className="text-center">₱{parseFloat(sale.total).toFixed(2)}</td>
+                                    <td className="text-center">{format(sale.time, "hh:mm:ss a")}</td>
                                 </tr>
                     )) : (
-                        <div className="flex justify-center items-center h-[200px] w-full">
+                        <tr className="flex justify-center items-center h-[200px] w-full">
                             <p>No transactions yet</p>
-                        </div>
+                        </tr>
                     )}
+                    <tr className="h-[20px]"></tr>
                 </tbody>
+                <tfoot className="sticky bottom-0 z-100">
+                    <tr>
+                        <td className="font-bold bg-white text-gray-800 rounded-md py-2 pt-5 px-5">
+                            Total Customers: {count}
+                            <span className="ml-30">Total Amount: ₱{amount.toFixed(2)}</span>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     );

@@ -6,13 +6,19 @@ import RecentTransactionsTable from "../components/RecentTransactionsTable";
 
 const AdminDashboard = () => {
     const sales = [
-        { id: 1, customer: "John Doe", total: 25.99, time: "2025-03-22 10:30 AM" },
-        { id: 2, customer: "In Store", total: 45.50, time: "2025-03-22 11:15 AM" },
-        { id: 3, customer: "Alice Johnson", total: 32.75, time: "2025-03-22 12:00 PM" },
-        { id: 4, customer: "In Store", total: 18.20, time: "2025-03-22 12:45 PM" },
-        { id: 5, customer: "In Store", total: 18.20, time: "2025-03-22 12:45 PM" },
-        { id: 6, customer: "Bob Brown", total: 18.20, time: "2025-03-22 12:45 PM" },
+        { id: 1, customer: "Tagoloan Community College", total: 27.99, time: "2025-03-22 10:30 AM" },
+        { id: 2, customer: "Walk In", total: 45.50, time: "2025-03-22 11:15 AM" },
+        { id: 3, customer: "St. Paul Hospital", total: 32.75, time: "2025-03-22 12:00 PM" },
+        { id: 4, customer: "Walk In", total: 18.20, time: "2025-03-22 12:45 PM" },
+        { id: 5, customer: "Walk In", total: 18.20, time: "2025-03-22 12:45 PM" },
+        { id: 6, customer: "Mr. DIY", total: 18.20, time: "2025-03-22 12:45 PM" },
       ];
+
+    
+    {/* Auto refresh every 10 minutes */}  
+    setTimeout(() => {
+        location.reload();
+    }, 600000);
       
 
     return (
@@ -30,13 +36,17 @@ const AdminDashboard = () => {
                         <div className="col-span-2 h-[400px] bg-white rounded-md shadow-md shadow-gray-500 border-1 
                                       border-blue-400 p-5 space-y-3"
                         >
-                            <h3 className="text-[17px] font-medium">Recent Transactions (Today)</h3>
+                            <h3 className="text-[17px] font-medium bg-primary px-4 py-1 rounded-sm w-fit text-white">
+                                Recent Transactions (Today)
+                            </h3>
                             <RecentTransactionsTable sales={sales} />
                         </div>
                         <div className="col-span-2 h-[400px] bg-white rounded-md shadow-md shadow-gray-500 border-1 
                                       border-blue-400 p-5"
                         >
-
+                            <h3 className="text-[17px] font-medium bg-primary text-white rounded-sm px-5 py-1">
+                                As Of Today
+                            </h3>
                         </div>
                     </div>
                 </div>
