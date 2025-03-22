@@ -2,9 +2,8 @@
 const Card1 = ({url, category, value, range, color}) => {
 
     return (
-        <div className={`h-fit w-fit px-5 py-3 shadow-md shadow-gray-600 space-y-2 border-1 
-                       border-blue-500 hover:scale-105 transition-all rounded-bl-xl rounded-br-xl
-                         rounded-tl-sm rounded-tr-sm`}
+        <div className="h-fit w-fit px-5 py-3 shadow-md shadow-gray-600 space-y-2 border-1 border-blue-500 
+                        hover:scale-105 transition-all rounded-xl"
              style={{backgroundImage: "url('src/assets/backgroundImages/" + url}}
         >
             <div className="w-[245px]"></div>
