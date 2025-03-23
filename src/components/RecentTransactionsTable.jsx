@@ -23,11 +23,11 @@ const RecentTransactionsTable = ({sales}) => {
 
     return (
         <div className="h-[310px] w-full overflow-auto">
-            <table className="w-full">
+            <table className="w-full text-[14px]">
                 <thead className="sticky top-0 z-100">
                     <tr className="grid grid-cols-3 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-md">
                         <th className="text-left text-gray-800">Customer</th>
-                        <th className="text-gray-800">Amount</th>
+                        <th className="text-gray-800">Total Amount</th>
                         <th className="text-gray-800">Time</th>
                     </tr>
                 </thead>
@@ -47,9 +47,9 @@ const RecentTransactionsTable = ({sales}) => {
                 </tbody>
                 <tfoot className="sticky bottom-0 z-100">
                     <tr>
-                        <td className="font-bold bg-white text-gray-800 rounded-md py-2 pt-5 px-5">
+                        <td className="font-bold bg-primary text-white rounded-md py-2 pt-5 px-5">
                             Total Customers: {count}
-                            <span className="ml-30">Total Amount: ₱{amount.toFixed(2)}</span>
+                            <span className="ml-30">Sales: ₱{amount.toFixed(2)}</span>
                         </td>
                     </tr>
                 </tfoot>
