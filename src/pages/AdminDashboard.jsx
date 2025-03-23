@@ -3,6 +3,7 @@ import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Card1 from "../components/Card1";
 import RecentTransactionsTable from "../components/RecentTransactionsTable";
+import PieChart from "../components/PieChart";
 
 const AdminDashboard = () => {
     const sales = [
@@ -47,6 +48,7 @@ const AdminDashboard = () => {
                             <h3 className="text-[17px] font-medium bg-primary text-white rounded-sm px-5 py-1">
                                 As Of Today
                             </h3>
+                            <PieChart />
                         </div>
                     </div>
                 </div>
