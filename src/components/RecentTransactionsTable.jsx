@@ -26,15 +26,15 @@ const RecentTransactionsTable = ({sales}) => {
             <table className="w-full text-[14px]">
                 <thead className="sticky top-0 z-100">
                     <tr className="grid grid-cols-3 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-sm">
-                        <th className="text-left text-gray-800">Customer</th>
+                        <th className="text-left pl-10 text-gray-800">Customer</th>
                         <th className="text-gray-800">Total Amount</th>
                         <th className="text-gray-800">Time</th>
                     </tr>
                 </thead>
                 <tbody className="space-y-1">
                     {sales ? sales.map(sale => (
-                                <tr key={sale.id} className="grid grid-cols-3 p-4 border-1 border-blue-400 rounded-sm">
-                                    <td>{sale.customer}</td>
+                                <tr key={sale.id} className="grid grid-cols-3 p-3 border-1 border-blue-400 rounded-full">
+                                    <td className="pl-4">{sale.customer}</td>
                                     <td className="text-center">₱{parseFloat(sale.total).toFixed(2)}</td>
                                     <td className="text-center">{format(sale.time, "hh:mm:ss a")}</td>
                                 </tr>
