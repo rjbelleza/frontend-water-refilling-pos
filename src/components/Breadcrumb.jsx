@@ -7,6 +7,9 @@ const Breadcrumb = () => {
         if(location.pathname === '/admin-dashboard') {
             return 'DASHBOARD'
         }
+        else if (location.pathname === '/admin-sales') {
+            return 'SALES MANAGEMENT'
+        }
     }
 
     return (

@@ -25,7 +25,7 @@ const RecentTransactionsTable = ({sales}) => {
         <div className="h-[310px] w-full overflow-auto">
             <table className="w-full text-[14px]">
                 <thead className="sticky top-0 z-100">
-                    <tr className="grid grid-cols-3 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-md">
+                    <tr className="grid grid-cols-3 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-sm">
                         <th className="text-left text-gray-800">Customer</th>
                         <th className="text-gray-800">Total Amount</th>
                         <th className="text-gray-800">Time</th>
@@ -33,7 +33,7 @@ const RecentTransactionsTable = ({sales}) => {
                 </thead>
                 <tbody className="space-y-1">
                     {sales ? sales.map(sale => (
-                                <tr key={sale.id} className="grid grid-cols-3 p-4 border-1 border-blue-400 rounded-md">
+                                <tr key={sale.id} className="grid grid-cols-3 p-4 border-1 border-blue-400 rounded-sm">
                                     <td>{sale.customer}</td>
                                     <td className="text-center">₱{parseFloat(sale.total).toFixed(2)}</td>
                                     <td className="text-center">{format(sale.time, "hh:mm:ss a")}</td>
@@ -47,7 +47,7 @@ const RecentTransactionsTable = ({sales}) => {
                 </tbody>
                 <tfoot className="sticky bottom-0 z-100">
                     <tr>
-                        <td className="font-bold bg-primary text-white rounded-md py-2 pt-5 px-5">
+                        <td className="font-bold bg-primary text-white rounded-sm py-2 pt-2 px-5">
                             Total Customers: {count}
                             <span className="ml-30">Sales: ₱{amount.toFixed(2)}</span>
                         </td>
