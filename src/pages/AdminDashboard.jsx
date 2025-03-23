@@ -32,7 +32,7 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-4 gap-6 h-fit w-full bg-white mt-2 rounded-md p-5">
                         <Card1 url="card-bg1.png" category="Total Sales" value="₱70,000.00" range="Last 30 days" color="#f257a0" />
                         <Card1 url="card-bg2.png" category="Total Expenses" value="₱20,000.00" range="Last 30 days" color="#c157f2" />
-                        <Card1 url="card-bg3.png" category="Inventory Level" value="In Stock" range="Current inventory" color="#575cf2" />
+                        <Card1 url="card-bg3.png" category="Inventory Level" value="In Stock" range="All products" color="#575cf2" />
                         <Card1 url="card-bg4.png" category="Net Profit" value="₱50,000.00" range="From Last 30 days" color="#57c4f2" />
                         <div className="col-span-3 h-[400px] bg-white rounded-md shadow-md shadow-gray-500 border-1 
                                       border-blue-400 p-5 space-y-3"
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
                                       border-blue-400 p-5"
                         >
                             <h3 className="text-[17px] font-medium bg-primary text-white rounded-sm px-5 py-1">
-                                As Of Today
+                                Sales per product (Today)
                             </h3>
                             <PieChart />
                         </div>
