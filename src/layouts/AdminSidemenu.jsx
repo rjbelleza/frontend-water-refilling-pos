@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const AdminSidemenu = () => {
     const user = {name: 'Jack Frost', email: 'jack@gmail.com', role: 'admin'};
@@ -25,24 +26,31 @@ const AdminSidemenu = () => {
 
 const SideMenuBtn = () => {
 
+
     return (
         <div className="flex flex-col gap-3 w-full text-white font-light">
-            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-indigo-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Dashboard</p>
-                    <img src="src/assets/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
-                </div>
-            </button>
-            <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-purple-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Sales</p>
-                    <img src="src/assets/icons/sales.png" className="h-7 bg-purple-500 rounded-full mr-3 p-1" />
-                </div>
-            </button>
+            <Link to="/admin-dashboard">
+                <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
+                    <div className="h-full w-2 bg-indigo-500"></div>
+                    <div className="flex justify-between w-full">
+                        <p>Dashboard</p>
+                        <img src="src/assets/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
+                    </div>
+                </button>
+            </Link>
+
+            <Link to="/admin-sales">
+                <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
+                    <div className="h-full w-2 bg-purple-500"></div>
+                    <div className="flex justify-between w-full">
+                        <p>Sales</p>
+                        <img src="src/assets/icons/sales.png" className="h-7 bg-purple-500 rounded-full mr-3 p-1" />
+                    </div>
+                </button>
+            </Link>
+
             <button className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-violet-500"></div>
