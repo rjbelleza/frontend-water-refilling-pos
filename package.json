@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.14",
+    "apexcharts": "^4.5.0",
     "date-fns": "^4.1.0",
     "react": "^19.0.0",
+    "react-apexcharts": "^1.7.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
     "tailwindcss": "^4.0.14"
