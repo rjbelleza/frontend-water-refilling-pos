@@ -3,8 +3,9 @@ import { format } from "date-fns";
 
 const SalesTable = ({sales, products}) => {
 
+
     return (
-        <div className="h-full w-full shadow-md shadow-gray-400 rounded-lg px-2 overflow-auto">
+        <div className="h-full w-full shadow-md shadow-gray-400 rounded-lg px-5 overflow-auto">
 
             <div className="flex justify-between w-full bg-white sticky top-0 p-2 gap-5">
 
@@ -35,28 +36,22 @@ const SalesTable = ({sales, products}) => {
 
             <table className="w-full">
                 <thead className="sticky top-13 z-99">
-                    <tr className="grid grid-cols-7 p-4 text-[12px] border-1 border-blue-800 bg-blue-300 rounded-lg mb-2">
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Subtotal</th>
+                    <tr className="grid grid-cols-4 p-4 text-[15px] border-1 border-blue-800 bg-blue-300 rounded-lg mb-2">
+                        <th className="text-left ml-19">Customer</th>
+                        <th>Total Amount</th>
                         <th>Date & Time</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody className="space-y-2 font-medium">
+                <tbody className="space-y-2">
                     {sales ? sales.map(sale => (
-                        <tr key={sale.id} className="grid grid-cols-7 text-center text-[12px] border-1 border-blue-300 rounded-full p-3">
-                            <td className="flex justify-center items-center">{sale.customer}</td>
-                            <td className="flex justify-center items-center">{sale.product}</td>
-                            <td className="flex justify-center items-center">{sale.quantity}</td>
-                            <td className="flex justify-center items-center">₱{sale.unitPrice.toFixed(2)}</td>
+                        <tr key={sale.id} className="grid grid-cols-4 text-center text-[15px] border-1 border-blue-300 rounded-full p-2">
+                            <td className="flex items-center ml-20">{sale.customer}</td>
                             <td className="flex justify-center items-center">₱{sale.subtotal.toFixed(2)}</td>
                             <td className="flex justify-center items-center text-[13px]">{format(sale.dateTime, "MMM dd, yyyy hh:mm a")}</td>
                             <td>
                                 <button className="bg-primary text-white px-4 py-1 rounded-md hover:bg-blue-900 cursor-pointer">
-                                    Select
+                                    View
                                 </button>
                             </td>
                         </tr>

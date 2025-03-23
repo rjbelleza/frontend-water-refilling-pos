@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 import LoginPage from "./pages/LoginPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminSales from "./pages/AdminSales";
+import NewSalesPage from "./pages/NewSalesPage";
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin-sales" element={<AdminSales />} />
+        <Route path="/new-sales" element={<AdminSales />} />
       </Routes>
     </Router>
   );

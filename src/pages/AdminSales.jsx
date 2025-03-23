@@ -9,7 +9,7 @@ const AdminSales = () => {
     const sales = [
         {
             id: 1,
-            customer: "John Doe",
+            customer: "Walk in",
             product: "5-Gallon Bottle",
             quantity: 2,
             unitPrice: 50,
@@ -18,7 +18,7 @@ const AdminSales = () => {
         },
         {
             id: 2,
-            customer: "Jane Smith",
+            customer: "Tagoloan Community College",
             product: "3-Gallon Bottle",
             quantity: 3,
             unitPrice: 30,
@@ -27,7 +27,7 @@ const AdminSales = () => {
         },
         {
             id: 3,
-            customer: "Alice Johnson",
+            customer: "St. Paul Hospital",
             product: "1-Gallon Bottle",
             quantity: 5,
             unitPrice: 10,
@@ -36,7 +36,7 @@ const AdminSales = () => {
         },
         {
             id: 4,
-            customer: "Bob Brown",
+            customer: "Kaking Tagoloan",
             product: "5-Gallon Bottle",
             quantity: 1,
             unitPrice: 50,
@@ -45,7 +45,7 @@ const AdminSales = () => {
         },
         {
             id: 5,
-            customer: "Charlie Davis",
+            customer: "Mr. DIY Tagoloan",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -54,7 +54,7 @@ const AdminSales = () => {
         },
         {
             id: 6,
-            customer: "Charlie Davis",
+            customer: "Walk in",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -63,7 +63,7 @@ const AdminSales = () => {
         },
         {
             id: 7,
-            customer: "Charlie Davis",
+            customer: "Katipunan Bank",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -72,7 +72,7 @@ const AdminSales = () => {
         },
         {
             id: 8,
-            customer: "Charlie Davis",
+            customer: "Tagoloan Municipal Hall",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -81,7 +81,7 @@ const AdminSales = () => {
         },
         {
             id: 9,
-            customer: "Charlie Davis",
+            customer: "Walk in",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -90,7 +90,7 @@ const AdminSales = () => {
         },
         {
             id: 10,
-            customer: "Charlie Davis",
+            customer: "Walk in",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -99,7 +99,7 @@ const AdminSales = () => {
         },
         {
             id: 11,
-            customer: "Charlie Davis",
+            customer: "Walk in",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
@@ -108,7 +108,7 @@ const AdminSales = () => {
         },
         {
             id: 12,
-            customer: "Charlie Davis",
+            customer: "Botoy's Tagoloan",
             product: "3-Gallon Bottle",
             quantity: 4,
             unitPrice: 30,
