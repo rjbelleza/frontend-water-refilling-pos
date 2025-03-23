@@ -116,17 +116,28 @@ const AdminSales = () => {
             dateTime: "2023-10-05 04:20 PM"
         }
     ];
+
+
+    const products = [
+        {id: 1, name: "5-Gallon Bottle"},
+        {id: 2, name: "3-Gallon Bottle"},
+        {id: 3, name: "500ml Bottle"},
+        {id: 4, name: "1-Gallon Bottle"},
+    ];
     
 
     return (
         <div className="h-screen w-full bg-gray-300 scroll-smooth">
             <Header />
-            <div className="flex h-full w-full mt-15">
+            <div className="flex h-fit w-full mt-15">
                 <AdminSidemenu />
                 <div className="h-full w-full ml-63 mt-2 mr-2 rounded-md">
                     <Breadcrumb />
-                    <div className="grid grid-cols-1 h-fit w-full bg-white mt-2 rounded-md p-5">
-                        <SalesTable sales={sales} />
+                    <div className="grid grid-cols-1 grid-rows-4 h-[600px] w-full bg-white mt-2 rounded-md p-5">
+                        <div className="row-span-1">
+
+                        </div>
+                        <SalesTable sales={sales} products={products} />
                     </div>
                 </div>
             </div>
