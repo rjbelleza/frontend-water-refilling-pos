@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
 
 const CreateTransaction = () => {
     const [selectedProduct, setSelectedProduct] = useState([]);
-    const [totalAmount, setTotalAmount] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     
@@ -20,34 +19,60 @@ const CreateTransaction = () => {
     ];
 
     
+    // Add product handler
     const handleAddProduct = (product) => {
+        if (product.stock <= 0) return;
+        
         setSelectedProduct(prev => {
-          const existing = prev.find(p => p.id === product.id);
-          if (existing) {
-            return prev.map(p => 
-              p.id === product.id 
-                ? {...p, quantity: (p.quantity || 1) + 1} 
-                : p
-            );
-          }
-          return [...prev, {...product, quantity: 1}];
+            const existing = prev.find(p => p.id === product.id);
+            if (existing) {
+                if (existing.quantity >= product.stock) return prev;
+                return prev.map(p => 
+                    p.id === product.id 
+                        ? {...p, quantity: (p.quantity || 1) + 1} 
+                        : p
+                );
+            }
+            return [...prev, {...product, quantity: 1}];
         });
     };
 
-    
-    const calculateTotal = () => {
-        return selectedProduct.reduce((sum, product) => {
-          return sum + (product.price * (product.quantity || 1));
-        }, 0);
+
+    const handleQuantityChange = (productId, newQuantity) => {
+        setSelectedProduct(prev =>
+            prev.map(product =>
+                product.id === productId
+                    ? { ...product, quantity: newQuantity }
+                    : product
+            )
+        );
     };
 
 
+    // Calculate total
+    const totalAmount = useMemo(() => 
+        selectedProduct.reduce((sum, product) => 
+            sum + (product.price * (product.quantity || 1)), 
+        0
+    ), [selectedProduct]);
+
+
     // Filtered products
-    const filteredProducts = products.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-    });
+    const filteredProducts = useMemo(() => 
+        products.filter(product => {
+          const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+          const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+          return matchesSearch && matchesCategory;
+        }),
+        [products, searchTerm, selectedCategory]
+    );
+
+
+    const handleRemoveProduct = (productId) => {
+        setSelectedProduct(prev => 
+            prev.filter(product => product.id !== productId)
+        );
+    };
 
 
     return(
@@ -93,14 +118,19 @@ const CreateTransaction = () => {
                         }
 
                         {selectedProduct.map((product, index) => (
-                            <Card3 key={index} product={product} price={calculateTotal} />
+                            <Card3
+                                key={index} 
+                                product={product} 
+                                onQuantityChange={handleQuantityChange}
+                                onRemove={handleRemoveProduct}
+                            />
                         ))}
                     </div>
                 </div>
                 <p className="h-[70px] font-medium text-[18px] p-5"
                    style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                 >
-                    Total Amount: {totalAmount}
+                    Total Amount: ₱{totalAmount.toFixed(2)}
                 </p>
                 <div className="flex justify-center items-center h-[110px] w-full">
                 <button 

@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Card3 = ({product, price}) => {
-    const [quantity, setQuantity] = useState(1);
+const Card3 = ({ product, onQuantityChange, onRemove }) => {
+    const [quantity, setQuantity] = useState(product.quantity || 1);
 
+    const handleQuantityChange = (newQty) => {
+        newQty = Math.max(1, parseInt(newQty) || 1); 
+        setQuantity(newQty);
+        onQuantityChange(product.id, newQty);
+    };
+
+    useEffect(() => {
+        setQuantity(product.quantity || 1);
+    }, [product.quantity]);
 
     return (
         <div className="flex items-center justify-between gap-20 w-full border-l-5 border-1 border-gray-400 
-                      border-l-blue-600 bg-white rounded-sm p-3">
+        border-l-blue-600 bg-white rounded-sm p-3">
             <div>
                 <p className="font-medium">{product.name}</p>
                 <p>₱{product.price.toFixed(2)}</p>
@@ -17,13 +26,16 @@ const Card3 = ({product, price}) => {
                     type="number" 
                     className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm" 
                     min="1"
+                    max={product.stock}
                     value={quantity}
-                    onChange={(e) => {
-                        const newQty = Math.max(1, parseInt(e.target.value) || 1);
-                        setQuantity(newQty);
-                        price((newQty - quantity) * product.price);
-                      }}
+                    onChange={(e) => handleQuantityChange(e.target.value)}
                 />
+                <button 
+                    onClick={() => onRemove(product.id)}
+                    className="text-red-500 hover:text-red-700"
+                >
+                    Remove
+                </button>
             </div>
         </div>
     );
