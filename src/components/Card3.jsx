@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import remove from "../assets/icons/remove.png";
 
 const Card3 = ({ product, onQuantityChange, onRemove }) => {
     const [quantity, setQuantity] = useState(product.quantity || 1);
@@ -14,7 +15,7 @@ const Card3 = ({ product, onQuantityChange, onRemove }) => {
     }, [product.quantity]);
 
     return (
-        <div className="flex items-center justify-between gap-20 w-full border-l-5 border-1 border-gray-400 
+        <div className="flex items-center justify-between gap-15 w-full border-l-5 border-1 border-gray-400 
         border-l-blue-600 bg-white rounded-sm p-3">
             <div>
                 <p className="font-medium">{product.name}</p>
@@ -32,9 +33,9 @@ const Card3 = ({ product, onQuantityChange, onRemove }) => {
                 />
                 <button 
                     onClick={() => onRemove(product.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="cursor-pointer"
                 >
-                    Remove
+                    <img src={remove} className="h-[25px] w-[25px]" />
                 </button>
             </div>
         </div>
