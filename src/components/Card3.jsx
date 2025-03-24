@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Card3 = ({product}) => {
+const Card3 = ({product, price}) => {
     const [quantity, setQuantity] = useState(1);
 
 
@@ -19,9 +19,10 @@ const Card3 = ({product}) => {
                     min="1"
                     value={quantity}
                     onChange={(e) => {
-                        if (e.target.value < 0) e.target.value = 1;
-                        setQuantity(e.target.value);
-                      }} 
+                        const newQty = Math.max(1, parseInt(e.target.value) || 1);
+                        setQuantity(newQty);
+                        price((newQty - quantity) * product.price);
+                      }}
                 />
             </div>
         </div>
