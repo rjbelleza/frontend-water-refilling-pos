@@ -1,7 +1,9 @@
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 
 const SalesTable = ({sales, products}) => {
+    const navigate = useNavigate();
 
 
     return (
@@ -29,7 +31,9 @@ const SalesTable = ({sales, products}) => {
                     <input type="date" className="px-3 border-1 border-gray-500 rounded-sm" />
                 </div>
 
-                <button className="bg-blue-700 text-white px-5 rounded-md cursor-pointer hover:bg-blue-500">
+                <button className="bg-blue-700 text-white px-5 rounded-md cursor-pointer hover:bg-blue-500"
+                    onClick={() => navigate('/new-sales')}
+                >
                     Create New Transaction
                 </button>
             </div>
