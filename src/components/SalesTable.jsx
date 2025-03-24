@@ -17,16 +17,6 @@ const SalesTable = ({sales, products}) => {
                         <input type="text" placeholder="Search by customer..." className="border-1 border-gray-500 p-1 px-4 rounded-sm" />
                     </form>
 
-                    {/* Filter by product */}
-                    <select className="px-2 border-1 border-gray-500 rounded-sm">
-                        <option>All</option>
-                        {products ? products.map(product => (
-                            <option key={product.id}>{product.name}</option>
-                        )) : (
-                            <option>All</option>
-                        )}
-                    </select>
-
                     {/* Filter by date */}
                     <input type="date" className="px-3 border-1 border-gray-500 rounded-sm" />
                 </div>
