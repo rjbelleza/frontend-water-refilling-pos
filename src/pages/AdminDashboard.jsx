@@ -4,6 +4,8 @@ import Breadcrumb from "../components/Breadcrumb";
 import Card1 from "../components/Card1";
 import RecentTransTable from "../components/RecentTransTable";
 import PieChart from "../components/PieChart";
+import { SquareArrowOutUpRight } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
     const sales = [
@@ -34,12 +36,18 @@ const AdminDashboard = () => {
                         <Card1 url="card-bg2.png" category="Total Expenses" value="₱20,000.00" range="Last 30 days" color="#c157f2" />
                         <Card1 url="card-bg3.png" category="Inventory Level" value="In Stock" range="All products" color="#575cf2" />
                         <Card1 url="card-bg4.png" category="Net Profit" value="₱50,000.00" range="From Last 30 days" color="#57c4f2" />
-                        <div className="col-span-3 h-[450px] bg-white rounded-md shadow-md shadow-gray-500 border-1 
+                        <div className="col-span-3 h-fit bg-white rounded-md shadow-md shadow-gray-500 border-1 
                                       border-blue-400"
                         >
+                            <div className="flex items-center justify-between w-full">
+                             <p className="text-[17px] font-bold text-primary p-3 px-5">Recent Transactions (Today)</p>
+                                <Link to="/admin-sales">
+                                    <SquareArrowOutUpRight className="mr-8 text-primary cursor-pointer" />
+                                </Link>
+                            </div>
                             <RecentTransTable sales={sales} />
                         </div>
-                        <div className="col-span-1 h-[400px] bg-white rounded-md shadow-md shadow-gray-500 border-1 
+                        <div className="col-span-1 h-full bg-white rounded-md shadow-md shadow-gray-500 border-1 
                                       border-blue-400 p-5"
                         >
                             <h3 className="text-[17px] font-medium bg-primary text-white rounded-sm px-5 py-1">

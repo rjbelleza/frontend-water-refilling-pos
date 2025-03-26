@@ -25,7 +25,7 @@ const PieChart = () => {
     const [chartSeries, setChartSeries] = useState([60.0, 45.3, 20.78]);
 
     return (
-        <div className="flex justify-center items-center h-full w-full">
+        <div className="flex justify-center mt-15 h-full w-full">
             <Chart
                 options={chartOptions}
                 series={chartSeries}
