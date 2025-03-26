@@ -25,18 +25,24 @@ const RecentTransactionsTable = ({sales}) => {
         <div className="h-[310px] w-full overflow-auto">
             <table className="w-full text-[14px]">
                 <thead className="sticky top-0 z-100">
-                    <tr className="grid grid-cols-3 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-sm">
+                    <tr className="grid grid-cols-4 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-sm">
                         <th className="text-left pl-10 text-gray-800">Customer</th>
                         <th className="text-gray-800">Total Amount</th>
                         <th className="text-gray-800">Time</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody className="space-y-1">
+                <tbody className="">
                     {sales ? sales.map(sale => (
-                                <tr key={sale.id} className="grid grid-cols-3 p-3 border-1 border-blue-400 rounded-full">
+                                <tr key={sale.id} className="grid grid-cols-4 p-3 border-b-1 border-gray-300">
                                     <td className="pl-4">{sale.customer}</td>
                                     <td className="text-center">₱{parseFloat(sale.total).toFixed(2)}</td>
                                     <td className="text-center">{format(sale.time, "hh:mm:ss a")}</td>
+                                    <td className="flex justify-center">
+                                        <button>
+                                            View
+                                        </button>
+                                    </td>
                                 </tr>
                     )) : (
                         <tr className="flex justify-center items-center h-[200px] w-full">
