@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.0.14",
     "apexcharts": "^4.5.0",
     "date-fns": "^4.1.0",
+    "gridjs": "^6.2.0",
     "react": "^19.0.0",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^19.0.0",
