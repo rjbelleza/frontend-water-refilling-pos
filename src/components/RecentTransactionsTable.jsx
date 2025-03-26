@@ -1,67 +1,165 @@
-import { format } from "date-fns";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from 'react';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+  type ColumnFiltersState,
+} from '@tanstack/react-table';
 
-const RecentTransactionsTable = ({sales}) => {
-    const [count, setCount] = useState(0);
-    let amount = 0;
+type Payment = {
+  number: string;
+  customer: string;
+  totalAmount: number;
+  time: string;
+};
 
+export default function PaymentTable() {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState('');
 
-    {/* Sum of total amount */}
-    sales.forEach(sale => {
-        amount+=sale.total;
-    });
+  // Sample data - replace with your actual data
+  const data: Payment[] = [
+    {
+      number: 'INV-001',
+      customer: 'John Doe',
+      totalAmount: 1250.0,
+      time: '2023-05-01 10:30',
+    },
+    {
+      number: 'INV-002',
+      customer: 'Jane Smith',
+      totalAmount: 899.99,
+      time: '2023-05-02 14:15',
+    },
+    {
+      number: 'INV-003',
+      customer: 'Acme Corp',
+      totalAmount: 4200.5,
+      time: '2023-05-03 09:45',
+    },
+  ];
 
-    
-    useEffect(() => {
-        if (sales) {
-            setCount(sales.length);
-        } else {
-            setCount(0);
-        }
-    }, [sales]);
+  const columns = useMemo<ColumnDef<Payment>[]>(
+    () => [
+      {
+        accessorKey: 'number',
+        header: 'Number',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'customer',
+        header: 'Customer',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'totalAmount',
+        header: 'Total Amount',
+        cell: (info) => `$${info.getValue().toFixed(2)}`,
+      },
+      {
+        accessorKey: 'time',
+        header: 'Time',
+        cell: (info) => info.getValue(),
+      },
+      {
+        id: 'actions',
+        header: 'Action',
+        cell: ({ row }) => (
+          <button
+            onClick={() => {
+              // Handle action here
+              console.log('Action clicked for', row.original);
+            }}
+            className="text-blue-600 hover:text-blue-900"
+          >
+            View
+          </button>
+        ),
+      },
+    ],
+    []
+  );
 
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+      columnFilters,
+      globalFilter,
+    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
-    return (
-        <div className="h-[310px] w-full overflow-auto">
-            <table className="w-full text-[14px]">
-                <thead className="sticky top-0 z-100">
-                    <tr className="grid grid-cols-4 mb-2 p-3 border-2 border-primary bg-blue-200 rounded-sm">
-                        <th className="text-left pl-10 text-gray-800">Customer</th>
-                        <th className="text-gray-800">Total Amount</th>
-                        <th className="text-gray-800">Time</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody className="">
-                    {sales ? sales.map(sale => (
-                                <tr key={sale.id} className="grid grid-cols-4 p-3 border-b-1 border-gray-300">
-                                    <td className="pl-4">{sale.customer}</td>
-                                    <td className="text-center">₱{parseFloat(sale.total).toFixed(2)}</td>
-                                    <td className="text-center">{format(sale.time, "hh:mm:ss a")}</td>
-                                    <td className="flex justify-center">
-                                        <button>
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                    )) : (
-                        <tr className="flex justify-center items-center h-[200px] w-full">
-                            <p>No transactions yet</p>
-                        </tr>
+  return (
+    <div className="p-4">
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search all columns..."
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="p-2 border rounded w-full max-w-md"
+        />
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? 'cursor-pointer select-none'
+                            : '',
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: ' ↑',
+                          desc: ' ↓',
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
                     )}
-                    <tr className="h-[20px]"></tr>
-                </tbody>
-                <tfoot className="sticky bottom-0 z-100">
-                    <tr>
-                        <td className="font-bold bg-primary text-white rounded-sm py-2 pt-2 px-5">
-                            Total Customers: {count}
-                            <span className="ml-30">Sales: ₱{amount.toFixed(2)}</span>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    );
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-6 py-4 whitespace-nowrap">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
-
-export default RecentTransactionsTable;
