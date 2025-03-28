@@ -9,37 +9,37 @@ const LoginPage = () => {
     const [error, setError] = useState("");
     const [validationErrors, setValidationErrors] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { login } = useAuth();
+    const { login, user } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        setError('');
         setValidationErrors([]);
         setIsSubmitting(true);
-
+    
         try {
             const result = await login(email, password);
-
+    
             if (result.success) {
-                // Fetch user role from AuthContext or API
-                const userRole = result.user?.role; 
-
-                if (userRole === "admin") {
-                    navigate("/admin-dashboard");
+                // Redirect based on user role
+                if (result.user.role === "admin") {
+                    navigate('/admin-dashboard');
+                } else if (result.user.role === "staff") {
+                    navigate('/new-sales');
                 } else {
-                    navigate("/new-sales"); // Redirect non-admins
+                    navigate('/'); // Redirect to home if role is unknown
                 }
             } else {
                 if (result.errors) {
                     setValidationErrors(Object.values(result.errors).flat());
                 } else {
-                    setError(result.message || "Invalid credentials");
+                    setError(result.message || 'Invalid credentials');
                 }
             }
         } catch (err) {
-            console.error("Login error:", err);
-            setError("An unexpected error occurred");
+            console.error('Login error:', err);
+            setError('An unexpected error occurred');
         } finally {
             setIsSubmitting(false);
         }

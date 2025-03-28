@@ -23,7 +23,7 @@ const Header = () => {
             </Link>
             <button 
                 onClick={handleLogout}
-                className="text-white cursor-pointer px-4 py-2 bg-red-500 rounded hover:bg-red-600"
+                className="text-white cursor-pointer px-4 py-2"
                 aria-label="Logout">
                 Logout
             </button>

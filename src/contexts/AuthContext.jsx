@@ -1,21 +1,26 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api/axios'; // Use centralized axios instance
-import { useNavigate } from 'react-router-dom'; // Redirect users
+import api from '../api/axios'; 
+import { useNavigate } from 'react-router-dom'; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate(); // Hook for navigation
 
     const login = async (email, password) => {
         try {
             const response = await api.post('/login', { email, password });
-
+    
             localStorage.setItem('auth_token', response.data.access_token);
-            await fetchUser();
-            return { success: true };
+            localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user data
+    
+            setUser(response.data.user); // Set user in React state
+            return { success: true, user: response.data.user };
         } catch (error) {
             return { 
                 success: false, 
@@ -24,6 +29,7 @@ export const AuthProvider = ({ children }) => {
             };
         }
     };
+    
 
     const register = async (name, email, password, password_confirmation) => {
         try {
@@ -44,9 +50,9 @@ export const AuthProvider = ({ children }) => {
             console.error('Logout error:', error);
         } finally {
             localStorage.removeItem('auth_token');
-            localStorage.removeItem('user_role');
+            localStorage.removeItem('user');
             setUser(null);
-            navigate('/login'); // Redirect to login page
+            navigate('/'); 
         }
     };
 
@@ -56,19 +62,20 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
             return;
         }
-
+    
         try {
-            const response = await api.get('/user');
+            const response = await api.get('/user'); // Ensure your API returns user data
             setUser(response.data);
-            localStorage.setItem('user_role', response.data.role); // Store role
+            localStorage.setItem('user', JSON.stringify(response.data)); // Store full user data
         } catch (error) {
             localStorage.removeItem('auth_token');
-            localStorage.removeItem('user_role');
+            localStorage.removeItem('user');
             setUser(null);
         } finally {
             setLoading(false);
         }
     };
+    
 
     useEffect(() => {
         fetchUser();

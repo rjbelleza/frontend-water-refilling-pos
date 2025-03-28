@@ -13,7 +13,7 @@ const ProtectedRoute = ({ element, role }) => {
 
   if (!user) return <Navigate to="/" replace />; // Redirect if not logged in
 
-  if (role && user.role !== role) return <Navigate to="/" replace />; // Restrict by role
+  if (role && !role.includes(user.role)) return <Navigate to="/" replace />; // Restrict by role
 
   return element;
 };
@@ -29,7 +29,9 @@ const App = () => {
           {/* Protected Admin Routes */}
           <Route path="/admin-dashboard" element={<ProtectedRoute element={<AdminDashboard />} role="admin" />} />
           <Route path="/admin-sales" element={<ProtectedRoute element={<AdminSales />} role="admin" />} />
-          <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role="admin" />} />
+
+          {/* Protected Staff Routes */}
+          <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role={["admin", "staff"]} />} />
         </Routes>
       </AuthProvider>
     </Router>
