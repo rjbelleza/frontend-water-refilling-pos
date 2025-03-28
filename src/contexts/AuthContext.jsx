@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
             await fetchUser();
             return { success: true };
         } catch (error) {
-            console.log('Login error details:', error.response?.data);
             return { 
                 success: false, 
                 message: error.response?.data?.message || 'Login failed',
