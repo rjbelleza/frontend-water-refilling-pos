@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import remove from "../assets/icons/remove.png";
+import remove from "/icons/remove.png";
 
 const Card3 = ({ product, onQuantityChange, onRemove }) => {
     const [quantity, setQuantity] = useState(product.quantity || 1);

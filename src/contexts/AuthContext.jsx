@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api'; // Use centralized axios instance
+import api from '../api/axios'; // Use centralized axios instance
 import { useNavigate } from 'react-router-dom'; // Redirect users
 
 const AuthContext = createContext();
