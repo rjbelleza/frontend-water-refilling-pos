@@ -107,7 +107,7 @@ const CreateTransaction = () => {
                 </div>
             </div>
 
-            <div className="h-full w-[650px] bg-white border-1 border-gray-400 rounded-md p-4">
+            <div className="h-full w-[650px] bg-blue-700 border-1 border-gray-400 rounded-md p-4">
                 <p className="text-center bg-blue-600 text-gray-200 rounded-sm py-2 mb-1">Create Transaction</p>
                 <div className="w-full h-[60%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
                     <div className="flex flex-col gap-3 w-full h-full">
@@ -127,16 +127,18 @@ const CreateTransaction = () => {
                         ))}
                     </div>
                 </div>
-                <p className="h-[70px] font-medium text-[18px] p-5"
-                   style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
-                >
-                    Total Amount: ₱{totalAmount.toFixed(2)}
-                </p>
-                <div className="flex justify-center items-center h-[110px] w-full">
+                <div className="flex items-center h-[60px] w-full bg-blue-500 mt-2">
+                    <p className="h-[70px] font-medium text-[20px] p-5"
+                    style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
+                    >
+                        Total Amount: ₱{totalAmount.toFixed(2)}
+                    </p>
+                </div>
+                <div className="flex justify-center items-center h-[110px] bg-blue-500 w-full">
                 <button 
                     className={`
                         bg-primary w-3/4 h-[50px] text-white text-[20px] font-medium 
-                        rounded-full shadow-md shadow-black border-3 border-blue-900
+                        rounded-md shadow-md shadow-black border-3 border-blue-900
                         transition-colors duration-200
                         ${selectedProduct.length === 0 
                         ? 'opacity-50 cursor-default' 

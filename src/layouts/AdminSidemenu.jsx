@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { PhilippinePeso } from 'lucide-react';
 
 const AdminSidemenu = () => {
     const user = {name: 'Jack Frost', email: 'jack@gmail.com', role: 'admin'};
@@ -46,7 +47,7 @@ const SideMenuBtn = () => {
                     <div className="h-full w-2 bg-purple-500"></div>
                     <div className="flex justify-between w-full">
                         <p>Sales</p>
-                        <img src="src/assets/icons/sales.png" className="h-7 bg-purple-500 rounded-full mr-3 p-1" />
+                        <PhilippinePeso size={28} className="bg-purple-500 rounded-full mr-3 p-1" />
                     </div>
                 </button>
             </Link>
