@@ -1,19 +1,18 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api'; // Use centralized axios instance
+import { useNavigate } from 'react-router-dom'; // Redirect users
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate(); // Hook for navigation
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/login', {
-                email,
-                password
-            });
-            
+            const response = await api.post('/login', { email, password });
+
             localStorage.setItem('auth_token', response.data.access_token);
             await fetchUser();
             return { success: true };
@@ -28,29 +27,26 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password, password_confirmation) => {
         try {
-            await axios.post('http://localhost:8000/api/register', {
-                name,
-                email,
-                password,
-                password_confirmation
-            });
+            await api.post('/register', { name, email, password, password_confirmation });
             return { success: true };
         } catch (error) {
-            return { success: false, message: error.response?.data?.message || 'Registration failed' };
+            return { 
+                success: false, 
+                message: error.response?.data?.message || 'Registration failed' 
+            };
         }
     };
 
     const logout = async () => {
         try {
-            await axios.post('http://localhost:8000/api/logout', {}, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-                }
-            });
-            localStorage.removeItem('auth_token');
-            setUser(null);
+            await api.post('/logout');
         } catch (error) {
             console.error('Logout error:', error);
+        } finally {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_role');
+            setUser(null);
+            navigate('/login'); // Redirect to login page
         }
     };
 
@@ -62,14 +58,13 @@ export const AuthProvider = ({ children }) => {
         }
 
         try {
-            const response = await axios.get('http://localhost:8000/api/user', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+            const response = await api.get('/user');
             setUser(response.data);
+            localStorage.setItem('user_role', response.data.role); // Store role
         } catch (error) {
             localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_role');
+            setUser(null);
         } finally {
             setLoading(false);
         }
