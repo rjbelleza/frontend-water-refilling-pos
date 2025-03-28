@@ -1,8 +1,25 @@
 import { Link } from "react-router-dom";
 import { PhilippinePeso } from 'lucide-react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const AdminSidemenu = () => {
-    const user = {name: 'Jack Frost', email: 'jack@gmail.com', role: 'admin'};
+    const { user, loading } = useAuth();
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (!loading && !user) {
+            navigate('/');
+        }
+    }, [user, loading, navigate]);
+
+
+    if (loading || !user) {
+        return <p>Loading...</p>;
+    }
+
 
     return (
         <div className="flex h-full w-60 bg-[url('/images/sidemenu.png')] bg-cover bg-center mt-2 rounded-tr-md
@@ -13,7 +30,7 @@ const AdminSidemenu = () => {
                     <p className="text-[13px] text-gray-600 mb-1">Welcome,</p>
                     <p className="font-bold text-[20px]">{user.name}</p>
                     <p className="w-full text-center text-blue-700 font-mono text-[20px] mt-3 bg-gray-300 rounded-xl p-1">
-                        {user.role.toLocaleUpperCase()}
+                        {"admin".toLocaleUpperCase()}
                     </p>
                 </div>
                 <div className="h-fit w-full mt-12">
