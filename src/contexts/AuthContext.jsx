@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
         return storedUser ? JSON.parse(storedUser) : null;
     });
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate(); // Hook for nahvigation
 
     const login = async (email, password) => {
         try {
