@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
 import { PhilippinePeso } from 'lucide-react';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const AdminSidemenu = () => {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
 
     useEffect(() => {
@@ -18,6 +18,76 @@ const AdminSidemenu = () => {
 
     if (loading || !user) {
         return <p>Loading...</p>;
+    }
+
+
+    {/* Decrease Sidemenu in new-sales route */}
+    if (location.pathname == "/new-sales") {
+
+        return (
+            <div className="flex flex-col gap-5 h-screen w-20 bg-[url('/images/sidemenu.png')] bg-cover bg-center mt-2 rounded-tr-md
+                        shadow-[2px_0px_10px_gray] bg-opacity-30 fixed left-0 justify-center p-3"
+            >
+                <Link to="/admin-dashboard"
+                    className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                >
+                    <div className="h-full w-2 bg-indigo-500"></div>
+                    <div className="flex justify-between w-full">
+                        <img src="/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
+                </div>
+                </Link>
+
+                <Link to="/admin-sales"
+                    className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                >
+                    <div className="h-full w-2 bg-purple-500"></div>
+                    <PhilippinePeso size={28} color='white' className="bg-purple-500 rounded-full mr-3 p-1" />
+                </Link>
+
+                <Link
+                    className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                >
+                    <div className="h-full w-2 bg-violet-500"></div>
+                    <div className="flex justify-between w-full">
+                        <img src="/icons/inventory.png" className="h-7 bg-violet-500 rounded-full mr-3 p-1" />
+                    </div>
+                </Link>
+
+                <Link
+                    className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                >
+                    <div className="h-full w-2 bg-pink-500"></div>
+                    <div className="flex justify-between w-full">
+                        <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
+                    </div>
+                </Link>
+
+                <Link
+                    className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                >
+                    <div className="h-full w-2 bg-rose-500"></div>
+                    <div className="flex justify-between w-full">
+                        <img src="/icons/reports.png" className="h-7 bg-rose-500 rounded-full mr-3 p-1" />
+                    </div>
+                </Link>
+
+                <Link
+                    className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                >
+                    <div className="h-full w-2 bg-slate-500"></div>
+                    <div className="flex justify-between w-full">
+                        <img src="/icons/users.png" className="h-7 bg-slate-500 rounded-full mr-3 p-1" />
+                    </div>
+                </Link>
+
+            </div>
+        );
     }
 
 

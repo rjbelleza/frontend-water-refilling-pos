@@ -7,13 +7,13 @@ import CreateTransaction from "../components/CreateTransaction";
 const NewSalesPage = () => {
 
     return (
-        <div className="h-screen w-full bg-gray-300 overflow-hidden">
+        <div className="h-screen w-full bg-gray-300 overflow-auto">
             <Header />
-            <div className="flex h-fit w-full mt-15">
+            <div className="flex h-full w-full mt-15">
                 <AdminSidemenu />
-                <div className="h-full w-full ml-63 mt-2 mr-2 rounded-md">
+                <div className="h-full w-full ml-23 mt-2 mr-2 rounded-md">
                     <Breadcrumb />
-                    <div className="grid grid-cols-1 h-screen w-full bg-white mt-2 rounded-md p-5">
+                    <div className="grid grid-cols-1 w-full bg-white mt-2 rounded-md p-5 overflow-auto">
                         <CreateTransaction />
                     </div>
                 </div>
