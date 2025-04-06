@@ -42,29 +42,29 @@ const SalesTable = () => {
         accessorKey: 'customer',
         header: 'Customer',
         cell: info => info.getValue(),
-        size: 170,
+        size: 190,
       },
       {
         accessorKey: 'totalAmount',
         header: 'Total Amount',
         cell: info => `₱${info.getValue().toFixed(2)}`,
-        size: 130,
+        size: 160,
       },
       {
         accessorKey: 'dateTime',
         header: 'Date & Time',
         cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
-        size: 130,
+        size: 160,
       },
       {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <button className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2">
+          <button className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-4 py-1">
             View
           </button>
         ),
-        size: 30,
+        size: 20,
       },
     ],
     []
