@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { OctagonAlert } from "lucide-react";
+import { OctagonAlert, Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ const LoginPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { login, user } = useAuth();
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,7 +60,7 @@ const LoginPage = () => {
                 </div>
 
                 <div className="flex flex-col w-full h-full gap-2 px-5">
-                    <label className="ml-2 font-medium">Email or Username</label>
+                    <label className="ml-2 font-medium">Email or Username*</label>
                     <input
                         value={email}
                         onChange={(e) => {
@@ -72,7 +73,7 @@ const LoginPage = () => {
                         disabled={isSubmitting}
                     />
 
-                    <label className="mt-6 ml-2 font-medium">Password</label>
+                    <label className="mt-6 ml-2 font-medium">Password*</label>
                     <div className="relative">
                         <input
                             value={password}
@@ -81,10 +82,22 @@ const LoginPage = () => {
                                 setError("");
                                 setValidationErrors([]);
                             }}
-                            type="password"
+                            type={showPassword ? "text" : "password"} 
                             className="h-[40px] font-medium w-full bg-white rounded-xl border-3 hover:border-4 border-primary px-4 pr-10"
                             disabled={isSubmitting}
                         />
+                         <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)} 
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                        >
+                            
+                            {showPassword ? (
+                                <EyeOff />
+                            ) : (
+                                <Eye />
+                            )}
+                        </button>
                     </div>
 
                     <div className="flex items-center justify-between gap-2 h-[50px] w-full mb-2">
@@ -92,9 +105,6 @@ const LoginPage = () => {
                             <input type="checkbox" className="h-[15px] w-[15px]" disabled={isSubmitting} />
                             <p>Remember me</p>
                         </div>
-                        <Link to="/forgot-password" className="hover:font-medium">
-                            <u>Forgot Password?</u>
-                        </Link>
                     </div>
 
                     <button
@@ -109,7 +119,7 @@ const LoginPage = () => {
                 </div>
             </form>
 
-            {validationErrors.length > 0 && <ToastMessage error={validationErrors} />}
+            {validationErrors.length > 0 && <ToastMessage error={[validationErrors, error]} />}
         </div>
     );
 };
