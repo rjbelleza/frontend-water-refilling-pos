@@ -13,6 +13,9 @@ const Breadcrumb = () => {
         else if (location.pathname === '/new-sales') {
             return 'SALES MANAGEMENT > NEW TRANSACTION'
         }
+        else if (location.pathname === '/inventory') {
+            return 'INVENTORY MANAGEMENT'
+        }
     }
 
     return (

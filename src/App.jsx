@@ -35,7 +35,6 @@ const App = () => {
           {/* Protected Staff Routes */}
           <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role={["admin", "staff"]} />} />
           <Route path="/inventory" element={<ProtectedRoute element={<InventoryPage />} role={["admin", "staff"]} />} />
-          <Route path="/loading" element={<LoadingScreen />} />
         </Routes>
       </AuthProvider>
     </Router>
