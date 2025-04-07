@@ -4,12 +4,14 @@ import LoginPage from "./pages/LoginPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminSales from "./pages/AdminSales";
 import NewSalesPage from "./pages/NewSalesPage";
+import InventoryPage from "./pages/InventoryPage";
+import LoadingScreen from "./pages/LoadingScreen";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ element, role }) => {
   const { user, loading } = useAuth();
 
-  if (loading) return <p>Loading...</p>; // Wait for auth check
+  if (loading) return <LoadingScreen />; // Wait for auth check
 
   if (!user) return <Navigate to="/" replace />; // Redirect if not logged in
 
@@ -32,6 +34,8 @@ const App = () => {
 
           {/* Protected Staff Routes */}
           <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role={["admin", "staff"]} />} />
+          <Route path="/inventory" element={<ProtectedRoute element={<InventoryPage />} role={["admin", "staff"]} />} />
+          <Route path="/loading" element={<LoadingScreen />} />
         </Routes>
       </AuthProvider>
     </Router>

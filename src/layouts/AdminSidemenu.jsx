@@ -80,7 +80,7 @@ const AdminSidemenu = () => {
                             <PhilippinePeso size={28} color='white' className="bg-purple-500 rounded-full mr-3 p-1" />
                         </Link>
         
-                        <Link
+                        <Link to="/inventory"
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
@@ -153,7 +153,8 @@ const SideMenuBtn = () => {
                 </div>
             </Link>
 
-            <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+            <Link to="/inventory" 
+                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-violet-500"></div>
                 <div className="flex justify-between w-full">
