@@ -21,7 +21,7 @@ const Header = () => {
 
 
     return (
-        <div className="flex items-center justify-between h-15 w-full bg-primary-500 fixed top-0 z-100 px-5">
+        <div className="flex items-center justify-between h-15 w-full bg-primary-500 sticky top-0 px-5 z-999">
             <Link to="/admin-dashboard">
                 <img src="/images/Aqua2.png" alt="Logo" className="h-10 cursor-pointer" />
             </Link>

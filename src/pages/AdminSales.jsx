@@ -127,13 +127,13 @@ const AdminSales = () => {
     
 
     return (
-        <div className="h-screen w-full bg-gray-300 scroll-smooth">
+        <div className="h-full w-full scroll-smooth">
             <Header />
-            <div className="flex h-fit w-full mt-15">
+            <div className="flex h-full w-full fixed top-15">
                 <AdminSidemenu />
-                <div className="h-full w-full ml-63 mt-2 mr-2 rounded-md">
+                <div className="h-full w-full ml-3 mt-2 mr-2 rounded-md">
                     <Breadcrumb />
-                    <div className="grid grid-cols-1 h-fit w-full bg-white mt-2 rounded-md p-5">
+                    <div className="h-full w-full bg-white mt-2 rounded-md p-5">
                         <SalesTable sales={sales} products={products} />
                     </div>
                 </div>

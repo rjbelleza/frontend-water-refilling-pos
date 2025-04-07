@@ -6,6 +6,7 @@ const CreateTransaction = () => {
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [discount, setDiscount] = useState(0);
     
     const categories = ["Container", "Water"];
 
@@ -81,7 +82,7 @@ const CreateTransaction = () => {
 
 
     return(
-        <div className="flex h-full w-full overflow-auto">
+        <div className="flex h-full w-full">
 
             {/* Products Section */}
             <div className="h-full w-[55%] mr-2 overflow-auto">
@@ -94,7 +95,7 @@ const CreateTransaction = () => {
                         <input 
                             type="text" 
                             placeholder="Search product name..." 
-                            className="border-1 border-gray-500 px-5 py-1 rounded-sm h-[40px]" 
+                            className="border-1 border-gray-500 px-5 py-1 rounded-sm h-[40px] w-[200px]" 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -114,20 +115,20 @@ const CreateTransaction = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-7 w-full p-5 overflow-auto">
+                <div className="grid grid-cols-3 space-y-10 w-full p-5 overflow-auto">
                     <Card2 products={filteredProducts} add={handleAddProduct} />
                 </div>
             </div>
 
 
             {/* New Transaction Section */}
-            <div className="h-full w-[650px] bg-white border-1 border-gray-400 rounded-md p-4">
+            <div className="h-full w-[650px] bg-white border-3 border-gray-400 rounded-md p-4 ml-2 overflow-auto">
                 <p className="text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Create Transaction</p>
-                <div className="w-full h-[50%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
-                    <div className="flex flex-col gap-3 w-full h-full">
+                <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
+                    <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
                         {selectedProduct.length === 0 && 
                             <div className="flex justify-center items-center h-full w-full">
-                                <p className="text-[17px] font-medium text-gray-500">Select a product to create new transaction</p>
+                                <p className="text-[17px] font-medium text-gray-500 mt-7">Select a product to create new transaction</p>
                             </div>
                         }
 
@@ -151,10 +152,12 @@ const CreateTransaction = () => {
                         <input 
                             type="text" 
                             id="cust-name"
+                            required
                             disabled={selectedProduct.length === 0}
                             className="h-[40px] w-[300px] border-1 rounded-md px-5" 
                             style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                     />
+                    
                     </div>
                     <div className="flex flex-col gap-2">
                         <label 
@@ -165,8 +168,10 @@ const CreateTransaction = () => {
                             type="number" 
                             id="discount"
                             min={0}
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value / 100)}
                             disabled={selectedProduct.length === 0}
-                            className="h-[40px] w-[200px] border-1 rounded-md px-5"
+                            className="h-[40px] w-[170px] border-1 rounded-md px-5"
                             style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                         />
                     </div>
@@ -183,10 +188,10 @@ const CreateTransaction = () => {
                     </p>
                 </div>
 
-                <div className="flex justify-center items-end h-[110px] bg-white w-full">
+                <div className="flex justify-end items-end h-[110px] bg-white w-full mt-6 px-15">
                 <button 
                     className={`
-                        bg-primary w-3/4 h-[50px] text-white text-[20px] font-medium 
+                        bg-primary w-3/8 h-[50px] text-white text-[20px] font-medium 
                         rounded-md shadow-md shadow-black border-3 border-blue-900
                         transition-colors duration-200
                         ${selectedProduct.length === 0 

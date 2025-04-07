@@ -96,7 +96,7 @@ const SalesTable = () => {
   });
 
   return (
-    <div className="p-5 w-full">
+    <div className="h-[495px] w-full p-1">
       {/* Search Controls */}
       <div className="flex flex-col sm:flex-row gap-4 mb-4">
         <div className='flex gap-20 h-[37px] flex-wrap'>
@@ -136,16 +136,16 @@ const SalesTable = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="h-full overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 border-collapse">
-          <thead className="bg-gray-200">
+          <thead className="bg-gray-200 sticky top-0">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th 
                     key={header.id} 
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border border-gray-300"
+                    className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-gray-200"
                     style={{
                       width: header.getSize(),
                     }}
