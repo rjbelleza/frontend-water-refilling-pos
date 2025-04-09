@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1, 
+        "name": "5-Gallon Bottle", 
+        "category": "water", 
+        "price": 30.00, 
+        "stock_quantity": 100
+    },
+    {
+        "id": 2, 
+        "name": "3-Gallon Bottle", 
+        "category": "water", 
+        "price": 25.00, 
+        "stock_quantity": 100
+    },
+    {
+        "id": 3, 
+        "name": "1-Gallon Bottle", 
+        "category": "water", 
+        "price": 20.00, 
+        "stock_quantity": 200
+    },
+    {
+        "id": 4, 
+        "name": "5-Gallon Container", 
+        "category": "container", 
+        "price": 15.00, 
+        "stock_quantity": 50
+    },
+    {
+        "id": 5, 
+        "name": "500ml Container", 
+        "category": "container", 
+        "price": 15.00, 
+        "stock_quantity": 150
+    },
+    {
+        "id": 6, 
+        "name": "250ml Bottle", 
+        "category": "water", 
+        "price": 15.00, 
+        "stock_quantity": 25
+    }
+]
