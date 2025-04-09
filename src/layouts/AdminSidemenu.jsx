@@ -90,7 +90,7 @@ const AdminSidemenu = () => {
                             </div>
                         </Link>
         
-                        <Link
+                        <Link to="/expenses"
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
@@ -163,7 +163,8 @@ const SideMenuBtn = () => {
                 </div>
             </Link>
 
-            <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+            <Link to="/expenses" 
+                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-pink-500"></div>
                 <div className="flex justify-between w-full">
