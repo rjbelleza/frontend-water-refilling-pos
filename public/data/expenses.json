@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "user": "John Doe",
+        "description": "Electricity",
+        "amount": 24500,
+        "date": "2025-03-26 02:56:34"
+    },
+    {
+        "id": 2,
+        "user": "Jane Smith",
+        "description": "Rent",
+        "amount": 24500,
+        "date": "2025-03-26 02:56:34"
+    },
+    {
+        "id": 3,
+        "user": "Lana Del Rey",
+        "description": "Materials",
+        "amount": 24500,
+        "date": "2025-03-26 02:56:34"
+    },
+    {
+        "id": 4,
+        "user": "Dani Krossing",
+        "description": "Staff Payment",
+        "amount": 24500,
+        "date": "2025-03-26 02:56:34"
+    }
+]

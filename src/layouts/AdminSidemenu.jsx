@@ -60,7 +60,7 @@ const AdminSidemenu = () => {
             {/* Decreased Sidemenu width*/}
             {!isOpen && (
                     <div
-                        className="flex flex-col gap-4 h-full mt-10"
+                        className="flex flex-col gap-5 h-full mt-20"
                     >
                         <Link to="/admin-dashboard"
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full

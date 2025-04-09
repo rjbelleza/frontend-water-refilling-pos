@@ -1,6 +1,7 @@
 import Header from "../layouts/Header";
 import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
+import ExpensesTable from "../components/ExpensesTable";
 
 const ExpensesPage = () => {
 
@@ -12,7 +13,7 @@ const ExpensesPage = () => {
                 <div className="h-full w-full ml-3 mt-2 mr-2 rounded-md">
                     <Breadcrumb />
                     <div className="h-full w-full bg-white mt-2 rounded-md p-5">
-                        
+                        <ExpensesTable />
                     </div>
                 </div>
             </div>

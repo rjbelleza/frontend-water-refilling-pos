@@ -9,6 +9,8 @@ import {
 } from '@tanstack/react-table';
 import { format, parseISO, isSameDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { CirclePlus } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 const SalesTable = () => {
   // Data state
@@ -98,40 +100,49 @@ const SalesTable = () => {
   return (
     <div className="h-[495px] w-full p-1">
       {/* Search Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
-        <div className='flex gap-20 h-[37px] flex-wrap'>
-            <input
-                type="text"
-                id="search"
-                placeholder="Search customers..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-[200px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div className='flex gap-3 items-center h-[37px]'>
-                <label className='text-[15px] text-gray-500'>Filter by date</label>
+      <div className="flex flex-col w-full sm:flex-row gap-2 mb-4">
+        <div className='flex justify-between w-full gap-20 h-[37px]'>
+          <div className='text-[23px] font-medium text-sky-800 w-[200px]'>Sales List</div>
+            <div className='flex justify-end gap-3 w-full'>
+              <div className='flex items-center'>
+                <Search className='mr-[-30px] text-gray-600' />
                 <input
-                    type="date"
-                    id="date"
-                    value={searchDate}
-                    onChange={(e) => setSearchDate(e.target.value)}
-                    className="h-[35px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    type="text"
+                    id="search"
+                    placeholder="Search by keyword"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="h-[37px] w-[170px] text-[13px] mr-3 py-1 pl-9 border border-gray-500 rounded-sm shadow-sm"
                 />
-                {searchDate && (
-                    <button
-                    onClick={() => setSearchDate('')}
-                    className="ml-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-                    >
-                    Clear
-                    </button>
-                )}
+              </div>
+              <div className='flex items-center gap-2 h-[37px]'>
+                  <label className='text-[15px]'>Filter by date:</label>
+                  <input
+                      type="date"
+                      id="date"
+                      value={searchDate}
+                      onChange={(e) => setSearchDate(e.target.value)}
+                      className="h-[35px] px-3 py-2 border border-gray-500 rounded-sm shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  {searchDate && (
+                      <button
+                      onClick={() => setSearchDate('')}
+                      className="ml-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                      >
+                      Clear
+                      </button>
+                  )}
+              </div>
+              <div className='flex justify-end ml-2'>
+                <button 
+                    onClick={() => navigate('/new-sales')}
+                    className='flex items-center gap-2 h-[35px] bg-blue-800 text-white font-medium px-3 rounded-sm cursor-pointer hover:bg-blue-700'
+                >
+                  <CirclePlus />
+                  New Sale Entry
+                </button>
+              </div>
             </div>
-            <button 
-                className='bg-blue-700 text-white font-medium rounded-sm cursor-pointer hover:bg-blue-500 px-5'
-                onClick={() => navigate('/new-sales')}
-            >
-                Create New Transaction
-            </button>
         </div>
       </div>
 

@@ -17,7 +17,7 @@ const Breadcrumb = () => {
             return 'INVENTORY MANAGEMENT'
         }
         else if (location.pathname === '/expenses') {
-            return 'EXPENSE MANAGEMENT'
+            return 'EXPENSES MANAGEMENT'
         }
     }
 

@@ -10,8 +10,9 @@ import {
 import { CirclePlus } from 'lucide-react';
 import { Search } from 'lucide-react';
 import { X } from 'lucide-react';
+import { format, parseISO, isSameDay } from 'date-fns';
 
-const InventoryTable = () => {
+const ExpensesTable = () => {
   // Data state
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
@@ -39,7 +40,7 @@ const InventoryTable = () => {
 
   // Fetch data from recentTrans.json
   useEffect(() => {
-    fetch('/data/products.json')
+    fetch('/data/expenses.json')
       .then(response => response.json())
       .then(jsonData => setData(jsonData))
       .catch(error => console.error('Error fetching data:', error));
@@ -56,27 +57,27 @@ const InventoryTable = () => {
         accessorFn: (row, index) => index + 1,
       },
       {
-        accessorKey: 'name',
-        header: 'Name',
+        accessorKey: 'description',
+        header: 'Description',
         cell: info => info.getValue(),
         size: 190,
       },
       {
-        accessorKey: 'price',
-        header: 'Price',
+        accessorKey: 'amount',
+        header: 'Amount',
         cell: info => `₱${info.getValue().toFixed(2)}`,
         size: 160,
       },
       {
-        accessorKey: 'stock_quantity',
-        header: 'Stock qty.',
-        cell: info => <p className={`${stockColorCode(info.getValue())} text-white py-1 px-3 w-[48px]`}>{info.getValue()}</p>,
+        accessorKey: 'date',
+        header: 'Created at',
+        cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
         size: 160,
       },
       {
-        accessorKey: 'category',
-        header: 'Category',
-        cell: info => capitalize(info.getValue()),
+        accessorKey: 'user',
+        header: 'Created by',
+        cell: info => info.getValue(),
         size: 160,
       },
       {
@@ -113,26 +114,21 @@ const InventoryTable = () => {
     <div className="h-[495px] w-full p-1">
 
       <div className='flex justify-between h-[54px] w-full'>
-        <div className='text-[23px] font-medium text-sky-800'>Product List</div>
+        <div className='text-[23px] font-medium text-sky-800'>Expenses List</div>
         <div className='flex gap-3'>
-            <select className='h-[35px] border border-gray-500 rounded-sm px-2'>
-                <option>All</option>
-                <option>Container</option>
-                <option>Water</option>
-            </select>
             <div className='flex items-center h-[35px]'>
                 <Search className='mr-[-30px] text-gray-600' />
                 <input 
                     type='text' 
-                    placeholder='Search product by name' 
+                    placeholder='Search by keyword' 
                     className='text-[13px] h-[35px] border border-gray-500 pl-9 pr-2 py-1 rounded-sm' 
                 />
             </div>
             <button 
                 onClick={() => setShowModal(true)}
-                className='flex items-center gap-2 h-[35px] bg-blue-800 text-white font-medium px-3 rounded-sm cursor-pointer hover:bg-blue-700'>
+                className='flex items-center gap-2 h-[35px] bg-blue-800 text-white font-medium px-3 ml-2 rounded-sm cursor-pointer hover:bg-blue-700'>
                 <CirclePlus />
-                Add Product
+                Add Expense
             </button>
         </div>
       </div>
@@ -279,36 +275,27 @@ const InventoryTable = () => {
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
                 <p className='flex justify-between text-[19px] font-medium text-blue-900 mb-8'>
-                    ADD PRODUCT
+                    ADD EXPENSE
                     <span className='text-gray-800 hover:text-gray-600 font-normal'>
                         <button 
                             onClick={() => setShowModal(false)}
-                            className='cursor-pointer'><X size={20} /></button>
+                            className='cursor-pointer'
+                        >
+                            <X size={20} /></button>
                     </span>
                 </p>
                 <form className='flex flex-col'>
-                    <label className='text-[15px] mb-2'>Product Name*</label>
+                    <label className='text-[15px] mb-2'>Description*</label>
                     <input 
                         type='text' 
                         className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                      
                     />
-                    <label className='text-[15px] mb-2'>Price*</label>
+                    <label className='text-[15px] mb-2'>Amount*</label>
                     <input 
                         type='number' 
                         className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                      
                         min={0}
                     />
-                    <label className='text-[15px] mb-2'>Stock Qty.*</label>
-                    <input 
-                        type='number' 
-                        className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                       
-                        min={0}
-                    />
-                    <label className='text-[15px] mb-2'>Category*</label>
-                    <select className='border border-gray-500 px-4 py-2 rounded-sm mb-10'>
-                        <option>Water</option>
-                        <option>Container</option>
-                    </select>
                     <button 
                         onClick={() => setShowModal(false)}
                         type='submit'
@@ -323,4 +310,4 @@ const InventoryTable = () => {
   );
 };
 
-export default InventoryTable;
+export default ExpensesTable;
