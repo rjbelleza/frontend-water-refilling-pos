@@ -1,91 +1,90 @@
+import api from '../api/axios';
 import { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api/axios'; 
-import { useNavigate } from 'react-router-dom'; 
 
+// Create auth context
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem('user');
-        return storedUser ? JSON.parse(storedUser) : null;
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  // Check if user is logged in on mount
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token');
+    
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+  
+  // Fetch current user
+  const fetchUser = async () => {
+    try {
+      const response = await api.get('/user');
+      setUser(response.data.user);
+    } catch (error) {
+      localStorage.removeItem('auth_token');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Login function
+  const login = async (username, password) => {
+    const response = await api.post('/login', {
+      username,
+      password,
+      device_name: 'web',
     });
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate(); // Hook for nahvigation
-
-    const login = async (email, password) => {
-        try {
-            const response = await api.post('/login', { email, password });
     
-            localStorage.setItem('auth_token', response.data.access_token);
-            localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user data
+    const { token, user } = response.data;
     
-            setUser(response.data.user); // Set user in React state
-            return { success: true, user: response.data.user };
-        } catch (error) {
-            return { 
-                success: false, 
-                message: error.response?.data?.message || 'Login failed',
-                errors: error.response?.data?.errors 
-            };
-        }
-    };
+    localStorage.setItem('auth_token', token);
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     
-
-    const register = async (name, email, password, password_confirmation) => {
-        try {
-            await api.post('/register', { name, email, password, password_confirmation });
-            return { success: true };
-        } catch (error) {
-            return { 
-                success: false, 
-                message: error.response?.data?.message || 'Registration failed' 
-            };
-        }
-    };
-
-    const logout = async () => {
-        try {
-            await api.post('/logout');
-        } catch (error) {
-            console.error('Logout error:', error);
-        } finally {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('user');
-            setUser(null);
-            navigate('/'); 
-        }
-    };
-
-    const fetchUser = async () => {
-        const token = localStorage.getItem('auth_token');
-        if (!token) {
-            setLoading(false);
-            return;
-        }
+    setUser(user);
     
-        try {
-            const response = await api.get('/user'); // Ensure your API returns user data
-            setUser(response.data);
-            localStorage.setItem('user', JSON.stringify(response.data)); // Store full user data
-        } catch (error) {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('user');
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
-    };
+    return user;
+  };
+  
+  // Logout function
+  const logout = async () => {
+    try {
+      await api.post('/logout');
+    } catch (error) {
+      console.error('Logout error', error);
+    } finally {
+      localStorage.removeItem('auth_token');
+      api.defaults.headers.common['Authorization'] = '';
+      setUser(null);
+    }
+  };
+  
+  // Register function
+  const register = async (userData) => {
+    const response = await api.post('/register', {
+      ...userData,
+      device_name: 'web',
+    });
     
-
-    useEffect(() => {
-        fetchUser();
-    }, []);
-
-    return (
-        <AuthContext.Provider value={{ user, loading, login, register, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    const { token, user } = response.data;
+    
+    localStorage.setItem('auth_token', token);
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    
+    setUser(user);
+    
+    return user;
+  };
+  
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
