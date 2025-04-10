@@ -1,17 +1,20 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { OctagonAlert, Eye, EyeOff } from "lucide-react";
+import { OctagonAlert, Eye, EyeOff, Loader2 } from "lucide-react";
 
 const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [formData, setFormData] = useState({
+        username: "",
+        password: ""
+    });
     const [error, setError] = useState("");
     const [validationErrors, setValidationErrors] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { login, user } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,117 +23,183 @@ const LoginPage = () => {
         setIsSubmitting(true);
     
         try {
-            const result = await login(email, password);
-    
-            if (result.success) {
-                // Redirect based on user role
-                if (result.user.role === "admin") {
-                    navigate('/admin-dashboard');
-                } else if (result.user.role === "staff") {
-                    navigate('/new-sales');
-                } else {
-                    navigate('/'); // Redirect to home if role is unknown
-                }
+            const user = await login(formData.username, formData.password);
+            
+            // Redirect based on user role after successful login
+            if (user?.role === "admin") {
+                navigate('/admin-dashboard');
+            } else if (user?.role === "staff") {
+                navigate('/new-sales');
             } else {
-                if (result.errors) {
-                    setValidationErrors(Object.values(result.errors).flat());
-                } else {
-                    setError(result.message || 'Invalid credentials');
-                }
+                navigate('/'); // Default redirect if role is unknown
             }
         } catch (err) {
             console.error('Login error:', err);
-            setError('An unexpected error occurred');
+            if (err.response?.data?.errors) {
+                setValidationErrors(Object.values(err.response.data.errors).flat());
+            } else {
+                setError(err.response?.data?.message || 'Invalid credentials. Please try again.');
+            }
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        // Clear errors when user starts typing
+        if (error || validationErrors.length) {
+            setError('');
+            setValidationErrors([]);
+        }
+    };
+
     return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center bg-[url('/images/login-background.png')] bg-cover bg-center">
-            <div className="flex flex-col items-center justify-center text-[20px] mb-10">
-                <h1 className="font-bold">Aqua Springs</h1>
-                <h1 className="text-[15px]">POS System</h1>
+        <div className="min-h-screen flex flex-col justify-center items-center bg-[url('/images/login-background.png')] bg-cover bg-center bg-no-repeat p-4">
+            <div className="flex flex-col items-center justify-center text-center mb-8">
+                <h1 className="text-2xl font-bold">Aqua Springs</h1>
+                <h2 className="text-lg">POS System</h2>
             </div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-10 h-[470px] w-[400px] bg-white rounded-sm p-4 shadow-[1px_1px_5px_black]">
-                <div className="flex justify-between items-center">
-                    <p className="font-bold text-[30px] text-left pl-4 text-primary">Login</p>
-                    <img src="/images/Aqua2.png" alt="Logo" className="h-12 mr-5" />
+            <form 
+                onSubmit={handleSubmit} 
+                className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden"
+            >
+                <div className="flex justify-between items-center p-6 bg-gray-50 border-b border-gray-400 mb-7">
+                    <h2 className="text-2xl font-bold text-primary">Login</h2>
+                    <img 
+                        src="/images/Aqua2.png" 
+                        alt="Logo" 
+                        className="h-12 object-contain" 
+                    />
                 </div>
 
-                <div className="flex flex-col w-full h-full gap-2 px-5">
-                    <label className="ml-2 font-medium">Email or Username*</label>
-                    <input
-                        value={email}
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                            setError(""); 
-                            setValidationErrors([]);
-                        }}
-                        type="text"
-                        className="h-[40px] font-medium w-full bg-white rounded-xl border-3 hover:border-4 border-primary px-4"
-                        disabled={isSubmitting}
-                    />
-
-                    <label className="mt-6 ml-2 font-medium">Password*</label>
-                    <div className="relative">
+                <div className="p-6 space-y-6">
+                    <div className="space-y-2">
+                        <label htmlFor="username" className="block font-medium">
+                            Username*
+                        </label>
                         <input
-                            value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                                setError("");
-                                setValidationErrors([]);
-                            }}
-                            type={showPassword ? "text" : "password"} 
-                            className="h-[40px] font-medium w-full bg-white rounded-xl border-3 hover:border-4 border-primary px-4 pr-10"
+                            id="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            type="text"
+                            className="w-full px-4 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
                             disabled={isSubmitting}
+                            required
+                            autoComplete="username"
                         />
-                         <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)} 
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                        >
-                            
-                            {showPassword ? (
-                                <EyeOff />
-                            ) : (
-                                <Eye />
-                            )}
-                        </button>
                     </div>
 
-                    <div className="flex items-center justify-between gap-2 h-[50px] w-full mb-2">
-                        <div className="flex items-center gap-2">
-                            <input type="checkbox" className="h-[15px] w-[15px]" disabled={isSubmitting} />
-                            <p>Remember me</p>
+                    <div className="space-y-2">
+                        <label htmlFor="password" className="block font-medium">
+                            Password*
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                type={showPassword ? "text" : "password"}
+                                className="w-full px-4 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition pr-10"
+                                disabled={isSubmitting}
+                                required
+                                autoComplete="current-password"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="h-5 w-5 text-gray-500" />
+                                ) : (
+                                    <Eye className="h-5 w-5 text-gray-500" />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                            <input
+                                id="remember-me"
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={() => setRememberMe(!rememberMe)}
+                                className="h-4 w-4 text-primary rounded focus:ring-primary"
+                                disabled={isSubmitting}
+                            />
+                            <label htmlFor="remember-me" className="ml-2 text-sm">
+                                Remember me
+                            </label>
                         </div>
                     </div>
 
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className={`h-[50px] w-full text-white font-bold rounded-md cursor-pointer ${
-                            isSubmitting ? "bg-gray-400" : "bg-primary hover:bg-primary-500"
-                        }`}
+                        className={`w-full py-3 px-4 rounded-lg font-bold text-white transition-colors hover:bg-blue-800 cursor-pointer ${
+                            isSubmitting 
+                                ? "bg-gray-400 cursor-not-allowed" 
+                                : "bg-primary hover:bg-primary-600"
+                        } flex items-center justify-center`}
                     >
-                        {isSubmitting ? "Logging in..." : "LOGIN"}
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                                Logging in...
+                            </>
+                        ) : (
+                            "LOGIN"
+                        )}
                     </button>
                 </div>
             </form>
 
-            {validationErrors.length > 0 && <ToastMessage error={[validationErrors, error]} />}
+            {(error || validationErrors.length > 0) && (
+                <ToastMessage 
+                    error={error ? [error] : validationErrors} 
+                    onDismiss={() => {
+                        setError('');
+                        setValidationErrors([]);
+                    }}
+                />
+            )}
         </div>
     );
 };
 
-const ToastMessage = ({ error }) => {
+const ToastMessage = ({ error, onDismiss }) => {
     return (
-        <div className="flex items-center justify-center gap-3 text-red-900 font-medium w-fit h-fit bg-red-400 rounded-md z-100 mt-[-10px] py-3 px-10">
-            <OctagonAlert />
-            {error.map((e, i) => (
-                <p key={i}>{e}</p>
-            ))}
+        <div className="mt-4 animate-fade-in-up">
+            <div className="flex items-start max-w-md p-4 bg-red-50 rounded-lg shadow-lg border border-red-200">
+                <OctagonAlert className="flex-shrink-0 h-5 w-5 text-red-600 mt-0.5" />
+                <div className="ml-3">
+                    <div className="text-sm font-medium text-red-800">
+                        {error.map((e, i) => (
+                            <p key={i}>{e}</p>
+                        ))}
+                    </div>
+                </div>
+                <button
+                    onClick={onDismiss}
+                    className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-100 inline-flex h-8 w-8"
+                    aria-label="Close"
+                >
+                    <span className="sr-only">Close</span>
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                </button>
+            </div>
         </div>
     );
 };
