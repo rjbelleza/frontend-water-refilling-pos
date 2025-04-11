@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Menu } from 'lucide-react';
 
-const AdminSidemenu = () => {
+const StaffSidemenu = () => {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -62,16 +62,6 @@ const AdminSidemenu = () => {
                     <div
                         className="flex flex-col gap-5 h-full mt-20"
                     >
-                        <Link to="/admin-dashboard"
-                            className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
-                        >
-                            <div className="h-full w-2 bg-indigo-500"></div>
-                            <div className="flex justify-between w-full">
-                                <img src="/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
-                        </div>
-                        </Link>
-        
                         <Link to="/sales"
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
@@ -98,28 +88,7 @@ const AdminSidemenu = () => {
                             <div className="flex justify-between w-full">
                                 <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
                             </div>
-                        </Link>
-        
-                        <Link
-                            className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
-                        >
-                            <div className="h-full w-2 bg-rose-500"></div>
-                            <div className="flex justify-between w-full">
-                                <img src="/icons/reports.png" className="h-7 bg-rose-500 rounded-full mr-3 p-1" />
-                            </div>
-                        </Link>
-        
-                        <Link
-                            className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
-                        >
-                            <div className="h-full w-2 bg-slate-500"></div>
-                            <div className="flex justify-between w-full">
-                                <img src="/icons/users.png" className="h-7 bg-slate-500 rounded-full mr-3 p-1" />
-                            </div>
-                        </Link>
-        
+                        </Link>    
                     </div>
             )}
         </div>
@@ -131,17 +100,6 @@ const SideMenuBtn = () => {
 
     return (
         <div className="flex flex-col gap-3 h-full w-full text-white font-light">
-            <Link to="/admin-dashboard" 
-                  className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
-            >
-                <div className="h-full w-2 bg-indigo-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Dashboard</p>
-                    <img src="/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
-                </div>
-            </Link>
-
             <Link to="/sales"
                   className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
@@ -172,26 +130,8 @@ const SideMenuBtn = () => {
                     <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
                 </div>
             </Link>
-
-            <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-rose-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Reports</p>
-                    <img src="/icons/reports.png" className="h-7 bg-rose-500 rounded-full mr-3 p-1" />
-                </div>
-            </Link>
-
-            <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-slate-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Users</p>
-                    <img src="/icons/users.png" className="h-7 bg-slate-500 rounded-full mr-3 p-1" />
-                </div>
-            </Link>
         </div>
     );
 }
 
-export default AdminSidemenu;
+export default StaffSidemenu;

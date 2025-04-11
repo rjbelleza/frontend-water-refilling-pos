@@ -41,7 +41,7 @@ const AdminDashboard = () => {
                         >
                             <div className="flex items-center justify-between w-full">
                              <p className="text-[17px] font-bold text-primary p-3 px-5">Recent Transactions (Today)</p>
-                                <Link to="/admin-sales">
+                                <Link to="/sales">
                                     <SquareArrowOutUpRight className="mr-8 text-primary cursor-pointer" />
                                 </Link>
                             </div>

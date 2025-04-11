@@ -31,7 +31,7 @@ const App = () => {
 
           {/* Protected Admin Routes */}
           <Route path="/admin-dashboard" element={<ProtectedRoute element={<AdminDashboard />} role="admin" />} />
-          <Route path="/admin-sales" element={<ProtectedRoute element={<AdminSales />} role="admin" />} />
+          <Route path="/sales" element={<ProtectedRoute element={<AdminSales />} role={["admin", "staff"]}  />} />
 
           {/* Protected Staff Routes */}
           <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role={["admin", "staff"]} />} />
