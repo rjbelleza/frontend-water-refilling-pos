@@ -37,7 +37,7 @@ const AdminSidemenu = () => {
         >
             <div className={`${!isOpen ? 'justify-center' : 'justify-end'} flex w-full`}>
                 <button 
-                    className='cursor-pointer hover:bg-sky-500 rounded-md p-1 transition-all'
+                    className='cursor-pointer hover:bg-sky-200 rounded-md p-1 transition-all'
                     onClick={toggleMenu}
                 >
                     <Menu size={30} className='text-primary' />
@@ -66,9 +66,9 @@ const AdminSidemenu = () => {
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-indigo-500"></div>
+                            <div className="h-full w-2 bg-blue-900"></div>
                             <div className="flex justify-between w-full">
-                                <img src="/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
+                                <img src="/icons/dashboard.png" className="h-7 bg-blue-900 rounded-full mr-3 p-1" />
                         </div>
                         </Link>
         
@@ -76,17 +76,17 @@ const AdminSidemenu = () => {
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-purple-500"></div>
-                            <PhilippinePeso size={28} color='white' className="bg-purple-500 rounded-full mr-3 p-1" />
+                            <div className="h-full w-2 bg-blue-800"></div>
+                            <PhilippinePeso size={28} color='white' className="bg-blue-800 rounded-full mr-3 p-1" />
                         </Link>
         
                         <Link to="/inventory"
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-violet-500"></div>
+                            <div className="h-full w-2 bg-blue-700"></div>
                             <div className="flex justify-between w-full">
-                                <img src="/icons/inventory.png" className="h-7 bg-violet-500 rounded-full mr-3 p-1" />
+                                <img src="/icons/inventory.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
                             </div>
                         </Link>
         
@@ -94,9 +94,9 @@ const AdminSidemenu = () => {
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-pink-500"></div>
+                            <div className="h-full w-2 bg-blue-600"></div>
                             <div className="flex justify-between w-full">
-                                <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
+                                <img src="/icons/expenses.png" className="h-7 bg-blue-600 rounded-full mr-3 p-1" />
                             </div>
                         </Link>
         
@@ -104,9 +104,9 @@ const AdminSidemenu = () => {
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-rose-500"></div>
+                            <div className="h-full w-2 bg-blue-500"></div>
                             <div className="flex justify-between w-full">
-                                <img src="/icons/reports.png" className="h-7 bg-rose-500 rounded-full mr-3 p-1" />
+                                <img src="/icons/reports.png" className="h-7 bg-blue-500 rounded-full mr-3 p-1" />
                             </div>
                         </Link>
         
@@ -114,9 +114,9 @@ const AdminSidemenu = () => {
                             className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-slate-500"></div>
+                            <div className="h-full w-2 bg-blue-400"></div>
                             <div className="flex justify-between w-full">
-                                <img src="/icons/users.png" className="h-7 bg-slate-500 rounded-full mr-3 p-1" />
+                                <img src="/icons/users.png" className="h-7 bg-blue-400 rounded-full mr-3 p-1" />
                             </div>
                         </Link>
         
@@ -135,10 +135,10 @@ const SideMenuBtn = () => {
                   className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
             >
-                <div className="h-full w-2 bg-indigo-500"></div>
+                <div className="h-full w-2 bg-blue-900"></div>
                 <div className="flex justify-between w-full">
                     <p>Dashboard</p>
-                    <img src="/icons/dashboard.png" className="h-7 bg-indigo-500 rounded-full mr-3 p-1" />
+                    <img src="/icons/dashboard.png" className="h-7 bg-blue-900 rounded-full mr-3 p-1" />
                 </div>
             </Link>
 
@@ -146,48 +146,48 @@ const SideMenuBtn = () => {
                   className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
             >
-                <div className="h-full w-2 bg-purple-500"></div>
+                <div className="h-full w-2 bg-blue-800"></div>
                 <div className="flex justify-between w-full">
                     <p>Sales</p>
-                    <PhilippinePeso size={28} className="bg-purple-500 rounded-full mr-3 p-1" />
+                    <PhilippinePeso size={28} className="bg-blue-800 rounded-full mr-3 p-1" />
                 </div>
             </Link>
 
             <Link to="/inventory" 
                 className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-violet-500"></div>
+                <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Inventory</p>
-                    <img src="/icons/inventory.png" className="h-7 bg-violet-500 rounded-full mr-3 p-1" />
+                    <img src="/icons/inventory.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
                 </div>
             </Link>
 
             <Link to="/expenses" 
                 className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-pink-500"></div>
+                <div className="h-full w-2 bg-blue-600"></div>
                 <div className="flex justify-between w-full">
                     <p>Expenses</p>
-                    <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
+                    <img src="/icons/expenses.png" className="h-7 bg-blue-600 rounded-full mr-3 p-1" />
                 </div>
             </Link>
 
             <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-rose-500"></div>
+                <div className="h-full w-2 bg-blue-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Reports</p>
-                    <img src="/icons/reports.png" className="h-7 bg-rose-500 rounded-full mr-3 p-1" />
+                    <img src="/icons/reports.png" className="h-7 bg-blue-500 rounded-full mr-3 p-1" />
                 </div>
             </Link>
 
             <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-slate-500"></div>
+                <div className="h-full w-2 bg-blue-400"></div>
                 <div className="flex justify-between w-full">
                     <p>Users</p>
-                    <img src="/icons/users.png" className="h-7 bg-slate-500 rounded-full mr-3 p-1" />
+                    <img src="/icons/users.png" className="h-7 bg-blue-400 rounded-full mr-3 p-1" />
                 </div>
             </Link>
         </div>
