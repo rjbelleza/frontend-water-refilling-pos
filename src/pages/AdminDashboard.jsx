@@ -32,7 +32,7 @@ const AdminDashboard = () => {
                 <AdminSidemenu />
                 <div className="h-full w-full ml-3 mt-2 mr-2 rounded-md">
                     <Breadcrumb />
-                    <div className="grid grid-cols-4 gap-6 h-fit w-full bg-white mt-2 rounded-md p-5">
+                    <div className="grid grid-cols-4 gap-6 h-fit w-full bg-white mt-3 rounded-md">
                         <Card1 icon={<HandCoins />} category="Total Sales" value="₱70,000.00" range="Last 30 days" />
                         <Card1 icon={<Calculator />} category="Total Expenses" value="₱20,000.00" range="Last 30 days" />
                         <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All products" />
