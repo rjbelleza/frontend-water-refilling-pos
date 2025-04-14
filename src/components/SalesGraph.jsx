@@ -210,14 +210,14 @@ const SalesGraph = () => {
   }
 
   return (
-    <div className="chart-container">
-      <h2 className='text-lg font-bold text-sky-900 mb-2'>Monthly Sales & Expenses</h2>
-      <div className="chart-wrapper border-1 border-gray-400 rounded-sm p-3">
+    <div className="w-full h-full chart-container">
+      <div className="w-full chart-wrapper border-1 border-gray-400 rounded-sm p-3">
+        <p className='w-fit bg-blue-900 text-white font-medium py-2 px-5 rounded-sm'>Monthly Sales & Expenses</p>
         <Chart 
           options={options} 
           series={options.series} 
-          type="bar" 
-          height={420} 
+          type="bar"
+          height="400px"
           width="100%"
         />
       </div>

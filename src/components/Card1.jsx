@@ -2,7 +2,7 @@
 const Card1 = ({ icon, category, value, range }) => {
 
     return (
-        <div className="h-fit w-full px-5 py-2 pb-4 shadow-md shadow-gray-400 border border-gray-400 space-y-2 hover:scale-105 transition-all rounded-md"
+        <div className="h-fit w-full bg-white px-4 py-2 pb-4 shadow-md shadow-gray-400 border border-gray-400 space-y-2 hover:scale-105 transition-all rounded-md"
         >
             <div className="w-[245px]"></div>
             <div className="flex justify-between">

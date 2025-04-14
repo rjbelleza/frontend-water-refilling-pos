@@ -8,6 +8,7 @@ import { SquareArrowOutUpRight } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { HandCoins, Calculator, Package, ChartArea } from 'lucide-react';
 import SalesGraph from '../components/SalesGraph';
+import Footer from "../layouts/Footer";
 
 const AdminDashboard = () => {
     const sales = [
@@ -27,25 +28,21 @@ const AdminDashboard = () => {
       
 
     return (
-        <div className="h-full w-full scroll-smooth overflow-auto">
-            <Header />
-            <div className="flex h-full w-full fixed top-15">
-                <AdminSidemenu />
-                <div className="h-screen w-full ml-3 mt-2 mr-2 rounded-md overflow-auto">
-                    <Breadcrumb />
-                    <div className="grid grid-cols-4 gap-6 h-full w-full bg-white mt-3 rounded-md px-3">
-                        <Card1 icon={<HandCoins />} category="Total Sales" value="₱70,000.00" range="Last 30 days" />
-                        <Card1 icon={<Calculator />} category="Total Expenses" value="₱20,000.00" range="Last 30 days" />
-                        <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All products" />
-                        <Card1 icon={<ChartArea />} category="Net Profit" value="₱50,000.00" range="From Last 30 days" />
-                        <div className="col-span-3 h-fit w-full bg-white rounded-md">
-                            <SalesGraph />
-                        </div>
-                        <div className="col-span-1 h-[500px] bg-white rounded-md shadow-md shadow-gray-500 border-1 border-gray-400 p-5">
-                            <p>Sales Per Product</p>
-                           <PieChart />
-                        </div>
+        <div className="flex h-full w-full">
+            <AdminSidemenu />
+            <div className="h-full w-full overflow-auto">
+                <Header />
+                <div className="flex flex-col justify-between w-full h-full">
+                    <div className="grid grid-cols-4 gap-4 w-full p-4">
+                        <Card1 icon={<HandCoins />} category="Total Sales" value="P70,000.00" range="Last 30 days" />
+                        <Card1 icon={<Calculator />} category="Total Expenses" value="P20,000.00" range="Last 30 days" />
+                        <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All Products" />
+                        <Card1 icon={<ChartArea />} category="Net Profit" value="P50,000.00" range="Last 30 days" />
                     </div>
+                    <div className="flex w-full p-4">
+                        <SalesGraph />
+                    </div>
+                    <Footer />
                 </div>
             </div>
         </div>
