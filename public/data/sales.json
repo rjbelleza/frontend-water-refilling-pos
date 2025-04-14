@@ -1,0 +1,64 @@
+{
+    "monthlyData": [
+      {
+        "month": "Jan",
+        "sales": 12000,
+        "expenses": 8000
+      },
+      {
+        "month": "Feb",
+        "sales": 19000,
+        "expenses": 9500
+      },
+      {
+        "month": "Mar",
+        "sales": 15000,
+        "expenses": 10000
+      },
+      {
+        "month": "Apr",
+        "sales": 18000,
+        "expenses": 11000
+      },
+      {
+        "month": "May",
+        "sales": 21000,
+        "expenses": 10500
+      },
+      {
+        "month": "Jun",
+        "sales": 19000,
+        "expenses": 12000
+      },
+      {
+        "month": "Jul",
+        "sales": 22000,
+        "expenses": 12500
+      },
+      {
+        "month": "Aug",
+        "sales": 23000,
+        "expenses": 13000
+      },
+      {
+        "month": "Sep",
+        "sales": 20000,
+        "expenses": 11500
+      },
+      {
+        "month": "Oct",
+        "sales": 25000,
+        "expenses": 12000
+      },
+      {
+        "month": "Nov",
+        "sales": 22000,
+        "expenses": 11800
+      },
+      {
+        "month": "Dec",
+        "sales": 28000,
+        "expenses": 12500
+      }
+    ]
+}

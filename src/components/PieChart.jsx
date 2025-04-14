@@ -30,6 +30,7 @@ const PieChart = () => {
                 options={chartOptions}
                 series={chartSeries}
                 type="pie" 
+                height={260}
             />
         </div>
     );
