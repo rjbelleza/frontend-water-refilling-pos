@@ -67,7 +67,7 @@ const LoginPage = () => {
 
             <form 
                 onSubmit={handleSubmit} 
-                className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden"
+                className="w-full max-w-md bg-white rounded-lg shadow-lg border border-gray-400 overflow-hidden"
             >
                 <div className="flex justify-between items-center p-6 bg-gray-50 border-b border-gray-400 mb-7">
                     <h2 className="text-2xl font-bold text-primary">Login</h2>
