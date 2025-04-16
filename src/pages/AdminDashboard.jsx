@@ -32,10 +32,10 @@ const AdminDashboard = () => {
                 <div className="flex flex-col justify-between w-full h-full">
                         <Breadcrumb />
                     <div className="grid grid-cols-4 gap-5 w-full h-full p-4">
-                        <Card1 icon={<HandCoins />} category="Total Sales" value="P70,000" range="Last 30 days" />
-                        <Card1 icon={<Calculator />} category="Total Expenses" value="P20,000" range="Last 30 days" />
+                        <Card1 icon={<HandCoins />} category="Total Sales" value="₱70,000" range="Last Month" />
+                        <Card1 icon={<Calculator />} category="Total Expenses" value="₱20,000" range="Last Month" />
                         <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All Products" />
-                        <Card1 icon={<ChartArea />} category="Net Profit" value="P50,000" range="Last 30 days" />
+                        <Card1 icon={<ChartArea />} category="Net Profit" value="₱50,000" range="Last Month" />
                     </div>
                     <div className="grid grid-cols-4 w-full py-2 px-4">
                         <div className="col-span-3">
