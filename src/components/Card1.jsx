@@ -2,7 +2,7 @@
 const Card1 = ({ icon, category, value, range }) => {
 
     return (
-        <div className="flex bg-primary rounded-lg p-5 space-x-3">
+        <div className="flex bg-blue-950 rounded-lg p-5 space-x-3">
             <div className="flex items-center h-full">
                 <p className="h-fit bg-white text-primary p-3 rounded-sm">{icon}</p>
             </div>

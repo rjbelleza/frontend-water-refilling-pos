@@ -10,7 +10,7 @@ const PieChart = () => {
       type: 'donut',
     },
     labels: ['5-Gallon Bottle', '2-Gallon Bottle', '500ml Bottle', '5-Gallon Container'],
-    colors: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'],
+    colors: ['#221959', '#1a02ba', '#513cde', '#a094f2'],
     plotOptions: {
       pie: {
         startAngle: -90,
@@ -57,14 +57,13 @@ const PieChart = () => {
 
   return (
     <div className="max-w-[800px] mx-auto flex flex-col items-center justify-center">
-      <h2 className="text-center mb-5">Product Sales Comparison</h2>
       <div className="w-full mb-5">
         <ReactApexChart 
           options={options} 
           series={series} 
           type="donut" 
-          height={350}
-          width={250}
+          height={330}
+          width={230}
         />
       </div>
     </div>

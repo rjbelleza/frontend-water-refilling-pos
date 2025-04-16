@@ -30,10 +30,8 @@ const AdminDashboard = () => {
             <div className="h-full w-full overflow-auto">
                 <Header />
                 <div className="flex flex-col justify-between w-full h-full">
-                    <div className="h-full w-full">
                         <Breadcrumb />
-                    </div>
-                    <div className="grid grid-cols-4 gap-5 w-full p-4">
+                    <div className="grid grid-cols-4 gap-5 w-full h-full p-4">
                         <Card1 icon={<HandCoins />} category="Total Sales" value="P70,000" range="Last 30 days" />
                         <Card1 icon={<Calculator />} category="Total Expenses" value="P20,000" range="Last 30 days" />
                         <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All Products" />
@@ -43,7 +41,8 @@ const AdminDashboard = () => {
                         <div className="col-span-3">
                             <SalesGraph />
                         </div>
-                        <div className="flex col-span-1 p-3">
+                        <div className="flex flex-col col-span-1 border border-gray-400 ml-4 rounded-lg">
+                            <h2 className="text-left text-blue-900 font-medium p-5 mb-3">Product Sales Comparison</h2>
                             <PieChart />
                         </div>
                     </div>

@@ -51,7 +51,7 @@ const SalesGraph = () => {
     }, {
       name: 'Expenses',
       data: chartData.expenses,
-      color: '#4a486b'
+      color: '#000540'
     }],
     chart: {
       type: 'bar',
@@ -78,7 +78,7 @@ const SalesGraph = () => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '55%',
+        columnWidth: '75%',
         endingShape: 'rounded',
         dataLabels: {
           position: 'top'
@@ -173,7 +173,7 @@ const SalesGraph = () => {
     },
     grid: {
       row: {
-        colors: ['#f3f3f3', 'transparent'],
+        colors: ['#cccccc', 'transparent'],
         opacity: 0.5
       },
       borderColor: '#f1f1f1'
@@ -212,7 +212,7 @@ const SalesGraph = () => {
   return (
     <div className="w-full h-full chart-container">
       <div className="w-full chart-wrapper border-1 border-gray-400 rounded-lg p-3">
-        <p className='w-fit bg-blue-900 text-white font-medium py-2 px-5 rounded-sm'>Monthly Sales & Expenses</p>
+        <p className='w-fit text-blue-900 font-medium py-2 px-5 rounded-sm'>Monthly Sales & Expenses</p>
         <Chart 
           options={options} 
           series={options.series} 
