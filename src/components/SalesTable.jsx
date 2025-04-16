@@ -10,7 +10,7 @@ import {
 import { format, parseISO, isSameDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { CirclePlus } from 'lucide-react';
-import { Search } from 'lucide-react';
+import { Search, Eye } from 'lucide-react';
 
 const SalesTable = () => {
   // Data state
@@ -44,26 +44,26 @@ const SalesTable = () => {
         accessorKey: 'customer',
         header: 'Customer',
         cell: info => info.getValue(),
-        size: 190,
+        size: 290,
       },
       {
         accessorKey: 'totalAmount',
         header: 'Total Amount',
         cell: info => `₱${info.getValue().toFixed(2)}`,
-        size: 160,
+        size: 290,
       },
       {
         accessorKey: 'dateTime',
         header: 'Date & Time',
         cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
-        size: 160,
+        size: 290,
       },
       {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <button className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-4 py-1">
-            View
+          <button className="text-white bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-md px-2 py-1">
+            <Eye className='text-white' size={20} />
           </button>
         ),
         size: 20,
@@ -98,10 +98,10 @@ const SalesTable = () => {
   });
 
   return (
-    <div className="h-[495px] w-full p-1">
+    <div className="w-full">
       {/* Search Controls */}
-      <div className="flex flex-col w-full sm:flex-row gap-2 mb-4">
-        <div className='flex justify-between w-full gap-20 h-[37px]'>
+      <div className="flex flex-col w-full sm:flex-row gap-2">
+        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
           <div className='text-[23px] font-medium text-sky-800 w-[200px]'>Sales List</div>
             <div className='flex justify-end gap-3 w-full'>
               <div className='flex items-center'>
@@ -109,36 +109,28 @@ const SalesTable = () => {
                 <input
                     type="text"
                     id="search"
-                    placeholder="Search by keyword"
+                    placeholder="Search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="h-[37px] w-[170px] text-[13px] mr-3 py-1 pl-9 border border-gray-500 rounded-sm shadow-sm"
+                    className="h-[37px] w-[170px] text-[13px] mr-3 py-1 pl-9 border border-gray-400 rounded-md shadow-sm"
                 />
               </div>
               <div className='flex items-center gap-2 h-[37px]'>
-                  <label className='text-[15px]'>Filter by date:</label>
+                  <label className='text-[13px] text-gray-500'>Filter by date:</label>
                   <input
                       type="date"
                       id="date"
                       value={searchDate}
                       onChange={(e) => setSearchDate(e.target.value)}
-                      className="h-[35px] px-3 py-2 border border-gray-500 rounded-sm shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="h-[35px] px-5 bg-blue-500 text-white text-[13px] rounded-md outline-none"
                   />
-                  {searchDate && (
-                      <button
-                      onClick={() => setSearchDate('')}
-                      className="ml-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-                      >
-                      Clear
-                      </button>
-                  )}
               </div>
               <div className='flex justify-end ml-2'>
                 <button 
                     onClick={() => navigate('/new-sales')}
-                    className='flex items-center gap-2 h-[35px] bg-blue-800 text-white font-medium px-3 rounded-sm cursor-pointer hover:bg-blue-700'
+                    className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'
                 >
-                  <CirclePlus />
+                  <CirclePlus size={15} />
                   New Sale Entry
                 </button>
               </div>

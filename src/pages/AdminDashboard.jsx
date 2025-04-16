@@ -29,9 +29,9 @@ const AdminDashboard = () => {
             <AdminSidemenu />
             <div className="h-full w-full overflow-auto">
                 <Header />
-                <div className="flex flex-col justify-between w-full h-full">
-                        <Breadcrumb />
-                    <div className="grid grid-cols-4 gap-5 w-full h-full p-4">
+                <div className="flex flex-col justify-between w-full h-fit gap-5 overflow-x-hidden">
+                    <Breadcrumb />
+                    <div className="grid grid-cols-4 gap-5 w-full h-full px-4">
                         <Card1 icon={<HandCoins />} category="Total Sales" value="₱70,000" range="Last Month" />
                         <Card1 icon={<Calculator />} category="Total Expenses" value="₱20,000" range="Last Month" />
                         <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All Products" />
@@ -42,7 +42,6 @@ const AdminDashboard = () => {
                             <SalesGraph />
                         </div>
                         <div className="flex flex-col col-span-1 border border-gray-400 ml-4 rounded-lg">
-                            <h2 className="text-left text-blue-900 font-medium p-5 mb-3">Product Sales Comparison</h2>
                             <PieChart />
                         </div>
                     </div>
