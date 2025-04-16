@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
+import { Calendar } from 'lucide-react';
 
 const SalesGraph = () => {
   const [chartData, setChartData] = useState({
@@ -210,9 +211,15 @@ const SalesGraph = () => {
   }
 
   return (
-    <div className="w-full h-full chart-container">
-      <div className="w-full chart-wrapper border-1 border-gray-400 rounded-lg p-3">
-        <p className='w-fit text-blue-950 font-medium py-2 px-5 rounded-sm'>Monthly Sales & Expenses</p>
+    <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
+      <div className='flex justify-between border-b-1 border-gray-300 p-5'>
+        <p className='text-blue-950 font-medium rounded-sm'>Monthly Sales & Expenses</p>
+        <button className='flex items-center gap-2 text-[14px] border border-gray-400 px-4 py-1 rounded-md cursor-pointer'>
+          <Calendar size={14} />
+          2025
+        </button>
+      </div>
+      <div className="w-full chart-wrapper p-3">
         <Chart 
           options={options} 
           series={options.series} 
