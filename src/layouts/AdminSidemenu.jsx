@@ -8,7 +8,6 @@ const AdminSidemenu = () => {
     const { user, loading, close, isClose } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const [isOpen, setIsOpen] = useState(true);
 
 
     const toggleMenu = () => close(!isClose);
@@ -22,7 +21,7 @@ const AdminSidemenu = () => {
 
 
     useEffect(() => {
-        location.pathname == "/new-sales" && setIsOpen(false);
+        location.pathname == "/new-sales" && close(true);
     }, [])
 
 

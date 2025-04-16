@@ -9,8 +9,7 @@ import {
 } from '@tanstack/react-table';
 import { format, parseISO, isSameDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { CirclePlus } from 'lucide-react';
-import { Search, Eye } from 'lucide-react';
+import { Search, Eye, X, CirclePlus, Printer } from 'lucide-react';
 
 const SalesTable = () => {
   // Data state
@@ -19,8 +18,20 @@ const SalesTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [searchTerm, setSearchTerm] = useState('');
   const [searchDate, setSearchDate] = useState('');
+  const [viewModal, setViewModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const navigate = useNavigate();
+
+  const handleViewModal = (row) => {
+    setSelectedRow(row.original);
+    setViewModal(true);
+  }
+
+  const handleModalClose = (e) => {
+    e.preventDefault();
+    setViewModal(false);
+  }
 
   // Fetch data from recentTrans.json
   useEffect(() => {
@@ -62,7 +73,9 @@ const SalesTable = () => {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <button className="text-white bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-md px-2 py-1">
+          <button 
+            onClick={() => handleViewModal(row)}
+            className="text-white bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-md px-2 py-1">
             <Eye className='text-white' size={20} />
           </button>
         ),
@@ -138,8 +151,89 @@ const SalesTable = () => {
         </div>
       </div>
 
+      {/* View Modal */}
+      {viewModal && selectedRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+        >
+          <div className="min-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+              Sales Detail
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  onClick={() => setViewModal(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='flex gap-20 w-full px-5 mb-7'>
+              <div className='space-y-2'>
+                <p className='text-[14px] font-medium text-blue-600'>Customer</p>
+                <p className='text-[17px] font-bold text-blue-900'>{selectedRow.customer || ''}</p>
+              </div>
+              <div className='space-y-2'>
+                <p className='text-[14px] font-medium text-blue-600'>Date & Time</p>
+                <p className='text-[17px] font-bold text-blue-900'>{format(parseISO(selectedRow.dateTime), "yyyy-MM-dd, hh:mm a")}</p>
+              </div>
+            </div>
+            <div className='w-full px-5'>
+              <p className='text-[14px] font-medium text-blue-600 mb-2'>Order Summary</p>
+              <table className='w-full border-collapse'>
+                <thead className='rounded-md'>
+                  <tr className='text-[13px] text-left rounded-md'>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Product</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Price (₱)</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Total Cost (₱)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    [
+                      {product: "Product name", price: 0, quantity: 0, total: 0},
+                      {product: "Product name", price: 0, quantity: 0, total: 0},
+                      {product: "Product name", price: 0, quantity: 0, total: 0},
+                      {product: "Product name", price: 0, quantity: 0, total: 0},
+                      {product: "Product name", price: 0, quantity: 0, total: 0},
+
+                  ].map((data, index) => (
+                      <tr key={index} className='text-[13px]'>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.product}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.price.toFixed(2)}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.quantity}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.total.toFixed(2)}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+              <div className='flex justify-end w-full py-4'>
+                <div className='w-1/2 border border-gray-300 text-[14px] rounded-md'>
+                  <div className='flex justify-between p-3'>
+                    <p>Discount</p>
+                    <p>₱20.00</p>
+                  </div>
+                  <div className='flex justify-between p-3'>
+                    <p>Total Amount</p>
+                    <p>₱{selectedRow.totalAmount.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='flex justify-end w-full px-5'>
+              <button className='flex items-center gap-1 text-[14px] text-white bg-blue-900 rounded-md px-4 py-2'>
+                <Printer size={14} />
+                Print
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Table */}
-      <div className="h-full overflow-x-auto rounded-lg border border-gray-200">
+      <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 border-collapse">
           <thead className="bg-gray-200 sticky top-0">
             {table.getHeaderGroups().map(headerGroup => (
