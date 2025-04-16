@@ -32,8 +32,8 @@ const AdminSidemenu = () => {
 
 
     return (
-        <div className={`${isOpen ? 'w-60' : 'w-20'} h-screen flex flex-col bg-[url('/images/sidemenu.png')] bg-cover bg-center rounded-tr-md
-                         bg-opacity-30 sticky left-0 items-center p-3 transition-all ease-in-out border border-gray-500`}
+        <div className={`${isOpen ? 'w-60' : 'w-20'} h-screen flex flex-col bg-[url('/images/sidemenu.png')] bg-cover bg-center
+                         bg-opacity-30 sticky left-0 items-center p-3 transition-all ease-in-out border border-gray-400`}
         >
             <div className={`${!isOpen ? 'justify-center' : 'justify-end'} flex w-full`}>
                 <button 

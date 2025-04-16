@@ -16,44 +16,15 @@ const PieChart = () => {
         startAngle: -90,
         endAngle: 270,
         donut: {
-          size: '65%',
-          labels: {
-            show: true,
-            total: {
-              show: true,
-              showAlways: true,
-              label: 'Total Sales',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              color: '#373d3f',
-              formatter: function (w) {
-                return w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString() + ' units';
-              }
-            },
-            value: {
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#111',
-              formatter: function (val) {
-                return val.toLocaleString();
-              }
-            }
-          }
+          size: '45%',
         }
       }
     },
-    dataLabels: {
-      enabled: true,
-      formatter: function (val, { seriesIndex, w }) {
-        return w.config.labels[seriesIndex] + ': ' + val.toFixed(1) + '%';
-      },
-      dropShadow: {
-        enabled: false
-      }
-    },
     legend: {
-      position: 'right',
+      position: 'bottom',
+      horizontalAlign: 'left',
       fontSize: '14px',
+      fontWeight: 'bold',
       markers: {
         width: 12,
         height: 12,
@@ -85,14 +56,17 @@ const PieChart = () => {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Product Sales Comparison</h2>
-      <ReactApexChart 
-        options={options} 
-        series={series} 
-        type="donut" 
-        height={400} 
-      />
+    <div className="max-w-[800px] mx-auto flex flex-col items-center justify-center">
+      <h2 className="text-center mb-5">Product Sales Comparison</h2>
+      <div className="w-full mb-5">
+        <ReactApexChart 
+          options={options} 
+          series={series} 
+          type="donut" 
+          height={350}
+          width={250}
+        />
+      </div>
     </div>
   );
 };
