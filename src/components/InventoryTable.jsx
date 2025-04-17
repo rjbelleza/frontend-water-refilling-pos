@@ -173,7 +173,7 @@ const InventoryTable = () => {
       {showViewModal && selectedRow && (
         <div
           className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-5 scrollbar-thin"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         >
           <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
@@ -486,52 +486,70 @@ const InventoryTable = () => {
 
       {/* Add product modal */}
       <div 
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
             className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
                 ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-            <div className={`bg-white p-7 px-20 pb-10 rounded-sm shadow-lg transform transition-transform duration-300
+            <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
-                <p className='flex justify-between text-[19px] font-medium text-blue-900 mb-8'>
-                    ADD PRODUCT
-                    <span className='text-gray-800 hover:text-gray-600 font-normal'>
-                        <button 
-                            onClick={() => setShowModal(false)}
-                            className='cursor-pointer'><X size={20} /></button>
-                    </span>
-                </p>
-                <form className='flex flex-col'>
-                    <label className='text-[15px] mb-2'>Product Name*</label>
-                    <input 
-                        type='text' 
-                        className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                      
-                    />
-                    <label className='text-[15px] mb-2'>Price*</label>
-                    <input 
-                        type='number' 
-                        className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                      
-                        min={0}
-                    />
-                    <label className='text-[15px] mb-2'>Stock Qty.*</label>
-                    <input 
-                        type='number' 
-                        className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                       
-                        min={0}
-                    />
-                    <label className='text-[15px] mb-2'>Category*</label>
-                    <select className='border border-gray-500 px-4 py-2 rounded-sm mb-10'>
-                        <option>Water</option>
-                        <option>Container</option>
-                    </select>
-                    <button 
-                        onClick={() => setShowModal(false)}
-                        type='submit'
-                        className='bg-blue-900 text-white font-medium py-3 rounded-sm cursor-pointer hover:bg-blue-800'
+                <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+                  Add Product
+                  <span className="text-gray-800 hover:text-gray-600 font-normal">
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="cursor-pointer"
                     >
-                        CONTINUE
+                      <X size={20} />
                     </button>
+                  </span>
+                </p>
+                <form className='flex flex-col gap-7 p-5 mb-5'>
+                  <div className='flex flex-col w-full space-y-2 mx-auto'>
+                    <label for="product_name" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
+                    <input
+                      id='product_name'
+                      type='text'
+                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    />
+                  </div>
+                  <div className='flex flex-col w-full space-y-2 mx-auto'>
+                    <label for="price" className='text-[14px] font-medium text-blue-800'>Price <span className='text-red-700'>*</span></label>
+                    <input
+                      id='price'
+                      type='number'
+                      min={1}
+                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    />
+                  </div>
+                  <div className='flex flex-col w-full space-y-2 mx-auto'>
+                    <label for="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
+                    <select id='category' className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'>
+                      {["Water", "Container"].map((category, index) => (
+                        <option 
+                          key={index} 
+                          value={category}
+                        >
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className='flex flex-col w-full space-y-2 mx-auto'>
+                    <label for="stock" className='text-[14px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
+                    <input
+                      id='stock'
+                      type='number'
+                      min={1}
+                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    />
+                  </div>
                 </form>
+                <div className='flex justify-end w-full px-5'>
+                  <button className='text-[12px] text-white bg-blue-900 px-4 py-2 rounded-sm hover:bg-blue-800 cursor-pointer'>
+                    Add Product
+                  </button>
+                </div>
             </div>
         </div>
     </div>
