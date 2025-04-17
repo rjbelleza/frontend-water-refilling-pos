@@ -172,10 +172,109 @@ const InventoryTable = () => {
       {/* View Modal */}
       {showViewModal && selectedRow && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-1000"
+          className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-5 scrollbar-thin"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
-
+          <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+              Product Details
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  onClick={() => setShowViewModal(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='grid grid-cols-2 gap-8 w-full px-5 mb-10'>
+              <div className='flex flex-col w-full space-y-2'>
+                <label for="productName" className='text-[14px] font-medium text-blue-800'>Product Name</label>
+                <input 
+                  id='productName'
+                  value={selectedRow.name || ''}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  readOnly 
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2'>
+                <label for="category" className='text-[14px] font-medium text-blue-800'>Category</label>
+                <input 
+                  id='category'
+                  value={selectedRow.category || ''}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  readOnly 
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2'>
+                <label for="price" className='text-[14px] font-medium text-blue-800'>Price (₱)</label>
+                <input 
+                  id='price'
+                  value={selectedRow.price.toFixed(2) || 0}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  readOnly 
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2'>
+                <label for="added_by" className='text-[14px] font-medium text-blue-800'>Added By</label>
+                <input 
+                  id='added_by'
+                  value={'Jack Frost - Admin'}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  readOnly 
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2'>
+                <label for="stock_quantity" className='text-[14px] font-medium text-blue-800'>Available Stock</label>
+                <input 
+                  id='stock_quantity'
+                  value={selectedRow.stock_quantity || 0}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  readOnly 
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2'>
+                <label for="stock_quantity" className='text-[14px] font-medium text-blue-800'>Stock Status</label>
+                <input 
+                  id='stock_quantity'
+                  value={selectedRow.stock_quantity <= 25 ? 'Low Stock' : 'In stock'}
+                  className={`w-full text-white ${selectedRow.stock_quantity <= 25 ? 'bg-red-500' : 'bg-green-500'} text-[13px] px-3 py-1 rounded-sm outline-none`}
+                  readOnly 
+                />
+              </div>
+            </div>
+            <div className='w-full px-5 py-5 border-t-1 border-dashed border-gray-400'>
+              <p className='text-[14px] font-medium text-blue-900'>Stock In / Stock Out History</p>
+              <table className='w-full mt-5 border-collapse'>
+                <thead>
+                  <tr className='text-left text-[13px] rounded-md'>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>User</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Action</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Date & Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    [
+                      {user: 'Jack Frost', action: 'Stock in', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                    ].map((data, index) => (
+                      <tr key={index} className='text-[13px]'>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.user}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.action}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.quantity}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.dateTime}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
 
