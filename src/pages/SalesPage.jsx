@@ -17,7 +17,7 @@ const SalesPage = () => {
             ) : (
                 <StaffSidemenu />
             )}
-            <div className="h-full w-full overflow-auto">
+            <div className="h-full w-full overflow-y-auto scrollbar-thin">
                 <Header />
                 <div className="flex flex-col w-full h-fit gap-5">
                     <Breadcrumb />

@@ -22,43 +22,43 @@
       },
       {
         "month": "May",
-        "sales": 21000,
-        "expenses": 10500
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Jun",
-        "sales": 19000,
-        "expenses": 12000
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Jul",
-        "sales": 22000,
-        "expenses": 12500
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Aug",
-        "sales": 23000,
-        "expenses": 13000
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Sep",
-        "sales": 20000,
-        "expenses": 11500
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Oct",
-        "sales": 25000,
-        "expenses": 12000
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Nov",
-        "sales": 22000,
-        "expenses": 11800
+        "sales": 0,
+        "expenses": 0
       },
       {
         "month": "Dec",
-        "sales": 28000,
-        "expenses": 12500
+        "sales": 0,
+        "expenses": 0
       }
     ]
 }

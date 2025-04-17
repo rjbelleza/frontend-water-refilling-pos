@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Trash } from 'lucide-react';
 
 const InventoryTable = () => {
   // Data state
@@ -15,6 +15,21 @@ const InventoryTable = () => {
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [showModal, setShowModal] = useState(false);
+  const [showUpdateModal,setShowUpdateModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+
+  const handleUpdateClick = (row) => {
+    setSelectedRow(row.original);
+    setShowUpdateModal(true);
+  };
+
+
+  const handleViewClick = (row) => {
+    setSelectedRow(row.original);
+    setShowViewModal(true);
+  }
 
 
   const stockColorCode = (stock_quantity) => {
@@ -81,9 +96,26 @@ const InventoryTable = () => {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <button className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2">
-            <SquarePen size={15} />
-          </button>
+          <div className='flex space-x-1'>
+            <button 
+              onClick={() => handleViewClick(row)}
+              className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+            >
+              <Eye size={15} />
+            </button>
+            <button 
+              onClick={() => handleUpdateClick(row)}
+              className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+            >
+              <SquarePen size={15} />
+            </button>
+            <button 
+
+              className="text-white bg-rose-500 hover:bg-rose-400 cursor-pointer rounded-sm px-2 py-2"
+            >
+              <Trash size={15} />
+            </button>
+          </div>
         ),
         size: 20,
       },
@@ -136,6 +168,90 @@ const InventoryTable = () => {
             </div>
           </div>
       </div>
+
+      {/* View Modal */}
+      {showViewModal && selectedRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+        >
+
+        </div>
+      )}
+
+      {/* Update Modal */}
+      {showUpdateModal && selectedRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+        >
+          <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+              Update Product
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  onClick={() => setShowUpdateModal(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='grid grid-cols-2 gap-7 w-full px-5 mb-12 flex-wrap'>
+              <div className='flex flex-col w-full space-y-2 mx-auto'>
+                <label for="productName" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
+                <input
+                  id='productName'
+                  type='text'
+                  value={selectedRow.name || ''}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2 mx-auto'>
+                <label for="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
+                <select
+                  id="category"
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                >
+                  {['Water', 'Container'].map((category, index) => (
+                    <option key={index} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+              <div className='flex flex-col w-full space-y-2 mx-auto'>
+                <label for="price" className='text-[14px] font-medium text-blue-800'>Price (₱) <span className='text-red-700'>*</span></label>
+                <input
+                  id='price'
+                  type='text'
+                  value={selectedRow.price.toFixed(2) || 0}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2 mx-auto'>
+                <label for="stock" className='text-[14px] font-medium text-blue-800'>Stock qty. <span className='text-red-700'>*</span></label>
+                <input
+                  id='stock'
+                  type='text'
+                  value={selectedRow.stock_quantity || 0}
+                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                />
+              </div>
+            </div>
+            <div className='flex justify-end w-full space-x-2 px-5'>
+              <button 
+                onClick={() => setShowUpdateModal(false)}
+                className='text-[12px] text-white bg-blue-500 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
+                Cancel
+              </button>
+              <button 
+                onClick={() => setShowUpdateModal(false)}
+                className='text-[12px] text-white bg-blue-900 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Table */}
       <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">

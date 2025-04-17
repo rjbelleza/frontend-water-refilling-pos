@@ -27,9 +27,9 @@ const AdminDashboard = () => {
     return (
         <div className="flex h-full w-full">
             <AdminSidemenu />
-            <div className="h-full w-full overflow-auto">
+            <div className="h-full w-full overflow-y-auto scrollbar-thin">
                 <Header />
-                <div className="flex flex-col justify-between w-full h-fit gap-5 overflow-x-hidden">
+                <div className="flex flex-col justify-between w-full h-fit gap-5">
                     <Breadcrumb />
                     <div className="grid grid-cols-4 gap-5 w-full h-full px-4">
                         <Card1 icon={<HandCoins />} category="Total Sales" value="₱70,000" range="Last Month" />
