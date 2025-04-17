@@ -3,25 +3,27 @@ import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import InventoryTable from "../components/InventoryTable";
 import StaffSidemenu from "../layouts/StaffSidemenu";
+import Footer from "../layouts/Footer";
 import { useAuth } from "../contexts/AuthContext";
 
 const InventoryPage = () => {
     const { user } = useAuth();
 
     return (
-        <div className="h-full w-full scroll-smooth">
-            <Header />
-            <div className="flex h-full w-full fixed top-15">
+        <div className="flex h-full w-full">
             {user?.role == "admin" ? (
-                    <AdminSidemenu />
-                ) : (
-                    <StaffSidemenu />
-                )}
-                <div className="h-full w-full ml-3 mt-2 mr-2 rounded-md">
+                <AdminSidemenu />
+            ) : (
+                <StaffSidemenu />
+            )}
+            <div className="h-full w-full overflow-auto">
+                <Header />
+                <div className="flex flex-col w-full h-fit gap-5">
                     <Breadcrumb />
-                    <div className="h-full w-full bg-white mt-2 rounded-md p-5">
+                    <div className="h-full w-full px-5">
                         <InventoryTable />
                     </div>
+                    <Footer />
                 </div>
             </div>
         </div>

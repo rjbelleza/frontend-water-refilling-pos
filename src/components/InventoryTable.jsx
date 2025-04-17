@@ -7,9 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { CirclePlus } from 'lucide-react';
-import { Search } from 'lucide-react';
-import { X } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus } from 'lucide-react';
 
 const InventoryTable = () => {
   // Data state
@@ -59,19 +57,19 @@ const InventoryTable = () => {
         accessorKey: 'name',
         header: 'Name',
         cell: info => info.getValue(),
-        size: 190,
+        size: 290,
       },
       {
         accessorKey: 'price',
         header: 'Price',
         cell: info => `₱${info.getValue().toFixed(2)}`,
-        size: 160,
+        size: 260,
       },
       {
         accessorKey: 'stock_quantity',
         header: 'Stock qty.',
         cell: info => <p className={`${stockColorCode(info.getValue())} text-white py-1 px-3 w-[48px]`}>{info.getValue()}</p>,
-        size: 160,
+        size: 260,
       },
       {
         accessorKey: 'category',
@@ -84,7 +82,7 @@ const InventoryTable = () => {
         header: 'Action',
         cell: ({ row }) => (
           <button className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2">
-            Update
+            <SquarePen size={15} />
           </button>
         ),
         size: 20,
@@ -110,35 +108,37 @@ const InventoryTable = () => {
   });
 
   return (
-    <div className="h-[495px] w-full p-1">
+    <div className="w-full">
 
-      <div className='flex justify-between h-[54px] w-full'>
-        <div className='text-[23px] font-medium text-sky-800'>Product List</div>
-        <div className='flex gap-3'>
-            <select className='h-[35px] border border-gray-500 rounded-sm px-2'>
-                <option>All</option>
-                <option>Container</option>
-                <option>Water</option>
-            </select>
-            <div className='flex items-center h-[35px]'>
-                <Search className='mr-[-30px] text-gray-600' />
-                <input 
-                    type='text' 
-                    placeholder='Search product by name' 
-                    className='text-[13px] h-[35px] border border-gray-500 pl-9 pr-2 py-1 rounded-sm' 
-                />
+      <div className='flex justify-between w-full'>
+        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
+          <div className='text-[23px] font-medium text-sky-800'>Products List</div>
+            <div className='flex gap-3'>
+                <div className='flex items-center h-[35px]'>
+                    <Search className='mr-[-30px] text-gray-600' />
+                    <input 
+                        type='text' 
+                        placeholder='Search' 
+                        className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
+                    />
+                </div>
+                <select className='h-[35px] border border-gray-400 rounded-sm px-2'>
+                    <option>All</option>
+                    <option>Container</option>
+                    <option>Water</option>
+                </select>
+                <button 
+                    onClick={() => setShowModal(true)}
+                    className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                    <CirclePlus size={13} />
+                    Add Product
+                </button>
             </div>
-            <button 
-                onClick={() => setShowModal(true)}
-                className='flex items-center gap-2 h-[35px] bg-blue-800 text-white font-medium px-3 rounded-sm cursor-pointer hover:bg-blue-700'>
-                <CirclePlus />
-                Add Product
-            </button>
-        </div>
+          </div>
       </div>
 
       {/* Table */}
-      <div className="h-full overflow-x-auto rounded-lg border border-gray-200">
+      <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 border-collapse">
           <thead className="bg-gray-200 sticky top-0">
             {table.getHeaderGroups().map(headerGroup => (

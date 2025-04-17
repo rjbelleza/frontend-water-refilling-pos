@@ -232,7 +232,7 @@ const SalesTable = () => {
         </div>
       )}
 
-      {/* Table */}
+      {/* Tablei */}
       <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 border-collapse">
           <thead className="bg-gray-200 sticky top-0">
