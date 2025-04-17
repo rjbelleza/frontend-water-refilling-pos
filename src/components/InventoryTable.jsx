@@ -17,6 +17,7 @@ const InventoryTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal,setShowUpdateModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
 
@@ -29,6 +30,12 @@ const InventoryTable = () => {
   const handleViewClick = (row) => {
     setSelectedRow(row.original);
     setShowViewModal(true);
+  }
+
+
+  const handleDeleteClick = (row) => {
+    setSelectedRow(row.original);
+    setShowDeleteModal(true);
   }
 
 
@@ -75,6 +82,12 @@ const InventoryTable = () => {
         size: 290,
       },
       {
+        accessorKey: 'category',
+        header: 'Category',
+        cell: info => capitalize(info.getValue()),
+        size: 160,
+      },
+      {
         accessorKey: 'price',
         header: 'Price',
         cell: info => `₱${info.getValue().toFixed(2)}`,
@@ -85,12 +98,6 @@ const InventoryTable = () => {
         header: 'Stock qty.',
         cell: info => <p className={`${stockColorCode(info.getValue())} text-white py-1 px-3 w-[48px]`}>{info.getValue()}</p>,
         size: 260,
-      },
-      {
-        accessorKey: 'category',
-        header: 'Category',
-        cell: info => capitalize(info.getValue()),
-        size: 160,
       },
       {
         id: 'actions',
@@ -110,7 +117,7 @@ const InventoryTable = () => {
               <SquarePen size={15} />
             </button>
             <button 
-
+              onClick={() => handleDeleteClick(row)}
               className="text-white bg-rose-500 hover:bg-rose-400 cursor-pointer rounded-sm px-2 py-2"
             >
               <Trash size={15} />
@@ -346,6 +353,45 @@ const InventoryTable = () => {
                 onClick={() => setShowUpdateModal(false)}
                 className='text-[12px] text-white bg-blue-900 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
                 Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Modal */}
+      {showDeleteModal && selectedRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+        >
+          <div className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+              Delete Product
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  onClick={() => setShowDeleteModal(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='w-full px-5 space-y-7 mb-15'>
+              <p className='font-medium text-center'>Are you sure you want to delete this product?</p>
+              <div className='w-full text-center'>
+                <p className='text-[20px] text-blue-700 font-bold mb-3'>"{selectedRow.name || ''}"</p>
+                <div className='w-full border border-gray-300'></div>
+              </div>
+            </div>
+            <div className='flex justify-end w-full text-[12px] space-x-2 px-5'>
+              <button 
+                onClick={() => setShowDeleteModal(false)}
+                className='text-white bg-blue-500 px-4 py-[] rounded-md cursor-pointer hover:bg-blue-400'>
+                Cancel
+              </button>
+              <button className='text-white bg-blue-950 px-4 py-[6px] rounded-md cursor-pointer hover:bg-blue-900'>
+                Confirm
               </button>
             </div>
           </div>
