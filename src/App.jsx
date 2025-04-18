@@ -7,6 +7,7 @@ import NewSalesPage from "./pages/NewSalesPage";
 import InventoryPage from "./pages/InventoryPage";
 import LoadingScreen from "./pages/LoadingScreen";
 import ExpensesPage from "./pages/ExpensesPage";
+import ReportsPage from "./pages/ReportsPage";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ element, role }) => {
@@ -29,14 +30,15 @@ const App = () => {
           {/* Public Route */}
           <Route path="/" element={<LoginPage />} />
 
-          {/* Protected Admin Routes */}
-          <Route path="/admin-dashboard" element={<ProtectedRoute element={<AdminDashboard />} role="admin" />} />
+          { /* Accessible for Admins and Staffs */ }
           <Route path="/sales" element={<ProtectedRoute element={<SalesPage />} role={["admin", "staff"]}  />} />
-
-          {/* Protected Staff Routes */}
           <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role={["admin", "staff"]} />} />
           <Route path="/inventory" element={<ProtectedRoute element={<InventoryPage />} role={["admin", "staff"]} />} />
-          <Route path="/expenses" element={<ProtectedRoute element={<ExpensesPage />} role={["admin", "staff"]} />} />
+
+          {/* Protected Admin Routes */}
+          <Route path="/admin-dashboard" element={<ProtectedRoute element={<AdminDashboard />} role="admin" />} />
+          <Route path="/reports" element={<ProtectedRoute element={<SalesPage />} role="admin" />} />
+          <Route path="/expenses" element={<ProtectedRoute element={<ExpensesPage />} role="admin" />} />
         </Routes>
       </AuthProvider>
     </Router>
