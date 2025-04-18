@@ -86,14 +86,14 @@ const AdminSidemenu = () => {
                             <Calculator />
                         </Link>
         
-                        <Link to="/sales"
+                        <Link to="/reports"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
                             <Book />
                         </Link>
         
-                        <Link to="/sales"
+                        <Link to="/users"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
@@ -153,7 +153,8 @@ const SideMenuBtn = () => {
                 </div>
             </Link>
 
-            <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+            <Link to="/reports"
+                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
@@ -162,7 +163,8 @@ const SideMenuBtn = () => {
                 </div>
             </Link>
 
-            <Link className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+            <Link to="/users" 
+                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">

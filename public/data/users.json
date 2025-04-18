@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "fname": "Sean",
+        "lname": "Paterson",
+        "username": "seanpaterson",
+        "role": "admin",
+        "created_at": "2025-02-25"
+    },
+    {
+        "id": 2,
+        "fname": "Andrea",
+        "lname": "North",
+        "username": "andreanorth",
+        "role": "staff",
+        "created_at": "2025-02-25"
+    },
+    {
+        "id": 3,
+        "fname": "Jack",
+        "lname": "Frost",
+        "username": "jackfrost",
+        "role": "staff",
+        "created_at": "2025-02-25"
+    }
+]

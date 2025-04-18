@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "total_sales": 200000,
+        "total_expenses": 5000,
+        "date": "2025-03-11"
+    },
+    {
+        "id": 2,
+        "total_sales": 200000,
+        "total_expenses": 5000,
+        "date": "2025-03-11"
+    },
+    {
+        "id": 3,
+        "total_sales": 200000,
+        "total_expenses": 5000,
+        "date": "2025-03-11"
+    },
+    {
+        "id": 4,
+        "total_sales": 200000,
+        "total_expenses": 5000,
+        "date": "2025-03-11"
+    },
+    {
+        "id": 5,
+        "total_sales": 200000,
+        "total_expenses": 5000,
+        "date": "2025-03-11"
+    },
+    {
+        "id": 6,
+        "total_sales": 200000,
+        "total_expenses": 5000,
+        "date": "2025-03-11"
+    }
+]
