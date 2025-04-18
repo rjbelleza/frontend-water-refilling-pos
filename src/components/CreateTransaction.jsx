@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
-import { Search, Funnel, Store } from "lucide-react";
+import { Search, Funnel, Store, X } from "lucide-react";
 
 const CreateTransaction = () => {
     const [products, setProducts] = useState([]);
@@ -9,6 +9,8 @@ const CreateTransaction = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [discount, setDiscount] = useState(null);
+    const [placeOrder, setPlaceOrder] = useState(false);
+    const [custName, setCustName] = useState('');
     
     const categories = ["Container", "Water"];
 
@@ -77,6 +79,11 @@ const CreateTransaction = () => {
     };
 
 
+    const handlePlaceOrder = (e) => {
+        e.preventDefault();
+    }
+
+
     return(
         <div className="grid grid-cols-5 h-full w-full">
 
@@ -116,14 +123,17 @@ const CreateTransaction = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-5 w-full scrollbar-thin overflow-y-auto">
+                <div className="grid grid-cols-3 gap-8 w-full scrollbar-thin overflow-y-auto">
                     <Card2 products={filteredProducts} add={handleAddProduct} />
                 </div>
             </div>
 
 
             {/* New Transaction Section */}
-            <div className="col-span-2 h-fit w-full bg-white border-3 border-gray-400 rounded-md p-4 ml-2">
+            <form 
+                onSubmit={handlePlaceOrder}
+                className="col-span-2 h-fit w-full bg-white border-3 border-gray-400 rounded-md p-4 ml-2"
+            >
                 <p className="font-medium text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Order List</p>
                 <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
                     <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
@@ -151,7 +161,10 @@ const CreateTransaction = () => {
                             className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
                         >Customer Name <span className="text-red-500">*</span></label>
                         <div  className="relative">
-                            <button className="cursor-pointer">
+                            <button 
+                                onClick={() => setCustName('Walk-in')}
+                                className="cursor-pointer"
+                            >
                                 <Store size={20} className={`absolute right-2 top-2 ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-white'}`} />
                             </button>
                             <input 
@@ -159,7 +172,9 @@ const CreateTransaction = () => {
                                 id="cust-name"
                                 required
                                 disabled={selectedProduct.length === 0}
-                                className={`min-h-[35px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-35 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-blue-800'}`}
+                                onChange={(e) => setCustName(e.target.value)}
+                                value={custName}
+                                className={`min-h-[35px] text-[14px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-35 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-blue-800'}`}
                                 style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                             />
                         </div>
@@ -207,31 +222,44 @@ const CreateTransaction = () => {
                 </div>
 
                 <div className="flex justify-end items-end h-[110px] bg-white w-full mt-6 px-15 pb-5">
-                <button 
-                    disabled={selectedProduct.length === 0}
-                    className={`
-                        bg-blue-700 w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md shadow-black transition-colors duration-200
-                        ${selectedProduct.length === 0 
-                        ? 'opacity-50 cursor-default' 
-                        : 'cursor-pointer hover:bg-blue-600'}`}
-                    >
-                        Place Order
-                </button>
+                    <button 
+                        type="submit"
+                        onClick={() => setPlaceOrder(true)}
+                        disabled={!custName}
+                        className={`
+                            bg-blue-700 w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md shadow-black transition-colors duration-200
+                            ${!custName
+                            ? 'opacity-50 cursor-default' 
+                            : 'cursor-pointer hover:bg-blue-600'}`}
+                        >
+                            Place Order
+                    </button>
+                </div>
+            </form>
+
+            {/* Place Order Modal */}
+            {placeOrder && custName && (
+            <div
+                className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-5 scrollbar-thin"
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+            >
+                <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+                  <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+                    Confirm Order
+                    <span className="text-gray-800 hover:text-gray-600 font-normal">
+                      <button
+                        onClick={() => setPlaceOrder(false)}
+                        className="cursor-pointer"
+                      >
+                        <X size={20} />
+                      </button>
+                    </span>
+                  </p>
                 </div>
             </div>
+            )}
         </div>
     );
 }
-
-
-const Modal = () => {
-
-    return (
-        <div>
-
-        </div>
-    );
-}
-
 
 export default CreateTransaction;
