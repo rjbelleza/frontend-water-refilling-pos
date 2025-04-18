@@ -1,11 +1,10 @@
-import { PhilippinePeso } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu } from 'lucide-react';
+import { Menu, HandCoins, Package } from 'lucide-react';
 
 const StaffSidemenu = () => {
-    const { user, loading } = useAuth();
+    const { user, loading, close, isClose, setIsClose } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(true);
@@ -22,7 +21,7 @@ const StaffSidemenu = () => {
 
 
     useEffect(() => {
-        location.pathname == "/new-sales" && setIsOpen(false);
+        location.pathname === "/new-sales" && setIsClose(false);
     }, [])
 
 
@@ -32,18 +31,18 @@ const StaffSidemenu = () => {
 
 
     return (
-        <div className={`${isOpen ? 'w-60' : 'w-20'} flex flex-col bg-[url('/images/sidemenu.png')] bg-cover bg-center mt-2 rounded-tr-md
-                        shadow-[2px_0px_10px_gray] bg-opacity-30 sticky left-0 items-center p-3 transition-all ease-in-out`}
+        <div className={`${isClose ? 'w-60 p-5' : 'w-20 pt-5'} h-screen flex flex-col bg-[url('/images/sidemenu.png')] bg-cover bg-center
+                bg-opacity-30 sticky left-0 items-center transition-all ease-in-out border border-gray-400`}
         >
-            <div className={`${!isOpen ? 'justify-center' : 'justify-end'} flex w-full`}>
+            <div className={`${!isClose ? 'justify-center' : 'justify-end'} flex w-full`}>
                 <button 
                     className='cursor-pointer hover:bg-sky-500 rounded-md p-1 transition-all'
-                    onClick={toggleMenu}
+                    onClick={() => close()}
                 >
                     <Menu size={30} className='text-primary' />
                 </button>
             </div>
-            <div className={`${!isOpen && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3`}>
+            <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3`}>
                 <div className="flex flex-col items-center w-full">
                     <p className="text-[13px] text-gray-600 mb-1">Welcome,</p>
                     <p className="font-bold text-[20px]">{user.name}</p>
@@ -58,36 +57,22 @@ const StaffSidemenu = () => {
             </div>
 
             {/* Decreased Sidemenu width*/}
-            {!isOpen && (
+            {!isClose && (
                     <div
-                        className="flex flex-col gap-5 h-full mt-20"
+                        className="flex flex-col text-white items-center gap-5 h-full w-3/4 mt-20"
                     >
                         <Link to="/sales"
-                            className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                            className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-purple-500"></div>
-                            <PhilippinePeso size={28} color='white' className="bg-purple-500 rounded-full mr-3 p-1" />
+                            <HandCoins />
                         </Link>
         
                         <Link to="/inventory"
-                            className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                            className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
                         >
-                            <div className="h-full w-2 bg-violet-500"></div>
-                            <div className="flex justify-between w-full">
-                                <img src="/icons/inventory.png" className="h-7 bg-violet-500 rounded-full mr-3 p-1" />
-                            </div>
-                        </Link>
-        
-                        <Link to="/expenses"
-                            className="flex justify-center items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
-                        >
-                            <div className="h-full w-2 bg-pink-500"></div>
-                            <div className="flex justify-between w-full">
-                                <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
-                            </div>
+                            <Package />
                         </Link>    
                     </div>
             )}
@@ -97,37 +82,26 @@ const StaffSidemenu = () => {
 
 const SideMenuBtn = () => {
 
-
     return (
         <div className="flex flex-col gap-3 h-full w-full text-white font-light">
-            <Link to="/sales"
+           <Link to="/sales"
                   className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
             >
-                <div className="h-full w-2 bg-purple-500"></div>
+                <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Sales</p>
-                    <PhilippinePeso size={28} className="bg-purple-500 rounded-full mr-3 p-1" />
+                    <HandCoins className='mr-3' />
                 </div>
             </Link>
 
             <Link to="/inventory" 
                 className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-violet-500"></div>
+                <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Inventory</p>
-                    <img src="/icons/inventory.png" className="h-7 bg-violet-500 rounded-full mr-3 p-1" />
-                </div>
-            </Link>
-
-            <Link to="/expenses" 
-                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
-                <div className="h-full w-2 bg-pink-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Expenses</p>
-                    <img src="/icons/expenses.png" className="h-7 bg-pink-500 rounded-full mr-3 p-1" />
+                    <Package className='mr-3' />
                 </div>
             </Link>
         </div>

@@ -20,7 +20,7 @@ const Breadcrumb = () => {
             return 'EXPENSES MANAGEMENT'
         }
         else if (location.pathname === '/reports') {
-            return 'SALES REPORTS'
+            return 'INCOME REPORTS'
         }
         else if (location.pathname === '/users') {
             return 'USERS MANAGEMENT'

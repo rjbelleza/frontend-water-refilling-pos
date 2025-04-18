@@ -1,5 +1,4 @@
-import { PhilippinePeso } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Menu, CircleGauge, HandCoins, Package, Calculator, Book, Users } from 'lucide-react';
@@ -118,7 +117,7 @@ const SideMenuBtn = () => {
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Dashboard</p>
-                    <img src="/icons/dashboard.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
+                    <CircleGauge className='mr-3' />
                 </div>
             </Link>
 
@@ -129,7 +128,7 @@ const SideMenuBtn = () => {
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Sales</p>
-                    <PhilippinePeso size={28} className="bg-blue-700 rounded-full mr-3 p-1" />
+                    <HandCoins className='mr-3' />
                 </div>
             </Link>
 
@@ -139,7 +138,7 @@ const SideMenuBtn = () => {
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Inventory</p>
-                    <img src="/icons/inventory.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
+                    <Package className='mr-3' />
                 </div>
             </Link>
 
@@ -149,7 +148,7 @@ const SideMenuBtn = () => {
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Expenses</p>
-                    <img src="/icons/expenses.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
+                    <Calculator className='mr-3' />
                 </div>
             </Link>
 
@@ -159,7 +158,7 @@ const SideMenuBtn = () => {
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Reports</p>
-                    <img src="/icons/reports.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
+                    <Book className='mr-3' />
                 </div>
             </Link>
 
@@ -169,7 +168,7 @@ const SideMenuBtn = () => {
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Users</p>
-                    <img src="/icons/users.png" className="h-7 bg-blue-700 rounded-full mr-3 p-1" />
+                    <Users className='mr-3' />
                 </div>
             </Link>
         </div>

@@ -2,6 +2,7 @@ import Header from "../layouts/Header";
 import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Footer from "../layouts/Footer";
+import ReportsTable from "../components/ReportsTable";
 
 const ReportsPage = () => {
 
@@ -13,7 +14,7 @@ const ReportsPage = () => {
                 <div className="flex flex-col w-full h-fit gap-5">
                     <Breadcrumb />
                     <div className="h-full w-full px-5">
-
+                        <ReportsTable />
                     </div>
                     <Footer />
                 </div>
