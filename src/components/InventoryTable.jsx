@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Trash } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Trash, Newspaper } from 'lucide-react';
 
 const InventoryTable = () => {
   // Data state
@@ -19,19 +19,20 @@ const InventoryTable = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [toStock, setToStock] = useState(0);
   const [newStock, setNewStock] = useState(0);
   const [currentStock, setCurrentStock] = useState(0);
   const [stockAction, setStockAction] = useState('');
 
 
- useEffect(() => {
-    if(stockAction == 'stock-in') {
-      setCurrentStock((prev) => Number(prev) + Number(newStock))
-    }
-    else if (stockAction == 'stock-out') {
-      setCurrentStock((prev) => Number(prev) - Number(newStock))
-    }
- }, [newStock])
+useEffect(() => {
+  if(stockAction == 'stock-in') {
+    setNewStock(Number(currentStock) + Number(toStock));
+  }
+  else if (stockAction == 'stock-out') {
+    setNewStock(Number(currentStock) - Number(toStock));
+  }
+}, [toStock, stockAction])
 
 
   const handleUpdateClick = (row) => {
@@ -309,7 +310,7 @@ const InventoryTable = () => {
               Update Product
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
-                  onClick={() => setShowUpdateModal(false)}
+                  onClick={() => {setShowUpdateModal(false); setStockAction('none')}}
                   className="cursor-pointer"
                 >
                   <X size={20} />
@@ -352,7 +353,7 @@ const InventoryTable = () => {
                   id='current_stock'
                   type='number'
                   value={selectedRow.stock || 0}
-                  className='w-full text-[13px] text-white bg-blue-800 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  className='w-full text-[13px] text-white bg-blue-800 px-3 py-1 rounded-sm outline-none'
                   readOnly
                 />
               </div>
@@ -363,17 +364,17 @@ const InventoryTable = () => {
                 <div className='w-full space-y-3'>
                   <select 
                     className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
-                    onChange={(e) => setStockAction(e.target.value)}
+                    onChange={(e) => {setStockAction(e.target.value); setCurrentStock(selectedRow.stock)}}
                     value={stockAction}
                   >
-                    <option value=''>-- Select Action --</option>
+                    <option value='none'>-- Select Action --</option>
                     <option value="stock-in">Stock-in</option>
                     <option value="stock-out">Stock-out</option>
                   </select>
                   <input
                     id="quantity_update"
                     type='number'
-                    onChange={(e) => {setNewStock(e.target.value); setCurrentStock(selectedRow.stock)}}
+                    onChange={(e) => {setToStock(e.target.value)}}
                     className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                     placeholder='Enter Quantity'
                     min={0}
@@ -385,7 +386,7 @@ const InventoryTable = () => {
                         className='text-right text-[15px] text-blue-800 font-medium outline-none'
                         readOnly
                         value={
-                          stockAction == 'stock-in' ? '+ '+ newStock : stockAction == 'stock-out' ? '- '+ newStock : ''
+                          stockAction == 'stock-in' ? '+ '+ toStock : stockAction == 'stock-out' ? '- '+ toStock : ''
                         }
                       />
                     </div>
@@ -395,7 +396,7 @@ const InventoryTable = () => {
                         className='text-right text-[15px] text-blue-800 font-medium outline-none'
                         readOnly
                         type='text'
-                        value={currentStock < 0 ? 'Out of bounds' : currentStock}
+                        value={toStock > selectedRow.stock ? 'Out of bounds' : newStock}
                       />
                     </div>
                   </div>
@@ -404,7 +405,7 @@ const InventoryTable = () => {
             </div>
             <div className='flex justify-end w-full space-x-2 px-5'>
               <button 
-                onClick={() => setShowUpdateModal(false)}
+                onClick={() => {setShowUpdateModal(false); setStockAction('none')}}
                 className='text-[12px] text-white bg-blue-500 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
                 Cancel
               </button>
