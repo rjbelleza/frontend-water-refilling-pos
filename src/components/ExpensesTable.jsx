@@ -70,25 +70,9 @@ const ExpensesTable = () => {
       },
       {
         accessorKey: 'date',
-        header: 'Created at',
-        cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
+        header: 'Date Paid',
+        cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd"),
         size: 160,
-      },
-      {
-        accessorKey: 'user',
-        header: 'Created by',
-        cell: info => info.getValue(),
-        size: 160,
-      },
-      {
-        id: 'actions',
-        header: 'Action',
-        cell: ({ row }) => (
-          <button className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2">
-            Update
-          </button>
-        ),
-        size: 20,
       },
     ],
     []
@@ -111,30 +95,32 @@ const ExpensesTable = () => {
   });
 
   return (
-    <div className="h-[495px] w-full p-1">
+    <div className="w-full">
 
-      <div className='flex justify-between h-[54px] w-full'>
-        <div className='text-[23px] font-medium text-sky-800'>Expenses List</div>
-        <div className='flex gap-3'>
-            <div className='flex items-center h-[35px]'>
-                <Search className='mr-[-30px] text-gray-600' />
-                <input 
-                    type='text' 
-                    placeholder='Search by keyword' 
-                    className='text-[13px] h-[35px] border border-gray-500 pl-9 pr-2 py-1 rounded-sm' 
-                />
-            </div>
-            <button 
-                onClick={() => setShowModal(true)}
-                className='flex items-center gap-2 h-[35px] bg-blue-800 text-white font-medium px-3 ml-2 rounded-sm cursor-pointer hover:bg-blue-700'>
-                <CirclePlus />
-                Add Expense
-            </button>
+      <div className='flex justify-between w-full'>
+        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
+          <div className='text-[23px] font-medium text-sky-800'>Expenses List</div>
+            <div className='flex gap-3'>
+              <div className='flex items-center h-[35px]'>
+                  <Search className='mr-[-30px] text-gray-600' />
+                  <input 
+                      type='text' 
+                      placeholder='Search' 
+                      className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
+                  />
+              </div>
+              <button 
+                  onClick={() => setShowModal(true)}
+                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  <CirclePlus size={13} />
+                  Add Expense
+              </button>
+          </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="h-full overflow-x-auto rounded-lg border border-gray-200">
+      <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 border-collapse">
           <thead className="bg-gray-200 sticky top-0">
             {table.getHeaderGroups().map(headerGroup => (
@@ -271,39 +257,42 @@ const ExpensesTable = () => {
             className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
                 ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-            <div className={`bg-white p-7 px-20 pb-10 rounded-sm shadow-lg transform transition-transform duration-300
+            <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
-                <p className='flex justify-between text-[19px] font-medium text-blue-900 mb-8'>
-                    ADD EXPENSE
-                    <span className='text-gray-800 hover:text-gray-600 font-normal'>
-                        <button 
-                            onClick={() => setShowModal(false)}
-                            className='cursor-pointer'
-                        >
-                            <X size={20} /></button>
+                 <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+                    Add Expense
+                    <span className="text-gray-800 hover:text-gray-600 font-normal">
+                      <button
+                        onClick={() => setShowModal(false)}
+                        className="cursor-pointer"
+                      >
+                        <X size={20} />
+                      </button>
                     </span>
-                </p>
-                <form className='flex flex-col'>
-                    <label className='text-[15px] mb-2'>Description*</label>
+                  </p>
+                <form className='flex flex-col gap-2 w-full p-5'>
+                    <label className='text-[14px] font-medium text-blue-800'>Description <span className='text-red-500'>*</span></label>
                     <input 
                         type='text' 
-                        className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                      
+                        required
+                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'                      
                     />
-                    <label className='text-[15px] mb-2'>Amount*</label>
+                    <label className='text-[14px] font-medium text-blue-800'>Amount <span className='text-red-500'>*</span></label>
                     <input 
                         type='number' 
-                        className='w-[300px] text-[17px] border border-gray-500 px-5 py-1 rounded-sm mb-7'                      
+                        required
+                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'                      
                         min={0}
                     />
-                    <button 
-                        onClick={() => setShowModal(false)}
-                        type='submit'
-                        className='bg-blue-900 text-white font-medium py-3 rounded-sm cursor-pointer hover:bg-blue-800'
-                    >
-                        CONTINUE
-                    </button>
                 </form>
+                <div className='flex justify-end w-full px-5 mt-5'>
+                  <button
+                    className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                  >
+                    Submit
+                  </button>
+                </div>
             </div>
         </div>
     </div>
