@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
-import { Search } from "lucide-react";
+import { Search, Funnel } from "lucide-react";
 
 const CreateTransaction = () => {
     const [products, setProducts] = useState([]);
@@ -88,16 +88,20 @@ const CreateTransaction = () => {
                     <p className="font-bold text-[15px] text-sky-900/90">AVAILABLE PRODUCTS</p>
 
                     <div className="flex gap-5">
-                        <input 
-                            type="text" 
-                            placeholder="Search product" 
-                            className="text-[13px] border-1 border-gray-500 px-5 py-1 rounded-sm w-[170px]" 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        
+                        <div className="relative">
+                            <Search size={20} className="text-gray-500 absolute left-1 top-1" />
+                            <input 
+                                type="text" 
+                                placeholder="Search product" 
+                                className="top-0 text-[13px] border-1 border-gray-500 py-1 pl-7 pr-5 rounded-sm w-[170px]" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                    </div>
+                    <div className="relative">
+                        <Funnel size={20} className="text-gray-500 absolute left-1 top-1" />
                         <select 
-                            className="text-[13px] border-1 border-gray-500 px-3 rounded-sm"
+                            className="text-[13px] border-1 border-gray-500 pl-7 h-full rounded-sm"
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
                         >
@@ -108,6 +112,7 @@ const CreateTransaction = () => {
                                 <option>All</option>
                             )}
                         </select>
+                    </div>
                     </div>
                 </div>
 
