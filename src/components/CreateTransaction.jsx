@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
-import { Search, Funnel } from "lucide-react";
+import { Search, Funnel, Store } from "lucide-react";
 
 const CreateTransaction = () => {
     const [products, setProducts] = useState([]);
@@ -129,7 +129,7 @@ const CreateTransaction = () => {
                     <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
                         {selectedProduct.length === 0 && 
                             <div className="flex justify-center items-center h-full w-full">
-                                <p className="text-[17px] font-medium text-gray-500 mt-7">Select a product to create new transaction</p>
+                                <p className="text-[17px] font-medium text-gray-500 my-5">Select a product to create new transaction</p>
                             </div>
                         }
 
@@ -150,14 +150,19 @@ const CreateTransaction = () => {
                             htmlFor="cust-name"
                             className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
                         >Customer Name <span className="text-red-500">*</span></label>
-                        <input 
-                            type="text" 
-                            id="cust-name"
-                            required
-                            disabled={selectedProduct.length === 0}
-                            className="min-h-[35px] w-full border-1 border-gray-400 rounded-sm px-5" 
-                            style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
-                    />
+                        <div  className="relative">
+                            <button className="cursor-pointer">
+                                <Store size={20} className={`absolute right-2 top-2 ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-white'}`} />
+                            </button>
+                            <input 
+                                type="text" 
+                                id="cust-name"
+                                required
+                                disabled={selectedProduct.length === 0}
+                                className={`min-h-[35px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-35 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-blue-800'}`}
+                                style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
+                            />
+                        </div>
                     
                     </div>
                     <div className="flex flex-col gap-2">
@@ -165,16 +170,20 @@ const CreateTransaction = () => {
                             htmlFor="discount"
                             className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
                             >Discount</label>
-                        <input 
-                            type="number" 
+                        <select
                             id="discount"
-                            min={0}
-                            value={discount}
+                            style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}} 
+                            className="min-h-[35px] w-full text-[13px] border-1 border-gray-400 rounded-sm px-5" 
                             onChange={(e) => setDiscount(e.target.value)}
                             disabled={selectedProduct.length === 0}
-                            className="min-h-[35px] w-full border-1 border-gray-400 rounded-sm px-5" 
-                            style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
-                        />
+                        >
+                            <option>-- Select Discount --</option>
+                            <option value={10}>10%</option>
+                            <option value={20}>20%</option>
+                            <option value={50}>50%</option>
+                            <option value={70}>70%</option>
+                            <option value={90}>90%</option>
+                        </select>
                     </div>
                 </div>
 
