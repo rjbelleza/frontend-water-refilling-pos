@@ -75,8 +75,8 @@ const SalesTable = () => {
         cell: ({ row }) => (
           <button 
             onClick={() => handleViewModal(row)}
-            className="text-white bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-md px-2 py-1">
-            <Eye className='text-white' size={20} />
+            className="text-white bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-sm px-3 py-2">
+            <Eye className='text-white' size={15} />
           </button>
         ),
         size: 20,

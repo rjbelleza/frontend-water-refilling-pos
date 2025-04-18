@@ -7,10 +7,12 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isClose, setIsClose] = useState(false);
+  const [isClose, setIsClose] = useState(true);
 
 
-  const close = () => setIsClose(!isClose);
+  const close = () => {
+    setIsClose((prev) => !prev);
+  }
   
   // Check if user is logged in on mount
   useEffect(() => {
@@ -85,7 +87,7 @@ export const AuthProvider = ({ children }) => {
   };
   
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register, close, isClose }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, close, isClose, setIsClose }}>
       {children}
     </AuthContext.Provider>
   );

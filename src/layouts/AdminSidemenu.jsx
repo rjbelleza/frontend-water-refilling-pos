@@ -5,12 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { Menu, CircleGauge, HandCoins, Package, Calculator, Book, Users } from 'lucide-react';
 
 const AdminSidemenu = () => {
-    const { user, loading, close, isClose } = useAuth();
+    const { user, loading, close, isClose, setIsClose } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-
-
-    const toggleMenu = () => close(!isClose);
 
 
     useEffect(() => {
@@ -21,7 +18,7 @@ const AdminSidemenu = () => {
 
 
     useEffect(() => {
-        location.pathname == "/new-sales" && close(true);
+        location.pathname === "/new-sales" && setIsClose(false);
     }, [])
 
 
@@ -37,7 +34,7 @@ const AdminSidemenu = () => {
             <div className={`${!isClose ? 'justify-center' : 'justify-end'} flex w-full`}>
                 <button 
                     className='cursor-pointer hover:bg-sky-200 rounded-md p-1 transition-all'
-                    onClick={toggleMenu}
+                    onClick={() => close()}
                 >
                     <Menu size={30} className='text-primary' />
                 </button>

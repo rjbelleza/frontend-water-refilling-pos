@@ -1,28 +1,24 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
+import { Search } from "lucide-react";
 
 const CreateTransaction = () => {
+    const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const [discount, setDiscount] = useState(0);
+    const [discount, setDiscount] = useState(null);
     
     const categories = ["Container", "Water"];
 
-    const products = [
-        {id: 1, name: "5-Gallon Bottle", category: "Water", price: 30.00, stock: 100},
-        {id: 2, name: "3-Gallon Bottle", category: "Water", price: 25.00, stock: 100},
-        {id: 3, name: "1-Gallon Bottle", category: "Water", price: 20.00, stock: 200},
-        {id: 4, name: "5-Gallon Container", category: "Container", price: 15.00, stock: 150},
-        {id: 5, name: "500ml Container", category: "Container", price: 15.00, stock: 150},
-        {id: 6, name: "250ml Bottle", category: "Water", price: 15.00, stock: 150},
-        {id: 7, name: "250ml Bottle", category: "Water", price: 15.00, stock: 150},
-        {id: 8, name: "250ml Bottle", category: "Water", price: 15.00, stock: 150},
-        {id: 9, name: "250ml Bottle", category: "Water", price: 15.00, stock: 150},
-        {id: 10, name: "250ml Bottle", category: "Water", price: 15.00, stock: 150},
 
-    ];
+    useEffect(() => {
+        fetch('/data/products.json')
+        .then(response => response.json())
+        .then(jsonData => setProducts(jsonData))
+        .catch(error => console.error('Error fetching data:', error))
+    }, [])
 
     
     // Add product handler
@@ -82,26 +78,26 @@ const CreateTransaction = () => {
 
 
     return(
-        <div className="flex h-full w-full">
+        <div className="grid grid-cols-5 h-full w-full">
 
             {/* Products Section */}
-            <div className="h-full w-[55%] mr-2 overflow-auto">
+            <div className="col-span-3 flex flex-col items-center h-full mr-5 scrollbar-thin overflow-y-auto px-5">
 
-                <div className="flex justify-between items-center h-[50px] bg-white sticky top-0 mb-2">
+                <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-0 mb-10 rounded-lg">
 
-                    <p className="font-bold text-[18px] text-sky-900/70">AVAILABLE PRODUCTS</p>
+                    <p className="font-bold text-[15px] text-sky-900/90">AVAILABLE PRODUCTS</p>
 
-                    <div className="flex gap-5 pr-10">
+                    <div className="flex gap-5">
                         <input 
                             type="text" 
-                            placeholder="Search product name..." 
-                            className="border-1 border-gray-500 px-5 py-1 rounded-sm h-[40px] w-[200px]" 
+                            placeholder="Search product" 
+                            className="text-[13px] border-1 border-gray-500 px-5 py-1 rounded-sm w-[170px]" 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         
                         <select 
-                            className="border-1 border-gray-500 px-3 rounded-sm h-[40px]"
+                            className="text-[13px] border-1 border-gray-500 px-3 rounded-sm"
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
                         >
@@ -115,15 +111,15 @@ const CreateTransaction = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 space-y-10 w-full p-5 overflow-auto">
+                <div className="grid grid-cols-3 gap-5 w-full scrollbar-thin overflow-y-auto">
                     <Card2 products={filteredProducts} add={handleAddProduct} />
                 </div>
             </div>
 
 
             {/* New Transaction Section */}
-            <div className="h-full w-[650px] bg-white border-3 border-gray-400 rounded-md p-4 ml-2 overflow-auto">
-                <p className="text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Create Transaction</p>
+            <div className="col-span-2 h-full w-full bg-white border-3 border-gray-400 rounded-md p-4 ml-2">
+                <p className="font-medium text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Order List</p>
                 <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
                     <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
                         {selectedProduct.length === 0 && 
@@ -143,18 +139,18 @@ const CreateTransaction = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-between p-5 mt-10">
+                <div className="flex flex-col gap-10 justify-between p-5 mt-10">
                     <div className="flex flex-col gap-2">
                         <label 
                             htmlFor="cust-name"
-                            style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
-                        >Customer Name*</label>
+                            className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
+                        >Customer Name <span className="text-red-500">*</span></label>
                         <input 
                             type="text" 
                             id="cust-name"
                             required
                             disabled={selectedProduct.length === 0}
-                            className="h-[40px] w-[300px] border-1 rounded-md px-5" 
+                            className="min-h-[35px] w-full border-1 border-gray-400 rounded-sm px-5" 
                             style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                     />
                     
@@ -162,16 +158,16 @@ const CreateTransaction = () => {
                     <div className="flex flex-col gap-2">
                         <label 
                             htmlFor="discount"
-                            style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
+                            className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
                             >Discount</label>
                         <input 
                             type="number" 
                             id="discount"
                             min={0}
                             value={discount}
-                            onChange={(e) => setDiscount(e.target.value / 100)}
+                            onChange={(e) => setDiscount(e.target.value)}
                             disabled={selectedProduct.length === 0}
-                            className="h-[40px] w-[170px] border-1 rounded-md px-5"
+                            className="min-h-[35px] w-full border-1 border-gray-400 rounded-sm px-5" 
                             style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                         />
                     </div>

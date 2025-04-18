@@ -4,29 +4,25 @@ const Card2 = ({products, add}) => {
 
     return (
         <>
-            {products ? products.map(product => (
-                <div className="flex flex-col gap-2 h-fit w-[170px] p-5 bg-white rounded-lg shadow-md shadow-gray-500 
-                                border-1 border-gray-500 border-t-5 border-t-sky-700"
-                     key={product.id}
+            {products && products.map(product => (
+                <div 
+                    key={product}
+                    className="flex flex-col gap-2 h-fit p-5 bg-white rounded-lg shadow-sm shadow-gray-400 
+                                border-2 border-blue-800"
                 >
-                    <p className="card-text font-bold text-[14px]">{product.name}</p>
-                    <p className="text-[11px] text-gray-500 ">{product.category}</p>
-                    <p className="font-medium text-[14px]">₱{product.price.toFixed(2)}</p>
+                    <p className="flex flex-nowrap card-text font-bold xl:text-[17px] 2xl:text-[20px] bg-blue-200 px-5 py-2 rounded-full">{product.name}</p>
+                    <p className="xl:text-[13px] 2xl:text-[15px] text-gray-500">{product.category}</p>
+                    <p className='xl:text-[15px] 2xl:text-[18px]'>Stock: <span className="font-bold">{product.stock}</span></p>
                     <div className='flex justify-between items-center w-full mt-3'>
-                        <p className='text-[13px]'>Stock: <span className="font-bold text-[13px]">{product.stock}</span></p>
-                        <button className="px-3 py-1 bg-blue-700 shadow-md shadow-gray-700 rounded-md 
-                                        text-gray-200 hover:bg-blue-500 cursor-pointer"
+                        <p className="font-medium xl:text-[17px] 2xl:text-[19px]">₱{product.price.toFixed(2)}</p>
+                        <button className="px-1 py-1 bg-blue-700 text-gray-200 hover:bg-blue-500 cursor-pointer rounded-full"
                                 onClick={() => add(product)}
                         >
-                            <Plus size={20} />
+                            <Plus className='xl:w-[25px] xl:h-[25px] 2xl:w-[30px] 2xl:h-[30px]' />
                         </button>
                     </div>
                 </div>
-            )) : (
-                <div className="flex h-full w-full">
-                    <p className="text-[17px]">There are no products available.</p>
-                </div>
-            )}
+            ))}
         </>
     );
 }

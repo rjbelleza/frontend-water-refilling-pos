@@ -94,7 +94,7 @@ const InventoryTable = () => {
         size: 260,
       },
       {
-        accessorKey: 'stock_quantity',
+        accessorKey: 'stock',
         header: 'Stock qty.',
         cell: info => <p className={`${stockColorCode(info.getValue())} text-white py-1 px-3 w-[48px]`}>{info.getValue()}</p>,
         size: 260,
@@ -235,7 +235,7 @@ const InventoryTable = () => {
                 <label for="stock_quantity" className='text-[14px] font-medium text-blue-800'>Available Stock</label>
                 <input 
                   id='stock_quantity'
-                  value={selectedRow.stock_quantity || 0}
+                  value={selectedRow.stock || 0}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
@@ -338,7 +338,7 @@ const InventoryTable = () => {
                 <input
                   id='stock'
                   type='text'
-                  value={selectedRow.stock_quantity || 0}
+                  value={selectedRow.stock || 0}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                 />
               </div>
