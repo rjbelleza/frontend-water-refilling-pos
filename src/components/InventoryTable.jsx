@@ -15,6 +15,7 @@ const InventoryTable = () => {
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [showModal, setShowModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showUpdateModal,setShowUpdateModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -181,6 +182,12 @@ useEffect(() => {
                     <option>Water</option>
                 </select>
                 <button 
+                  onClick={() => setShowCategoryModal(true)}
+                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  <CirclePlus size={13} />
+                  Add Category
+                </button>
+                <button 
                     onClick={() => setShowModal(true)}
                     className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
                     <CirclePlus size={13} />
@@ -189,6 +196,44 @@ useEffect(() => {
             </div>
           </div>
       </div>
+
+      {/* Add Category Modal */}
+      <div 
+         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
+         className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
+             ${showCategoryModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
+         <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+             ${showCategoryModal ? 'scale-100' : 'scale-95'}`
+         }>
+           <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+             Add Category
+             <span className="text-gray-800 hover:text-gray-600 font-normal">
+               <button
+                 onClick={() => setShowCategoryModal(false)}
+                 className="cursor-pointer"
+               >
+                 <X size={20} />
+               </button>
+             </span>
+           </p>
+           <div className='flex flex-col gap-2 w-full p-5'>
+              <label htmlFor='category_name' className='text-[14px] font-medium text-blue-800'>Category name</label>
+              <input
+                id='category_name'
+                type='text'
+                className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'
+              />
+           </div>
+           <div className='flex justify-end w-full px-5 mt-5'>
+              <button
+                className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+              >
+                Submit
+              </button>
+           </div>
+          </div>
+        </div>
 
       {/* View Modal */}
       {showViewModal && selectedRow && (
