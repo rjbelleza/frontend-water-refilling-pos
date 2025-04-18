@@ -394,8 +394,8 @@ const InventoryTable = () => {
                       <input 
                         className='text-right text-[15px] text-blue-800 font-medium outline-none'
                         readOnly
-                        type='number'
-                        value={currentStock}
+                        type='text'
+                        value={currentStock < 0 ? 'Out of bounds' : currentStock}
                       />
                     </div>
                   </div>
