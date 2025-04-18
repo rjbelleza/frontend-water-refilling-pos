@@ -19,6 +19,19 @@ const InventoryTable = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [newStock, setNewStock] = useState(0);
+  const [currentStock, setCurrentStock] = useState(0);
+  const [stockAction, setStockAction] = useState('');
+
+
+ useEffect(() => {
+    if(stockAction == 'stock-in') {
+      setCurrentStock((prev) => Number(prev) + Number(newStock))
+    }
+    else if (stockAction == 'stock-out') {
+      setCurrentStock((prev) => Number(prev) - Number(newStock))
+    }
+ }, [newStock])
 
 
   const handleUpdateClick = (row) => {
@@ -196,7 +209,7 @@ const InventoryTable = () => {
             </p>
             <div className='grid grid-cols-2 gap-8 w-full px-5 mb-10'>
               <div className='flex flex-col w-full space-y-2'>
-                <label for="productName" className='text-[14px] font-medium text-blue-800'>Product Name</label>
+                <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name</label>
                 <input 
                   id='productName'
                   value={selectedRow.name || ''}
@@ -205,7 +218,7 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2'>
-                <label for="category" className='text-[14px] font-medium text-blue-800'>Category</label>
+                <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category</label>
                 <input 
                   id='category'
                   value={selectedRow.category || ''}
@@ -214,7 +227,7 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2'>
-                <label for="price" className='text-[14px] font-medium text-blue-800'>Price (₱)</label>
+                <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱)</label>
                 <input 
                   id='price'
                   value={selectedRow.price.toFixed(2) || 0}
@@ -223,7 +236,7 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2'>
-                <label for="added_by" className='text-[14px] font-medium text-blue-800'>Added By</label>
+                <label htmlFor="added_by" className='text-[14px] font-medium text-blue-800'>Added By</label>
                 <input 
                   id='added_by'
                   value={'Jack Frost - Admin'}
@@ -232,7 +245,7 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2'>
-                <label for="stock_quantity" className='text-[14px] font-medium text-blue-800'>Available Stock</label>
+                <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Available Stock</label>
                 <input 
                   id='stock_quantity'
                   value={selectedRow.stock || 0}
@@ -241,7 +254,7 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2'>
-                <label for="stock_quantity" className='text-[14px] font-medium text-blue-800'>Stock Status</label>
+                <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Stock Status</label>
                 <input 
                   id='stock_quantity'
                   value={selectedRow.stock_quantity <= 25 ? 'Low Stock' : 'In stock'}
@@ -305,7 +318,7 @@ const InventoryTable = () => {
             </p>
             <div className='grid grid-cols-2 gap-7 w-full px-5 mb-12 flex-wrap'>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label for="productName" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
+                <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                 <input
                   id='productName'
                   type='text'
@@ -314,7 +327,7 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label for="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
+                <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
                 <select
                   id="category"
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
@@ -325,7 +338,7 @@ const InventoryTable = () => {
                 </select>
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label for="price" className='text-[14px] font-medium text-blue-800'>Price (₱) <span className='text-red-700'>*</span></label>
+                <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱) <span className='text-red-700'>*</span></label>
                 <input
                   id='price'
                   type='text'
@@ -334,13 +347,59 @@ const InventoryTable = () => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label for="stock" className='text-[14px] font-medium text-blue-800'>Stock qty. <span className='text-red-700'>*</span></label>
+                <label htmlFor="current_stock" className='text-[14px] font-medium text-blue-800'>Current Stock</label>
                 <input
-                  id='stock'
-                  type='text'
+                  id='current_stock'
+                  type='number'
                   value={selectedRow.stock || 0}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  className='w-full text-[13px] text-white bg-blue-800 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  readOnly
                 />
+              </div>
+            </div>
+            <div className='w-full border-t-1 border-dashed border-gray-400 p-5'>
+              <p className='font-medium text-blue-900 text-[17px]'>Update Stock</p>
+              <div className='w-full py-5 space-y-4'>
+                <div className='w-full space-y-3'>
+                  <select 
+                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    onChange={(e) => setStockAction(e.target.value)}
+                    value={stockAction}
+                  >
+                    <option value=''>-- Select Action --</option>
+                    <option value="stock-in">Stock-in</option>
+                    <option value="stock-out">Stock-out</option>
+                  </select>
+                  <input
+                    id="quantity_update"
+                    type='number'
+                    onChange={(e) => {setNewStock(e.target.value); setCurrentStock(selectedRow.stock)}}
+                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    placeholder='Enter Quantity'
+                    min={0}
+                  />
+                  <div className='flex flex-col w-full border-1 border-gray-300 mt-5 rounded-md space-y-3 p-3'>
+                    <div className='flex justify-between'>
+                      <p className='text-[14px] text-blue-800'>Current Stock</p>
+                      <input 
+                        className='text-right text-[15px] text-blue-800 font-medium outline-none'
+                        readOnly
+                        value={
+                          stockAction == 'stock-in' ? '+ '+ newStock : stockAction == 'stock-out' ? '- '+ newStock : ''
+                        }
+                      />
+                    </div>
+                    <div className='flex justify-between'>
+                      <p className='text-[15px] text-blue-800 font-medium'>New Stock</p>
+                      <input 
+                        className='text-right text-[15px] text-blue-800 font-medium outline-none'
+                        readOnly
+                        type='number'
+                        value={currentStock}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className='flex justify-end w-full space-x-2 px-5'>
@@ -552,7 +611,7 @@ const InventoryTable = () => {
                 </p>
                 <form className='flex flex-col gap-7 p-5 mb-5'>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label for="product_name" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
+                    <label htmlFor="product_name" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                     <input
                       id='product_name'
                       type='text'
@@ -560,7 +619,7 @@ const InventoryTable = () => {
                     />
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label for="price" className='text-[14px] font-medium text-blue-800'>Price <span className='text-red-700'>*</span></label>
+                    <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price <span className='text-red-700'>*</span></label>
                     <input
                       id='price'
                       type='number'
@@ -569,7 +628,7 @@ const InventoryTable = () => {
                     />
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label for="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
+                    <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
                     <select id='category' className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'>
                       {["Water", "Container"].map((category, index) => (
                         <option 
@@ -582,7 +641,7 @@ const InventoryTable = () => {
                     </select>
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label for="stock" className='text-[14px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
+                    <label htmlFor="stock" className='text-[14px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
                     <input
                       id='stock'
                       type='number'

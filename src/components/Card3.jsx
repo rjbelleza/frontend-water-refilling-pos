@@ -23,7 +23,7 @@ const Card3 = ({ product, onQuantityChange, onRemove }) => {
                 <p className="text-[13px]">₱{product.price.toFixed(2)}</p>
             </div>
             <div className="flex items-center gap-3">
-                <label for="quantity" className="font-medium text-[14px]">Quantity:</label>
+                <label htmlFor="quantity" className="font-medium text-[14px]">Quantity:</label>
                 <input 
                     id="quantity"
                     type="number" 

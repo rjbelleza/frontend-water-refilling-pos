@@ -118,7 +118,7 @@ const CreateTransaction = () => {
 
 
             {/* New Transaction Section */}
-            <div className="col-span-2 h-full w-full bg-white border-3 border-gray-400 rounded-md p-4 ml-2">
+            <div className="col-span-2 h-fit w-full bg-white border-3 border-gray-400 rounded-md p-4 ml-2">
                 <p className="font-medium text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Order List</p>
                 <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
                     <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
@@ -174,27 +174,32 @@ const CreateTransaction = () => {
                 </div>
 
                 <div className="flex flex-col gap-3 h-[60px] w-full bg-white mt-2 p-5">
-                    <p className="font-medium text-[18px]"
-                        style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
-                    >Subtotal: ₱{totalAmount.toFixed(2)}</p>
-                    <p className="font-medium text-[20px]"
-                    style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
-                    >
-                        Total Amount: ₱{totalAmount.toFixed(2)}
-                    </p>
+                    <div className="flex justify-between w-full">
+                        <p className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}>
+                            Subtotal
+                        </p>
+                        <p className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-950'}`}>
+                            ₱{totalAmount.toFixed(2)}
+                        </p>
+                    </div>
+                    <div className="flex justify-between w-full">
+                        <p className={`text-[16px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}>
+                            Total Amount
+                        </p>
+                        <p className={`text-[16px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-950'}`}>
+                            ₱{totalAmount.toFixed(2)}
+                        </p>
+                    </div>
                 </div>
 
-                <div className="flex justify-end items-end h-[110px] bg-white w-full mt-6 px-15">
+                <div className="flex justify-end items-end h-[110px] bg-white w-full mt-6 px-15 pb-5">
                 <button 
+                    disabled={selectedProduct.length === 0}
                     className={`
-                        bg-primary w-3/8 h-[50px] text-white text-[20px] font-medium 
-                        rounded-md shadow-md shadow-black border-3 border-blue-900
-                        transition-colors duration-200
+                        bg-blue-700 w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md shadow-black transition-colors duration-200
                         ${selectedProduct.length === 0 
                         ? 'opacity-50 cursor-default' 
-                        : 'cursor-pointer hover:bg-primary-100'}
-                    `}
-                    disabled={selectedProduct.length === 0}
+                        : 'cursor-pointer hover:bg-blue-600'}`}
                     >
                         Place Order
                 </button>
