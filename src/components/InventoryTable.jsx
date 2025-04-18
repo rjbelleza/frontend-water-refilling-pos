@@ -396,7 +396,7 @@ useEffect(() => {
                         className='text-right text-[15px] text-blue-800 font-medium outline-none'
                         readOnly
                         type='text'
-                        value={toStock > selectedRow.stock ? 'Out of bounds' : newStock}
+                        value={newStock < 0 ? 'Out of bounds' : newStock}
                       />
                     </div>
                   </div>
