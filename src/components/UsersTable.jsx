@@ -9,10 +9,13 @@ import {
 } from '@tanstack/react-table';
 import { X, Pencil, CirclePlus, Search } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import api from '../api/axios';
 
 const UsersTable = () => {
   // Data state
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [selectedRow, setSelectedRow] = useState(null);
@@ -32,10 +35,18 @@ const UsersTable = () => {
 
 
   useEffect(() => {
-    fetch('/data/users.json')
-      .then(response => response.json())
-      .then(jsonData => setData(jsonData))
-      .catch(error => console.error('Error fetching data:', error));
+    // Fetch Users data from server
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get('/users');
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError(error);
+      }
+    }
+    fetchUsers();
   }, []);
 
   // Define columns
@@ -75,7 +86,7 @@ const UsersTable = () => {
       {
         accessorKey: 'created_at',
         header: 'Created At',
-        cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
+        cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy, hh:mm a"),
         size: 200,
       },
       {
@@ -181,7 +192,7 @@ const UsersTable = () => {
                     id='username'
                     type='text' 
                     required
-                    value={selectedRow.username || ''}
+                    value={selectedRow.username}
                     className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
                 />
                 <label htmlFor='role' className='text-[14px] font-medium text-blue-800'>Role <span className='text-red-500'>*</span></label>
@@ -282,7 +293,7 @@ const UsersTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  No records found
+                  {loading ? 'Fetching data...' : error ? 'Error fetching data!' : 'No records found'}
                 </td>
               </tr>
             )}
