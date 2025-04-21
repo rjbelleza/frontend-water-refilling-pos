@@ -102,8 +102,7 @@ useEffect(() => {
 
     try {
       const response = await api.post('/category', newCategory);
-      setMessage(prev => [...prev, response.data.message]);
-      console.log('Category created successfully!', response.data);
+      setMessage(response.data.message);
       setNewCategory({ name: '' });
       setShowCategoryModal(false);
       setShowSnackbar(true);
@@ -122,6 +121,19 @@ useEffect(() => {
       setCategories(response.data);
     } catch (error) {
       setError(error.response.data.error);
+      setShowSnackbar(true);
+    }
+  }
+
+
+  const deleteCategory = async (id) => {
+    try {
+      const response = await api.delete(`/delete/category/${id}`);
+      setMessage(response.data.message);
+      setShowCategoryModal(false);
+      setShowSnackbar(true);
+    } catch (error) {
+      setError(prev, response.data.error);
       setShowSnackbar(true);
     }
   }
@@ -277,11 +289,11 @@ useEffect(() => {
            <div className='flex flex-col w-full p-5'>
               <div className='w-full'>
                 {categories.length < 1 ? (
-                  <p className='w-full text-center mb-10'>No categories available</p>
+                  <p className='w-full text-center mb-10'>No categories added</p>
                 ) : categories.map((category) => (
                   <div key={category.id} className='flex justify-between items-center w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-2'>
                     {category.name}
-                    <Trash2 size={20} className='cursor-pointer hover:text-gray-700' />
+                    <Trash2 onClick={() => deleteCategory(category.id)} size={20} className='cursor-pointer hover:text-gray-700' />
                   </div>
                 ))}
               </div>
