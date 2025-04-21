@@ -41,7 +41,7 @@ const AdminSidemenu = () => {
             <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3`}>
                 <div className="flex flex-col items-center w-full">
                     <p className="text-[13px] text-gray-600 mb-1">Welcome,</p>
-                    <p className="font-bold text-[20px]">{user.name}</p>
+                    <p className="font-bold text-[20px]">{user.fname} {user.lname}</p>
                     <p className="w-full text-center text-blue-700 font-mono text-[20px] mt-3 bg-gray-300 rounded-xl p-1">
                         {user.role ? user.role.toLocaleUpperCase() : "ADMIN"}
                     </p>

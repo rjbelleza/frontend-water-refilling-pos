@@ -7,7 +7,9 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Trash, Newspaper } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Trash, Tags, Trash2 } from 'lucide-react';
+import api from '../api/axios';
+import Snackbar from './Snackbar';
 
 const InventoryTable = () => {
   // Data state
@@ -24,6 +26,11 @@ const InventoryTable = () => {
   const [newStock, setNewStock] = useState(0);
   const [currentStock, setCurrentStock] = useState(0);
   const [stockAction, setStockAction] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [newCategory, setNewCategory] = useState({ name: ''});
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [message, setMessage ] = useState([]);
+  const [error, setError] = useState([]);
 
 
 useEffect(() => {
@@ -79,6 +86,45 @@ useEffect(() => {
       .then(jsonData => setData(jsonData))
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+
+  const newCategoryChange = (e) => {
+    const { name, value } = e.target;
+    setNewCategory(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+
+  const CreateCategory = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await api.post('/category', newCategory);
+      setMessage(prev => [...prev, response.data.message]);
+      console.log('Category created successfully!', response.data);
+      setNewCategory({ name: '' });
+      setShowCategoryModal(false);
+      setShowSnackbar(true);
+    } catch (error) {
+      console.error('Error creating category: ', error);
+      setError(error.response.data.message);
+      setShowCategoryModal(false);
+      setShowSnackbar(true);
+    }
+  };
+
+  
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get('/categories');
+      setCategories(response.data);
+    } catch (error) {
+      setError(error.response.data.error);
+      setShowSnackbar(true);
+    }
+  }
 
   // Define columns
   const columns = useMemo(
@@ -164,6 +210,14 @@ useEffect(() => {
   return (
     <div className="w-full">
 
+      {showSnackbar && (
+        <Snackbar 
+          message={message.length > 0 ? message : error.length > 0 ? error : ''}
+          type={message.length > 0 ? 'success' : error.length > 0 ? 'error' : ''}
+          onClose={() => setShowSnackbar(false)}
+        />
+      )}
+
       <div className='flex justify-between w-full'>
         <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
           <div className='text-[23px] font-medium text-sky-800'>Products List</div>
@@ -182,10 +236,10 @@ useEffect(() => {
                     <option>Water</option>
                 </select>
                 <button 
-                  onClick={() => setShowCategoryModal(true)}
+                  onClick={() => {setShowCategoryModal(true); fetchCategories();}}
                   className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
-                  <CirclePlus size={13} />
-                  Add Category
+                  <Tags size={15} />
+                  Categories
                 </button>
                 <button 
                     onClick={() => setShowModal(true)}
@@ -203,13 +257,16 @@ useEffect(() => {
          className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
              ${showCategoryModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
-         <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+         <form
+             onSubmit={CreateCategory} 
+             className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
              ${showCategoryModal ? 'scale-100' : 'scale-95'}`
          }>
            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-             Add Category
+             Categories
              <span className="text-gray-800 hover:text-gray-600 font-normal">
                <button
+                 type='button'
                  onClick={() => setShowCategoryModal(false)}
                  className="cursor-pointer"
                >
@@ -217,22 +274,38 @@ useEffect(() => {
                </button>
              </span>
            </p>
-           <div className='flex flex-col gap-2 w-full p-5'>
-              <label htmlFor='category_name' className='text-[14px] font-medium text-blue-800'>Category name</label>
+           <div className='flex flex-col w-full p-5'>
+              <div className='w-full'>
+                {categories.length < 1 ? (
+                  <p className='w-full text-center mb-10'>No categories available</p>
+                ) : categories.map((category) => (
+                  <div key={category.id} className='flex justify-between items-center w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-2'>
+                    {category.name}
+                    <Trash2 size={20} className='cursor-pointer hover:text-gray-700' />
+                  </div>
+                ))}
+              </div>
               <input
-                id='category_name'
                 type='text'
+                name='name'
+                value={newCategory.name}
+                onChange={newCategoryChange}
+                placeholder='Add category'
                 className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'
+                required
               />
            </div>
            <div className='flex justify-end w-full px-5 mt-5'>
               <button
-                className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                type='submit'
+                className={`text-white px-3 py-2 text-[13px] rounded-sm
+                            ${newCategory.name == '' ? 'bg-gray-500' : 'bg-blue-900 hover:bg-blue-800 cursor-pointer'}`}
+                disabled={newCategory.name == ''}
               >
                 Submit
               </button>
            </div>
-          </div>
+          </form>
         </div>
 
       {/* View Modal */}
