@@ -33,6 +33,50 @@ const InventoryTable = () => {
   const [error, setError] = useState([]);
 
 
+  // New Product States
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    price: null,
+    stock_quantity: null,
+    category_id: '',
+  });
+
+
+  const AddProduct = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await api.post('/product', newProduct);
+      setMessage(response.data.message);
+      setShowModal(false); 
+      setShowSnackbar(true);
+    } catch (error) {
+      setError(response.data.error);
+      setShowSnackbar(true);
+    }
+  };
+
+
+  const fetchProducts = async () => {
+    try {
+      const response = await api.get('/products');
+      setData(response.data);
+    } catch (error) {
+      setError(response.data.error);
+      setShowSnackbar(true);
+    }
+  };
+
+
+  // New product input onChange handler
+  const handleNewProductChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct(prev => ({
+      ...prev, [name]: name === 'category_id' ? (value === '' ? null : Number(value)) : value
+    }));
+  };
+
+
 useEffect(() => {
   if(stockAction == 'stock-in') {
     setNewStock(Number(currentStock) + Number(toStock));
@@ -79,12 +123,11 @@ useEffect(() => {
   }
 
 
-  // Fetch data from recentTrans.json
+  // Fetch categories in mount
   useEffect(() => {
-    fetch('/data/products.json')
-      .then(response => response.json())
-      .then(jsonData => setData(jsonData))
-      .catch(error => console.error('Error fetching data:', error));
+    fetchCategories();
+    fetchProducts();
+    console.log(data);
   }, []);
 
 
@@ -155,19 +198,19 @@ useEffect(() => {
         size: 290,
       },
       {
-        accessorKey: 'category',
+        accessorKey: 'category.name',
         header: 'Category',
-        cell: info => capitalize(info.getValue()),
+        cell: info => info.getValue(),
         size: 160,
       },
       {
         accessorKey: 'price',
-        header: 'Price',
-        cell: info => `₱${info.getValue().toFixed(2)}`,
+        header: 'Price (₱)',
+        cell: info => info.getValue(),
         size: 260,
       },
       {
-        accessorKey: 'stock',
+        accessorKey: 'stock_quantity',
         header: 'Stock qty.',
         cell: info => <p className={`${stockColorCode(info.getValue())} text-white py-1 px-3 w-[48px]`}>{info.getValue()}</p>,
         size: 260,
@@ -184,7 +227,7 @@ useEffect(() => {
               <Eye size={15} />
             </button>
             <button 
-              onClick={() => handleUpdateClick(row)}
+
               className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
@@ -244,8 +287,9 @@ useEffect(() => {
                 </div>
                 <select className='h-[35px] border border-gray-400 rounded-sm px-2'>
                     <option>All</option>
-                    <option>Container</option>
-                    <option>Water</option>
+                    {categories.map((category) => (
+                      <option key={category.id}>{category.name}</option>
+                    ))}
                 </select>
                 <button 
                   onClick={() => {setShowCategoryModal(true); fetchCategories();}}
@@ -352,7 +396,7 @@ useEffect(() => {
                 <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category</label>
                 <input 
                   id='category'
-                  value={selectedRow.category || ''}
+                  value={selectedRow.category.name || ''}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
@@ -361,7 +405,7 @@ useEffect(() => {
                 <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱)</label>
                 <input 
                   id='price'
-                  value={selectedRow.price.toFixed(2) || 0}
+                  value={selectedRow.price || ''}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
@@ -370,7 +414,7 @@ useEffect(() => {
                 <label htmlFor="added_by" className='text-[14px] font-medium text-blue-800'>Added By</label>
                 <input 
                   id='added_by'
-                  value={'Jack Frost - Admin'}
+                  value={`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
@@ -379,17 +423,8 @@ useEffect(() => {
                 <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Available Stock</label>
                 <input 
                   id='stock_quantity'
-                  value={selectedRow.stock || 0}
+                  value={selectedRow.stock_quantity || 0}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
-                  readOnly 
-                />
-              </div>
-              <div className='flex flex-col w-full space-y-2'>
-                <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Stock Status</label>
-                <input 
-                  id='stock_quantity'
-                  value={selectedRow.stock_quantity <= 25 ? 'Low Stock' : 'In stock'}
-                  className={`w-full text-white ${selectedRow.stock_quantity <= 25 ? 'bg-red-500' : 'bg-green-500'} text-[13px] px-3 py-1 rounded-sm outline-none`}
                   readOnly 
                 />
               </div>
@@ -644,7 +679,7 @@ useEffect(() => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  No records found
+                  No products available
                 </td>
               </tr>
             )}
@@ -726,13 +761,16 @@ useEffect(() => {
             className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
                 ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-            <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            <form 
+                onSubmit={AddProduct}
+                className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
                 <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
                   Add Product
                   <span className="text-gray-800 hover:text-gray-600 font-normal">
                     <button
+                      type='button'
                       onClick={() => setShowModal(false)}
                       className="cursor-pointer"
                     >
@@ -740,12 +778,15 @@ useEffect(() => {
                     </button>
                   </span>
                 </p>
-                <form className='flex flex-col gap-7 p-5 mb-5'>
+                <div className='flex flex-col gap-7 p-5 mb-5'>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
                     <label htmlFor="product_name" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                     <input
                       id='product_name'
+                      name='name'
                       type='text'
+                      onChange={handleNewProductChange}
+                      value={newProduct.name}
                       className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                     />
                   </div>
@@ -753,20 +794,30 @@ useEffect(() => {
                     <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price <span className='text-red-700'>*</span></label>
                     <input
                       id='price'
+                      name='price'
                       type='number'
+                      onChange={handleNewProductChange}
+                      value={newProduct.price}
                       min={1}
                       className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                     />
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
                     <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
-                    <select id='category' className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'>
-                      {["Water", "Container"].map((category, index) => (
+                    <select 
+                      onChange={handleNewProductChange}
+                      value={newProduct.category_id}
+                      id='category' 
+                      name='category_id'
+                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    >
+                      <option value=''>-- Select Category --</option> 
+                      {categories.map((category, index) => (
                         <option 
                           key={index} 
-                          value={category}
-                        >
-                          {category}
+                          value={category.id}
+                        > 
+                          {category.name}
                         </option>
                       ))}
                     </select>
@@ -776,17 +827,22 @@ useEffect(() => {
                     <input
                       id='stock'
                       type='number'
+                      name='stock_quantity'
+                      onChange={handleNewProductChange}
+                      value={newProduct.stock_quantity}
                       min={1}
                       className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                     />
                   </div>
-                </form>
+                </div>
                 <div className='flex justify-end w-full px-5'>
-                  <button className='text-[12px] text-white bg-blue-900 px-4 py-2 rounded-sm hover:bg-blue-800 cursor-pointer'>
+                  <button 
+                    type='submit'
+                    className='text-[12px] text-white bg-blue-900 px-4 py-2 rounded-sm hover:bg-blue-800 cursor-pointer'>
                     Add Product
                   </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
   );
