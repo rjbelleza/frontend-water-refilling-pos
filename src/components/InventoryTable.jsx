@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Trash, Tags, Trash2 } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Trash, Tags, Trash2, LoaderCircle } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 
@@ -32,6 +32,7 @@ const InventoryTable = () => {
   const [message, setMessage ] = useState([]);
   const [error, setError] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0); // Refresh trigger
+  const [loading, setLoading] = useState(true);
 
 
   // New Product States
@@ -50,6 +51,7 @@ const InventoryTable = () => {
       const response = await api.post('/product', newProduct);
       setMessage(response.data.message);
       setShowModal(false); 
+      setRefreshKey(prev => prev + 1);
       setShowSnackbar(true);
     } catch (error) {
       setError(response.data.error);
@@ -797,6 +799,7 @@ useEffect(() => {
                       id='price'
                       name='price'
                       type='number'
+                      step="any"
                       onChange={handleNewProductChange}
                       value={newProduct.price}
                       min={1}
