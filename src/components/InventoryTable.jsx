@@ -613,11 +613,6 @@ useEffect(() => {
               </div>
             </div>
             <div className='flex justify-end w-full text-[12px] space-x-2 px-5'>
-              <button 
-                onClick={() => setShowDeleteModal(false)}
-                className='text-white bg-blue-500 px-4 py-[] rounded-md cursor-pointer hover:bg-blue-400'>
-                Cancel
-              </button>
               <button className='text-white bg-blue-950 px-4 py-[6px] rounded-md cursor-pointer hover:bg-blue-900'>
                 Confirm
               </button>
