@@ -34,7 +34,7 @@ const Snackbar = ({ message, type = 'info', duration = 10000, onClose }) => {
       <div className="mt-0.5">
         {iconMap[type]}
       </div>
-      <p className="text-sm flex-1">
+      <p className="text-sm flex-1 mr-3">
         {message}
       </p>
       <button
