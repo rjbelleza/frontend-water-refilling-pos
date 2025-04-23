@@ -31,13 +31,14 @@ const InventoryTable = () => {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [message, setMessage ] = useState([]);
   const [error, setError] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0); // Refresh trigger
 
 
   // New Product States
   const [newProduct, setNewProduct] = useState({
     name: '',
-    price: null,
-    stock_quantity: null,
+    price: '',
+    stock_quantity: 0,
     category_id: '',
   });
 
@@ -127,8 +128,7 @@ useEffect(() => {
   useEffect(() => {
     fetchCategories();
     fetchProducts();
-    console.log(data);
-  }, []);
+  }, [refreshKey]);
 
 
   const newCategoryChange = (e) => {
@@ -149,8 +149,8 @@ useEffect(() => {
       setNewCategory({ name: '' });
       setShowCategoryModal(false);
       setShowSnackbar(true);
+      setRefreshKey(prev => prev + 1);
     } catch (error) {
-      console.error('Error creating category: ', error);
       setError(error.response.data.message);
       setShowCategoryModal(false);
       setShowSnackbar(true);
@@ -174,6 +174,7 @@ useEffect(() => {
       const response = await api.delete(`/delete/category/${id}`);
       setMessage(response.data.message);
       setShowCategoryModal(false);
+      setRefreshKey(prev => prev + 1);
       setShowSnackbar(true);
     } catch (error) {
       setError(prev, response.data.error);
