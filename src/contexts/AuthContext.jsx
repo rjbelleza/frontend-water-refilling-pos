@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClose, setIsClose] = useState(true);
-  const [isDropped, setIsDropped] = useState(true);
+  const [isDropped, setIsDropped] = useState(false);
 
 
   const dropped = () => {

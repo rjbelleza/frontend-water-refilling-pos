@@ -11,6 +11,7 @@ import ReportsPage from "./pages/ReportsPage";
 import UsersPage from "./pages/UsersPage";
 import SalesReport from "./pages/SalesReport";
 import ExpensesReport from "./pages/ExpensesReport";
+import IncomeReport from "./pages/IncomeReport";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ element, role }) => {
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/users" element={<ProtectedRoute element={<UsersPage />} role="admin" />} />
           <Route path="/sales-report" element={<ProtectedRoute element={<SalesReport />} role="admin" />} />
           <Route path="/expenses-report" element={<ProtectedRoute element={<ExpensesReport />} role="admin" />} />
+          <Route path="/income-report" element={<ProtectedRoute element={<IncomeReport />} role="admin" />} />
         </Routes>
       </AuthProvider>
     </Router>

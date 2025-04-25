@@ -29,7 +29,7 @@ const AdminSidemenu = () => {
 
     return (
         <div className={`${isClose ? 'w-60 p-5' : 'w-20 pt-5'} h-screen flex flex-col bg-[url('/images/sidemenu.png')] bg-cover bg-center
-                         bg-opacity-30 sticky left-0 items-center transition-all ease-in-out border border-gray-400`}
+                         bg-opacity-30 sticky left-0 items-center transition-all ease-in-out border border-gray-400 overflow-y-auto overflow-x-hidden scrollbar-thin`}
         >
             <div className={`${!isClose ? 'justify-center' : 'justify-end'} flex w-full`}>
                 <button 
@@ -39,7 +39,7 @@ const AdminSidemenu = () => {
                     <Menu size={30} className='text-primary' />
                 </button>
             </div>
-            <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3`}>
+            <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3 px-2`}>
                 <div className="flex flex-col items-center w-full">
                     <p className="text-[13px] text-gray-600 mb-1">Welcome,</p>
                     <p className="font-bold text-[20px]">{user.fname} {user.lname}</p>
@@ -100,6 +100,9 @@ const AdminSidemenu = () => {
                                     </Link>
                                     <Link to="/expenses-report" className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
                                         2
+                                    </Link>
+                                    <Link to="/income-report" className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
+                                        3
                                     </Link>
                                 </div>
                             </div>
@@ -182,6 +185,9 @@ const SideMenuBtn = ({drop, dropHandler}) => {
                     </Link>
                     <Link to="/expenses-report" className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
                         Expenses Report
+                    </Link>
+                    <Link to="/income-report" className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
+                        Income Report
                     </Link>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import Header from "../layouts/Header";
 import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Footer from "../layouts/Footer";
+import ExpensesReportTable from "../components/ExpensesReport";
 
 
 const ExpensesReport = () => {
@@ -14,7 +15,7 @@ const ExpensesReport = () => {
                 <div className="flex flex-col w-full h-fit gap-5">
                     <Breadcrumb />
                     <div className="h-full w-full px-5">
-                        
+                        <ExpensesReportTable />
                     </div>
                     <Footer />
                 </div>

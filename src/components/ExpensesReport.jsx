@@ -7,44 +7,14 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { CirclePlus } from 'lucide-react';
-import { Search } from 'lucide-react';
-import { X } from 'lucide-react';
-import { format, parseISO, isSameDay } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
-const ExpensesTable = () => {
+const ExpensesReportTable = () => {
   // Data state
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const [showModal, setShowModal] = useState(false);
-
-
-  const stockColorCode = (stock_quantity) => {
-    if(stock_quantity <= 25) {
-        return 'bg-red-500'
-    } 
-    else if(stock_quantity > 25 && stock_quantity <= 50) {
-        return 'bg-yellow-500'
-    }
-    else {
-        return 'bg-green-500'
-    }
-  }
-
-
-  const capitalize = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-
-  // Fetch data from recentTrans.json
-  useEffect(() => {
-    fetch('/data/expenses.json')
-      .then(response => response.json())
-      .then(jsonData => setData(jsonData))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  const [searchDate, setSearchDate] = useState('');
 
   // Define columns
   const columns = useMemo(
@@ -57,28 +27,28 @@ const ExpensesTable = () => {
         accessorFn: (row, index) => index + 1,
       },
       {
+        accessorKey: 'dateTime',
+        header: 'Date',
+        cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
+        size: 290,
+      },
+      {
         accessorKey: 'description',
         header: 'Description',
         cell: info => info.getValue(),
-        size: 190,
+        size: 290,
       },
       {
         accessorKey: 'amount',
-        header: 'Amount',
-        cell: info => `₱${info.getValue().toFixed(2)}`,
-        size: 160,
+        header: 'Amount (₱)',
+        cell: info => info.getValue(),
+        size: 290,
       },
       {
         accessorKey: 'user',
         header: 'Paid By',
         cell: info => info.getValue(),
-        size: 160,
-      },
-      {
-        accessorKey: 'date',
-        header: 'Date Paid',
-        cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy"),
-        size: 160,
+        size: 290,
       },
     ],
     []
@@ -102,26 +72,31 @@ const ExpensesTable = () => {
 
   return (
     <div className="w-full">
-
-      <div className='flex justify-between w-full'>
-        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
-          <div className='text-[23px] font-medium text-sky-800'>Expenses List</div>
-            <div className='flex gap-3'>
-              <div className='flex items-center h-[35px]'>
-                  <Search className='mr-[-30px] text-gray-600' />
-                  <input 
-                      type='text' 
-                      placeholder='Search' 
-                      className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
+      {/* Search Controls */}
+      <div className="flex flex-col w-full sm:flex-row gap-2">
+        <div className='flex justify-between w-full gap-20 mb-4'>
+            <div className='flex justify-end gap-3 w-full'>
+              <div className='flex items-center gap-2'>
+                  <label className='text-[13px] text-gray-500'>Start Date:</label>
+                  <input
+                      type="date"
+                      id="date"
+                      value={searchDate}
+                      onChange={(e) => setSearchDate(e.target.value)}
+                      className="h-[35px] px-5 bg-blue-500 text-white text-[13px] rounded-md outline-none"
                   />
               </div>
-              <button 
-                  onClick={() => setShowModal(true)}
-                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
-                  <CirclePlus size={13} />
-                  Add Expense
-              </button>
-          </div>
+              <div className='flex items-center gap-2 h-[37px]'>
+                  <label className='text-[13px] text-gray-500'>End Date:</label>
+                  <input
+                      type="date"
+                      id="date"
+                      value={searchDate}
+                      onChange={(e) => setSearchDate(e.target.value)}
+                      className="h-[35px] px-5 bg-blue-500 text-white text-[13px] rounded-md outline-none"
+                  />
+              </div>
+            </div>
         </div>
       </div>
 
@@ -256,53 +231,8 @@ const ExpensesTable = () => {
           </div>
         </div>
       </div>
-
-      {/* Add product modal */}
-      <div 
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
-            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
-                ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        >
-            <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
-                ${showModal ? 'scale-100' : 'scale-95'}`
-            }>
-                 <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-                    Add Expense
-                    <span className="text-gray-800 hover:text-gray-600 font-normal">
-                      <button
-                        onClick={() => setShowModal(false)}
-                        className="cursor-pointer"
-                      >
-                        <X size={20} />
-                      </button>
-                    </span>
-                  </p>
-                <form className='flex flex-col gap-2 w-full p-5'>
-                    <label className='text-[14px] font-medium text-blue-800'>Description <span className='text-red-500'>*</span></label>
-                    <input 
-                        type='text' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'                      
-                    />
-                    <label className='text-[14px] font-medium text-blue-800'>Amount <span className='text-red-500'>*</span></label>
-                    <input 
-                        type='number' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'                      
-                        min={0}
-                    />
-                </form>
-                <div className='flex justify-end w-full px-5 mt-5'>
-                  <button
-                    className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
-                  >
-                    Submit
-                  </button>
-                </div>
-            </div>
-        </div>
     </div>
   );
 };
 
-export default ExpensesTable;
+export default ExpensesReportTable;
