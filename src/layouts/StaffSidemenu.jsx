@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, HandCoins, Package } from 'lucide-react';
+import { Menu, HandCoins, Package, Wallet } from 'lucide-react';
 
 const StaffSidemenu = () => {
     const { user, loading, close, isClose, setIsClose } = useAuth();
@@ -61,6 +61,13 @@ const StaffSidemenu = () => {
                     <div
                         className="flex flex-col text-white items-center gap-5 h-full w-3/4 mt-20"
                     >
+                        <Link to="/new-sales"
+                            className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                        >
+                            <Wallet />
+                        </Link>
+
                         <Link to="/sales"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
@@ -84,6 +91,17 @@ const SideMenuBtn = () => {
 
     return (
         <div className="flex flex-col gap-3 h-full w-full text-white font-light">
+            <Link to="/new-sales"
+                  className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+            >
+                <div className="h-full w-2 bg-blue-700"></div>
+                <div className="flex justify-between w-full">
+                    <p>New Transaction</p>
+                    <Wallet className='mr-3' />
+                </div>
+            </Link>
+
            <Link to="/sales"
                   className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"

@@ -230,7 +230,7 @@ useEffect(() => {
               <Eye size={15} />
             </button>
             <button 
-
+              onClick={() => setShowUpdateModal(true)}
               className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
@@ -511,7 +511,7 @@ useEffect(() => {
                 <input
                   id='price'
                   type='text'
-                  value={selectedRow.price.toFixed(2) || 0}
+                  value={selectedRow.price || ''}
                   className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                 />
               </div>
@@ -520,7 +520,7 @@ useEffect(() => {
                 <input
                   id='current_stock'
                   type='number'
-                  value={selectedRow.stock || 0}
+                  value={selectedRow.stock_quantity || 0}
                   className='w-full text-[13px] text-white bg-blue-800 px-3 py-1 rounded-sm outline-none'
                   readOnly
                 />

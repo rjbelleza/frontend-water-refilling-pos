@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Menu, CircleGauge, HandCoins, Package, Calculator, Book, Users } from 'lucide-react';
@@ -7,6 +7,7 @@ const AdminSidemenu = () => {
     const { user, loading, close, isClose, setIsClose } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const [drop, setDrop] = useState(false);
 
 
     useEffect(() => {
@@ -48,53 +49,64 @@ const AdminSidemenu = () => {
                 </div>
                 <div className="h-full w-full mt-12">
                     <p className="font-bold text-[13px] text-gray-600 mb-3">Menus</p>
-                    <SideMenuBtn />
+                    <SideMenuBtn drop={drop} dropHandler={setDrop} />
                 </div>
             </div>
 
             {/* Decreased Sidemenu width*/}
             {!isClose && (
                     <div
-                        className="flex flex-col text-white items-center gap-5 h-full w-3/4 mt-20"
+                        className="flex flex-col text-white items-center h-full w-3/4 mt-20"
                     >
                         <Link to="/admin-dashboard"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <CircleGauge />
                         </Link>
         
                         <Link to="/sales"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <HandCoins />
                         </Link>
         
                         <Link to="/inventory"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <Package />
                         </Link>
         
                         <Link to="/expenses"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <Calculator />
                         </Link>
         
-                        <Link to="/reports"
+                        <button 
+                            onClick={() => setDrop(prev => !prev)}
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <Book />
-                        </Link>
+                        </button>
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${drop ? 'max-h-40 mb-5' : 'max-h-0'}`}>
+                                <div className='flex flex-col justify-center items-center gap-3'>
+                                    <Link className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
+                                        1
+                                    </Link>
+                                    <Link className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
+                                        2
+                                    </Link>
+                                </div>
+                            </div>
         
                         <Link to="/users"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <Users />   
                         </Link>
@@ -105,14 +117,14 @@ const AdminSidemenu = () => {
     );
 }
 
-const SideMenuBtn = () => {
+const SideMenuBtn = ({drop, dropHandler}) => {
 
 
     return (
-        <div className="flex flex-col gap-3 h-full w-full text-white font-light">
+        <div className="flex flex-col h-full w-full text-white font-light">
             <Link to="/admin-dashboard" 
-                  className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                  className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
@@ -122,8 +134,8 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/sales"
-                  className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all"
+                  className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
@@ -133,8 +145,8 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/inventory" 
-                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
+                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Inventory</p>
@@ -143,8 +155,8 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/expenses" 
-                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
+                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Expenses</p>
@@ -152,18 +164,30 @@ const SideMenuBtn = () => {
                 </div>
             </Link>
 
-            <Link to="/reports"
-                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
+            <button
+                onClick={() => dropHandler(prev => !prev)}
+                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
                     <p>Reports</p>
                     <Book className='mr-3' />
                 </div>
-            </Link>
+            </button>
+
+            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${drop ? 'max-h-40 mb-3' : 'max-h-0'}`}>
+                <div className='flex flex-col justify-center items-end gap-3'>
+                    <Link className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
+                        Sales Report
+                    </Link>
+                    <Link className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
+                        Expenses Report
+                    </Link>
+                </div>
+            </div>
 
             <Link to="/users" 
-                className="flex items-center gap-3 h-11 w-full bg-primary-500 rounded-tr-full
+                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">

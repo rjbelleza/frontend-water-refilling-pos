@@ -2,24 +2,51 @@ import { useState, useMemo, useEffect } from "react";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
 import { Search, Funnel, Store, X } from "lucide-react";
+import api from "../api/axios";
+import Snackbar from "./Snackbar";
 
 const CreateTransaction = () => {
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [discount, setDiscount] = useState(null);
     const [placeOrder, setPlaceOrder] = useState(false);
     const [custName, setCustName] = useState('');
+    const [message, setMessage] = useState([]);
+    const [error, setError] = useState([]);
+    const [showSnackbar, setShowSnackbar] = useState(false);
+
+
+    // Helper function for fetching categories
+    const fetchCategories = async () => {
+        try {
+            const response = await api.get('/categories');
+            setCategories(response.data);
+        } catch (error) {
+            console.log(error);
+            setShowSnackbar(true);
+        }
+    };
     
-    const categories = ["Container", "Water"];
+
+    // Helper function for fetching products
+    const fetchProducts = async () => {
+        try {
+            const response = await api.get('/products');
+            setProducts(response.data);
+        } catch (error) {
+            console.log(error);
+            setShowSnackbar(true);
+        }
+    }
 
 
+    // Fetch categories and products on mount
     useEffect(() => {
-        fetch('/data/products.json')
-        .then(response => response.json())
-        .then(jsonData => setProducts(jsonData))
-        .catch(error => console.error('Error fetching data:', error))
+        fetchProducts();
+        fetchCategories();
     }, [])
 
     
@@ -54,11 +81,16 @@ const CreateTransaction = () => {
 
 
     // Calculate total
-    const totalAmount = useMemo(() => 
-        selectedProduct.reduce((sum, product) => 
+    const totalAmount = useMemo(() => {
+        const subtotal = selectedProduct.reduce((sum, product) => 
             sum + (product.price * (product.quantity || 1)), 
-        0
-    ), [selectedProduct]);
+        0);
+        
+        if (discount) {
+            return subtotal * (1 - discount/100);
+        }
+        return subtotal;
+    }, [selectedProduct, discount]);
 
 
     // Filtered products
@@ -86,6 +118,13 @@ const CreateTransaction = () => {
 
     return(
         <div className="grid grid-cols-5 h-full w-full">
+            {showSnackbar && (
+                <Snackbar 
+                    message={message.length > 0 ? message : error.length > 0 ? error : ''}
+                    type={message.length > 0 ? 'success' : error.length > 0 ? 'error' : ''}
+                    onClose={() => setShowSnackbar(false)}
+                />
+            )}
 
             {/* Products Section */}
             <div className="col-span-3 flex flex-col items-center h-full mr-5 scrollbar-thin overflow-y-auto px-5">
@@ -112,12 +151,14 @@ const CreateTransaction = () => {
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
                         >
-                            <option value="All">All</option>
-                            {categories ? categories.map((category, index) => (
-                                <option key={index} value={category}>{category}</option>
-                            )) : (
-                                <option>All</option>
-                            )}
+                            <option value="All">
+                                All
+                            </option>
+                            {categories.length > 0 && categories.map(category => (
+                                <option key={category.id} value={category.name}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     </div>
