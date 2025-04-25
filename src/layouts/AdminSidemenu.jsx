@@ -123,7 +123,7 @@ const SideMenuBtn = ({drop, dropHandler}) => {
     return (
         <div className="flex flex-col h-full w-full text-white font-light">
             <Link to="/admin-dashboard" 
-                  className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                  className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-blue-700"></div>
@@ -134,7 +134,7 @@ const SideMenuBtn = ({drop, dropHandler}) => {
             </Link>
 
             <Link to="/sales"
-                  className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                  className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-blue-700"></div>
@@ -145,7 +145,7 @@ const SideMenuBtn = ({drop, dropHandler}) => {
             </Link>
 
             <Link to="/inventory" 
-                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
@@ -155,7 +155,7 @@ const SideMenuBtn = ({drop, dropHandler}) => {
             </Link>
 
             <Link to="/expenses" 
-                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
@@ -166,7 +166,7 @@ const SideMenuBtn = ({drop, dropHandler}) => {
 
             <button
                 onClick={() => dropHandler(prev => !prev)}
-                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
@@ -187,7 +187,7 @@ const SideMenuBtn = ({drop, dropHandler}) => {
             </div>
 
             <Link to="/users" 
-                className="flex items-center gap-3 h-11 lg:h-10 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
+                className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary-500 rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
