@@ -8,7 +8,12 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClose, setIsClose] = useState(true);
+  const [isDropped, setIsDropped] = useState(true);
 
+
+  const dropped = () => {
+    setIsDropped((prev) => !prev);
+  }
 
   const close = () => {
     setIsClose((prev) => !prev);
@@ -87,7 +92,7 @@ export const AuthProvider = ({ children }) => {
   };
   
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register, close, isClose, setIsClose }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, close, isClose, setIsClose, isDropped, dropped }}>
       {children}
     </AuthContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Menu, CircleGauge, HandCoins, Package, Calculator, Book, Users } from 'lucide-react';
 
 const AdminSidemenu = () => {
-    const { user, loading, close, isClose, setIsClose } = useAuth();
+    const { user, loading, close, isClose, setIsClose, dropped, isDropped } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [drop, setDrop] = useState(false);
@@ -49,7 +49,7 @@ const AdminSidemenu = () => {
                 </div>
                 <div className="h-full w-full mt-12">
                     <p className="font-bold text-[13px] text-gray-600 mb-3">Menus</p>
-                    <SideMenuBtn drop={drop} dropHandler={setDrop} />
+                    <SideMenuBtn drop={isDropped} dropHandler={dropped} />
                 </div>
             </div>
 
@@ -87,18 +87,18 @@ const AdminSidemenu = () => {
                         </Link>
         
                         <button 
-                            onClick={() => setDrop(prev => !prev)}
+                            onClick={() => dropped(prev => !prev)}
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary-500 rounded-full
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
                         >
                             <Book />
                         </button>
-                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${drop ? 'max-h-40 mb-5' : 'max-h-0'}`}>
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isDropped ? 'max-h-40 mb-5' : 'max-h-0'}`}>
                                 <div className='flex flex-col justify-center items-center gap-3'>
-                                    <Link className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
+                                    <Link to="/sales-report" className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
                                         1
                                     </Link>
-                                    <Link className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
+                                    <Link to="/expenses-report" className='flex justify-center items-center font-bold p-1 h-7 w-7 bg-primary rounded-full'>
                                         2
                                     </Link>
                                 </div>
@@ -177,10 +177,10 @@ const SideMenuBtn = ({drop, dropHandler}) => {
 
             <div className={`overflow-hidden transition-all duration-300 ease-in-out ${drop ? 'max-h-40 mb-3' : 'max-h-0'}`}>
                 <div className='flex flex-col justify-center items-end gap-3'>
-                    <Link className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
+                    <Link to="/sales-report" className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
                         Sales Report
                     </Link>
-                    <Link className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
+                    <Link to="/expenses-report" className='flex justify-center items-center p-1 h-[40px] w-3/4 text-[14px] bg-primary rounded-full'>
                         Expenses Report
                     </Link>
                 </div>
