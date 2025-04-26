@@ -172,7 +172,9 @@ const CreateTransaction = () => {
                         <label 
                             htmlFor="cust-name"
                             className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
-                        >Customer Name <span className="text-red-500">*</span></label>
+                        >
+                            Customer Name <span className="text-red-500">*</span>
+                        </label>
                         <div  className="relative">
                             <button 
                                 onClick={() => setCustName('Walk-in')}
@@ -187,7 +189,7 @@ const CreateTransaction = () => {
                                 disabled={selectedProduct.length === 0}
                                 onChange={(e) => setCustName(e.target.value)}
                                 value={custName}
-                                className={`min-h-[35px] text-[14px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-35 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-blue-800'}`}
+                                className={`min-h-[40px] text-[14px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-37 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-blue-800'}`}
                                 style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}}
                             />
                         </div>
@@ -213,7 +215,7 @@ const CreateTransaction = () => {
                        </div>
                        <input 
                           type="text"
-                          className="border border-gray-400 text-[20px] rounded-md px-5 py-1"
+                          className="border border-gray-400 text-[15px] min-h-[40px] rounded-sm px-5 py-1"
                         
                        />
                     </div>
@@ -238,9 +240,9 @@ const CreateTransaction = () => {
                     </div>
                 </div>
 
-                {/* Added Amount Paid and Change fields */}
-                <div className="flex flex-col gap-3 w-full bg-white p-5">
+                <div className="flex flex-col gap-3 w-[95%] bg-sky-800 p-5 rounded-sm mx-auto">
                     <div className="flex flex-col gap-2">
+                        <label htmlFor="amount_paid" className={`text-[20px] font-bold ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-white'}`}>Amount Paid</label>
                         <input 
                             type="text" 
                             id="amount-paid"
@@ -249,18 +251,20 @@ const CreateTransaction = () => {
                             disabled={selectedProduct.length === 0}
                             onChange={(e) => setAmountPaid(parseFloat(e.target.value) || 0)}
                             value={amountPaid}  
-                            placeholder="Enter amount paid"
-                            className={`min-h-[45px] text-[17px] w-full border-1 border-gray-400 rounded-sm px-5 ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-black'}`}
+                            className={`min-h-[45px] text-[20px] font-medium bg-white w-full border-1 border-gray-700 rounded-sm px-5 ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-black'}`}
                         />
                     </div>
                     {amountPaid != null && amountPaid != 0 && (
-                        <div className="flex justify-between w-full mt-5">
-                            <p className={`text-[17px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}>
-                                Change
-                            </p>
-                            <p className={`text-[17px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                ₱{change.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                            </p>
+                        <div className="flex flex-col justify-between gap-2 mt-5">
+                            <label htmlFor="change" className={`text-[20px] font-bold ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-white'}`}>Change</label>
+                            <input 
+                                type="text" 
+                                id="change"
+                                disabled
+                                onChange={(e) => setAmountPaid(parseFloat(e.target.value) || 0)}
+                                value={change.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                className={`min-h-[45px] text-[20px] font-medium bg-gray-200 px-5 rounded-sm ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                            />
                         </div>        
                     )}
                 </div>

@@ -28,7 +28,7 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
                 </button> 
                 <input 
                     id="quantity"
-                    type="number" 
+                    type="text" 
                     className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm" 
                     min="1"
                     max={product.stock}
