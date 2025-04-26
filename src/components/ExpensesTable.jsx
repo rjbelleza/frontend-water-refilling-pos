@@ -7,9 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { CirclePlus } from 'lucide-react';
-import { Search } from 'lucide-react';
-import { X } from 'lucide-react';
+import { CirclePlus, X, Calendar } from 'lucide-react';
 import { format, parseISO, isSameDay } from 'date-fns';
 
 const ExpensesTable = () => {
@@ -57,6 +55,12 @@ const ExpensesTable = () => {
         accessorFn: (row, index) => index + 1,
       },
       {
+        accessorKey: 'date',
+        header: 'Date Paid',
+        cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy"),
+        size: 160,
+      },
+      {
         accessorKey: 'description',
         header: 'Description',
         cell: info => info.getValue(),
@@ -64,20 +68,14 @@ const ExpensesTable = () => {
       },
       {
         accessorKey: 'amount',
-        header: 'Amount',
-        cell: info => `₱${info.getValue().toFixed(2)}`,
+        header: 'Amount (₱)',
+        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 160,
       },
       {
         accessorKey: 'user',
-        header: 'Paid By',
+        header: 'Recorded By',
         cell: info => info.getValue(),
-        size: 160,
-      },
-      {
-        accessorKey: 'date',
-        header: 'Date Paid',
-        cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy"),
         size: 160,
       },
     ],
@@ -107,14 +105,12 @@ const ExpensesTable = () => {
         <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
           <div className='text-[23px] font-medium text-sky-800'>Expenses List</div>
             <div className='flex gap-3'>
-              <div className='flex items-center h-[35px]'>
-                  <Search className='mr-[-30px] text-gray-600' />
-                  <input 
-                      type='text' 
-                      placeholder='Search' 
-                      className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
-                  />
-              </div>
+              <button 
+
+                  className='flex items-center gap-2 h-[35px] bg-sky-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  <Calendar size={13} />
+                  Change Date Range
+              </button>
               <button 
                   onClick={() => setShowModal(true)}
                   className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>

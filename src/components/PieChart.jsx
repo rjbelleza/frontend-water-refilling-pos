@@ -58,15 +58,10 @@ const PieChart = () => {
 
   return (
     <div className="flex flex-col justify-center gap-5">
-      <div className="flex justify-between w-full border-b-1 border-gray-300 p-5">
+      <div className="flex w-full border-b-1 border-gray-300 p-5">
             <div>
-                <h2 className="text-left text-blue-950 font-medium text-[13px]">Product Sales</h2>
-                <h2 className="text-left text-blue-950 font-medium text-[13px]">Comparison</h2>
+                <h2 className="text-left text-blue-950 font-medium text-[15px]">Product Sales Comparison</h2>
             </div>
-            <button className="flex items-center gap-2 h-fit text-[12px] border border-gray-400 px-3 py-1 rounded-md cursor-pointer"> 
-                <Calendar size={13} />
-                This Week
-            </button>
         </div>
       <div className="flex justify-center w-full h-full">
         <ReactApexChart 

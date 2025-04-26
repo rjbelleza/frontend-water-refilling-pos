@@ -7,9 +7,10 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { format, parseISO, isSameDay } from 'date-fns';
+import { format, parseISO } from 'date-fns';
+import { Calendar } from 'lucide-react';
 
-const SalesReportTable = () => {
+const NetProfitTable = () => {
   // Data state
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
@@ -28,31 +29,25 @@ const SalesReportTable = () => {
       },
       {
         accessorKey: 'dateTime',
-        header: 'Date & Time',
+        header: 'Date',
         cell: info => format(parseISO(info.getValue()), "yyyy-MM-dd, hh:mm:ss a"),
         size: 290,
       },
       {
-        accessorKey: 'customer',
-        header: 'Customer Name',
+        accessorKey: 'sales',
+        header: 'Sales (₱)',
         cell: info => info.getValue(),
         size: 290,
       },
       {
-        accessorKey: 'user',
-        header: 'Cashier Name',
+        accessorKey: 'expenses',
+        header: 'Expenses (₱)',
         cell: info => info.getValue(),
         size: 290,
       },
       {
-        accessorKey: 'total_quantity',
-        header: 'Total Quantity',
-        cell: info => info.getValue(),
-        size: 290,
-      },
-      {
-        accessorKey: 'total_amount',
-        header: 'Total Amount',
+        accessorKey: 'net_profit',
+        header: 'Net Profit (₱)',
         cell: info => info.getValue(),
         size: 290,
       },
@@ -82,26 +77,11 @@ const SalesReportTable = () => {
       <div className="flex flex-col w-full sm:flex-row gap-2">
         <div className='flex justify-between w-full gap-20 mb-4'>
             <div className='flex justify-end gap-3 w-full'>
-              <div className='flex items-center gap-2'>
-                  <label className='text-[13px] text-gray-500'>Start Date:</label>
-                  <input
-                      type="date"
-                      id="date"
-                      value={searchDate}
-                      onChange={(e) => setSearchDate(e.target.value)}
-                      className="h-[35px] px-5 bg-blue-500 text-white text-[13px] rounded-md outline-none"
-                  />
-              </div>
-              <div className='flex items-center gap-2 h-[37px]'>
-                  <label className='text-[13px] text-gray-500'>End Date:</label>
-                  <input
-                      type="date"
-                      id="date"
-                      value={searchDate}
-                      onChange={(e) => setSearchDate(e.target.value)}
-                      className="h-[35px] px-5 bg-blue-500 text-white text-[13px] rounded-md outline-none"
-                  />
-              </div>
+              <button 
+                className='flex items-center gap-2 h-[35px] bg-sky-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  <Calendar size={13} />
+                  Change Date Range
+              </button>
             </div>
         </div>
       </div>
@@ -241,4 +221,4 @@ const SalesReportTable = () => {
   );
 };
 
-export default SalesReportTable;
+export default NetProfitTable;

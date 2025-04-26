@@ -91,7 +91,7 @@ const UsersTable = () => {
       },
       {
         id: 'actions',
-        header: 'Action',
+        header: 'Edit',
         cell: ({ row }) => (
              <div className='flex space-x-1'>
                  <button 
@@ -205,7 +205,7 @@ const UsersTable = () => {
                     <option value="admin">Admin</option>
                     <option value="staff">Staff</option>
                 </select>
-                <label htmlFor='password' className='text-[14px] font-medium text-blue-800'>Password <span className='text-red-500'>*</span></label>
+                <label htmlFor='password' className='text-[14px] font-medium text-blue-800'>New Password <span className='text-red-500'>*</span></label>
                 <input 
                     id='password'
                     type='text' 

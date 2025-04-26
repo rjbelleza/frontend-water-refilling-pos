@@ -9,11 +9,6 @@ const Card1 = ({ icon, category, value, range }) => {
             <div className="flex flex-col justify-center text-white space-y-1">
                 <p className="font-light text-[14px]">{category}</p>
                 <p className="font-medium text-[23px]">{value}</p>
-                <button 
-                    className="w-fit bg-white text-primary text-[12px] font-medium px-2 py-1 rounded-sm cursor-pointer border-2 border-white hover:border-blue-500 hover:text-blue-600"
-                    >
-                     {range}
-                </button>
             </div>
         </div>
     );

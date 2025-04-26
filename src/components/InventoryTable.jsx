@@ -64,6 +64,7 @@ const InventoryTable = () => {
     try {
       const response = await api.get('/products');
       setData(response.data);
+      setLoading(false);
     } catch (error) {
       setError(response.data.error);
       setShowSnackbar(true);
@@ -215,7 +216,7 @@ useEffect(() => {
       {
         accessorKey: 'stock_quantity',
         header: 'Stock qty.',
-        cell: info => <p className={`${stockColorCode(info.getValue())} text-white py-1 px-3 w-[48px]`}>{info.getValue()}</p>,
+        cell: info => info.getValue(),
         size: 260,
       },
       {
@@ -230,7 +231,7 @@ useEffect(() => {
               <Eye size={15} />
             </button>
             <button 
-              onClick={() => setShowUpdateModal(true)}
+              onClick={() => handleUpdateClick(row)}
               className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
@@ -391,7 +392,7 @@ useEffect(() => {
                 <input 
                   id='productName'
                   value={selectedRow.name || ''}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -400,7 +401,7 @@ useEffect(() => {
                 <input 
                   id='category'
                   value={selectedRow.category.name || ''}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -409,7 +410,7 @@ useEffect(() => {
                 <input 
                   id='price'
                   value={selectedRow.price || ''}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -418,45 +419,47 @@ useEffect(() => {
                 <input 
                   id='added_by'
                   value={`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
               <div className='flex flex-col w-full space-y-2'>
-                <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Available Stock</label>
+                <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Current Stock</label>
                 <input 
                   id='stock_quantity'
                   value={selectedRow.stock_quantity || 0}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
             </div>
             <div className='w-full px-5 py-5 border-t-1 border-dashed border-gray-400'>
-              <p className='text-[14px] font-medium text-blue-900'>Stock In / Stock Out History</p>
+              <p className='text-[14px] font-medium text-blue-900'>Update History</p>
               <table className='w-full mt-5 border-collapse'>
                 <thead>
                   <tr className='text-left text-[13px] rounded-md'>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>User</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Action</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Previous</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Updated</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Date & Time</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
                     [
-                      {user: 'Jack Frost', action: 'Stock in', quantity: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', quantity: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock in', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
+                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
                     ].map((data, index) => (
                       <tr key={index} className='text-[13px]'>
                         <td className='px-3 py-2 border-b border-gray-200'>{data.user}</td>
                         <td className='px-3 py-2 border-b border-gray-200'>{data.action}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.quantity}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.previous}</td>
+                        <td className='px-3 py-2 border-b border-gray-200'>{data.update}</td>
                         <td className='px-3 py-2 border-b border-gray-200'>{data.dateTime}</td>
                       </tr>
                     ))}
@@ -677,7 +680,7 @@ useEffect(() => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  No products available
+                  {loading ? 'Fetching Products...' : 'No product available'}
                 </td>
               </tr>
             )}

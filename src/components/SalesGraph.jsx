@@ -212,12 +212,8 @@ const SalesGraph = () => {
 
   return (
     <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
-      <div className='flex justify-between border-b-1 border-gray-300 p-5'>
-        <p className='text-blue-950 font-medium rounded-sm'>Monthly Sales & Expenses</p>
-        <button className='flex items-center gap-2 text-[14px] border border-gray-400 px-4 py-1 rounded-md cursor-pointer'>
-          <Calendar size={14} />
-          2025
-        </button>
+      <div className='flex border-b-1 border-gray-300 p-5'>
+        <p className='text-blue-950 font-medium rounded-sm'>Sales vs Expenses</p>
       </div>
       <div className="w-full chart-wrapper p-3">
         <Chart 

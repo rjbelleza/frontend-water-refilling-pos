@@ -9,19 +9,17 @@ import LoadingScreen from "./pages/LoadingScreen";
 import ExpensesPage from "./pages/ExpensesPage";
 import ReportsPage from "./pages/ReportsPage";
 import UsersPage from "./pages/UsersPage";
-import SalesReport from "./pages/SalesReport";
-import ExpensesReport from "./pages/ExpensesReport";
-import IncomeReport from "./pages/IncomeReport";
+import NetProfit from "./pages/NetProfit";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ element, role }) => {
   const { user, loading } = useAuth();
 
-  if (loading) return <LoadingScreen />; // Wait for auth check
+  if (loading) return <LoadingScreen />; // 
 
-  if (!user) return <Navigate to="/" replace />; // Redirect if not logged in
+  if (!user) return <Navigate to="/" replace />; 
 
-  if (role && !role.includes(user.role)) return <Navigate to="/" replace />; // Restrict by role
+  if (role && !role.includes(user.role)) return <Navigate to="/" replace />; 
 
   return element;
 };
@@ -44,9 +42,7 @@ const App = () => {
           <Route path="/reports" element={<ProtectedRoute element={<ReportsPage />} role="admin" />} />
           <Route path="/expenses" element={<ProtectedRoute element={<ExpensesPage />} role="admin" />} />
           <Route path="/users" element={<ProtectedRoute element={<UsersPage />} role="admin" />} />
-          <Route path="/sales-report" element={<ProtectedRoute element={<SalesReport />} role="admin" />} />
-          <Route path="/expenses-report" element={<ProtectedRoute element={<ExpensesReport />} role="admin" />} />
-          <Route path="/income-report" element={<ProtectedRoute element={<IncomeReport />} role="admin" />} />
+          <Route path="/netProfit" element={<ProtectedRoute element={<NetProfit />} role="admin" />} />
         </Routes>
       </AuthProvider>
     </Router>
