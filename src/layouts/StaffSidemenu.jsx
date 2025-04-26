@@ -97,7 +97,7 @@ const SideMenuBtn = () => {
             >
                 <div className="h-full w-2 bg-blue-700"></div>
                 <div className="flex justify-between w-full">
-                    <p>New Transaction</p>
+                    <p>New Sale</p>
                     <Wallet className='mr-3' />
                 </div>
             </Link>

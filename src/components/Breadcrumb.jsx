@@ -11,12 +11,12 @@ const Breadcrumb = () => {
             return 'SALES MANAGEMENT'
         }
         else if (location.pathname === '/new-sales') {
-            return 'SALES MANAGEMENT > NEW ORDER'
+            return 'NEW SALE'
         }
         else if (location.pathname === '/inventory') {
             return 'INVENTORY MANAGEMENT'
         }
-        else if (location.pathname === '/expenses') {
+        else if (location.pathname === '/expenses') {   
             return 'EXPENSES MANAGEMENT'
         }
         else if (location.pathname === '/netProfit') {

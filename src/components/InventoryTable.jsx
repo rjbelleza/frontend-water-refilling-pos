@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Trash, Tags, Trash2, LoaderCircle } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Trash, Tags, Trash2, Settings } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 
@@ -297,7 +297,7 @@ useEffect(() => {
                 </select>
                 <button 
                   onClick={() => {setShowCategoryModal(true); fetchCategories();}}
-                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  className='flex items-center gap-2 h-[35px] bg-sky-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
                   <Tags size={15} />
                   Categories
                 </button>
@@ -306,6 +306,9 @@ useEffect(() => {
                     className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
                     <CirclePlus size={13} />
                     Add Product
+                </button>
+                <button className='bg-primary px-2 rounded-md'>
+                  <Settings size={20} className='text-white' />
                 </button>
             </div>
           </div>

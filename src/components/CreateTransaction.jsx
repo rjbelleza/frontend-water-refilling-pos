@@ -11,7 +11,7 @@ const CreateTransaction = () => {
     const [discount, setDiscount] = useState(null);
     const [placeOrder, setPlaceOrder] = useState(false);
     const [custName, setCustName] = useState('');
-    const [amountPaid, setAmountPaid] = useState(null);
+    const [amountPaid, setAmountPaid] = useState('');
     
     const categories = ["Container", "Water"];
 
@@ -83,10 +83,10 @@ const CreateTransaction = () => {
     }
 
     return(
-        <div className="grid grid-cols-5 h-full w-full">
+        <div className="grid grid-cols-5 h-screen w-full">
 
             {/* Products Section */}
-            <div className="col-span-3 flex flex-col items-center h-full mr-5 scrollbar-thin overflow-y-auto px-5">
+            <div className="col-span-3 flex flex-col items-center h-full scrollbar-thin overflow-y-auto px-5">
                 <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-0 mb-10 rounded-lg">
                     <p className="font-bold text-[15px] text-sky-900/90">AVAILABLE PRODUCTS</p>
                     <div className="flex gap-5">
@@ -126,7 +126,7 @@ const CreateTransaction = () => {
             {/* New Transaction Section */}
             <form 
                 onSubmit={handlePlaceOrder}
-                className="col-span-2 h-fit w-full bg-white border-3 border-gray-400 rounded-md p-4 ml-2"
+                className="col-span-2 w-full bg-white border-3 border-gray-400 rounded-md p-4 overflow-y-auto"
             >
                 <p className="font-medium text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Order List</p>
                 <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
@@ -178,20 +178,25 @@ const CreateTransaction = () => {
                             htmlFor="discount"
                             className={`text-[14px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}
                             >Discount</label>
-                        <select
-                            id="discount"
-                            style={{color: `${selectedProduct.length === 0 ? 'gray' : 'black'}`}} 
-                            className="min-h-[35px] w-full text-[13px] border-1 border-gray-400 rounded-sm px-5" 
-                            onChange={(e) => setDiscount(e.target.value)}
-                            disabled={selectedProduct.length === 0}
-                        >
-                            <option>-- Select Discount --</option>
-                            <option value={10}>10%</option>
-                            <option value={20}>20%</option>
-                            <option value={50}>50%</option>
-                            <option value={70}>70%</option>
-                            <option value={90}>90%</option>
-                        </select>
+                       <div className="flex gap-3">
+                            <button 
+                                type="button"
+                                className="bg-gray-400 focus:bg-blue-800 text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer"
+                            >
+                                Percentage
+                            </button>
+                            <button
+                                type="button" 
+                                className="bg-gray-400 focus:bg-blue-800 text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer"
+                            >
+                                Currency
+                            </button>
+                       </div>
+                       <input 
+                          type="text"
+                          className="border border-gray-400 text-[20px] rounded-md px-5 py-1"
+                        
+                       />
                     </div>
                 </div>
 
@@ -218,9 +223,9 @@ const CreateTransaction = () => {
                 <div className="flex flex-col gap-3 w-full bg-white p-5">
                     <div className="flex flex-col gap-2">
                         <input 
-                            type="number" 
+                            type="text" 
                             id="amount-paid"
-                            min="0"
+                            min={0}
                             step="0.01"
                             disabled={selectedProduct.length === 0}
                             onChange={(e) => setAmountPaid(parseFloat(e.target.value) || 0)}
@@ -247,12 +252,12 @@ const CreateTransaction = () => {
                         onClick={() => setPlaceOrder(true)}
                         disabled={!custName || amountPaid < totalAmount}
                         className={`
-                            bg-blue-700 w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md shadow-black transition-colors duration-200
+                            bg-blue-800 w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md shadow-black transition-colors duration-200
                             ${!custName || amountPaid < totalAmount
                             ? 'opacity-50 cursor-default' 
-                            : 'cursor-pointer hover:bg-blue-600'}`}
+                            : 'cursor-pointer hover:bg-blue-700'}`}
                         >
-                            Place Order
+                            Continue
                     </button>
                 </div>
             </form>
