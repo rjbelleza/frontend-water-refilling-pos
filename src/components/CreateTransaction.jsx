@@ -40,6 +40,23 @@ const CreateTransaction = () => {
         });
     };
 
+    const handleMinusProduct = (product) => {
+        if (product.stock <= 0) return;
+        
+        setSelectedProduct(prev => {
+            const existing = prev.find(p => p.id === product.id);
+            if (existing) {
+                if (existing.quantity >= product.stock) return prev;
+                return prev.map(p => 
+                    p.id === product.id 
+                        ? {...p, quantity: (p.quantity || 1) - 1} 
+                        : p
+                );
+            }
+            return [...prev, {...product, quantity: 1}];
+        });
+    };
+
     const handleQuantityChange = (productId, newQuantity) => {
         setSelectedProduct(prev =>
             prev.map(product =>
@@ -83,10 +100,10 @@ const CreateTransaction = () => {
     }
 
     return(
-        <div className="grid grid-cols-5 h-screen w-full">
+        <div className="grid grid-cols-6 gap-10 h-fit w-full pb-3">
 
             {/* Products Section */}
-            <div className="col-span-3 flex flex-col items-center h-full scrollbar-thin overflow-y-auto px-5">
+            <div className="col-span-3 flex flex-col items-center h-full scrollbar-thin">
                 <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-0 mb-10 rounded-lg">
                     <p className="font-bold text-[15px] text-sky-900/90">AVAILABLE PRODUCTS</p>
                     <div className="flex gap-5">
@@ -126,10 +143,10 @@ const CreateTransaction = () => {
             {/* New Transaction Section */}
             <form 
                 onSubmit={handlePlaceOrder}
-                className="col-span-2 w-full bg-white border-3 border-gray-400 rounded-md p-4 overflow-y-auto"
+                className="col-span-3 w-full h-fit bg-white rounded-md p-4"
             >
-                <p className="font-medium text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Order List</p>
-                <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-400 rounded-sm p-3 overflow-auto">
+                <p className="font-medium text-center bg-sky-900 text-gray-200 rounded-sm py-2 mb-1">Current Order</p>
+                <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-100 rounded-sm p-3 overflow-auto">
                     <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
                         {selectedProduct.length === 0 && 
                             <div className="flex justify-center items-center h-full w-full">
@@ -143,6 +160,8 @@ const CreateTransaction = () => {
                                 product={product} 
                                 onQuantityChange={handleQuantityChange}
                                 onRemove={handleRemoveProduct}
+                                add={handleAddProduct}
+                                minus={handleMinusProduct}
                             />
                         ))}
                     </div>
@@ -200,7 +219,7 @@ const CreateTransaction = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-3 h-[60px] w-full bg-white mt-2 p-5 mb-15">
+                <div className="flex flex-col gap-3 h-[60px] w-full mt-2 p-5 mb-15">
                     <div className="flex justify-between w-full">
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-blue-800'}`}>
                             Subtotal

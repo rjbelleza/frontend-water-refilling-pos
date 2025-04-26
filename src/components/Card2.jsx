@@ -1,6 +1,6 @@
 import { Plus } from 'lucide-react';
 
-const Card2 = ({products, add}) => {
+const Card2 = ({products, add, minus}) => {
 
     return (
         <>
@@ -8,9 +8,9 @@ const Card2 = ({products, add}) => {
                 <div 
                     key={product.id}
                     className="flex flex-col gap-2 h-fit bg-white rounded-lg shadow-sm shadow-gray-400 
-                               border-2 border-blue-800"
+                               border-2 border-blue-800 border-t-5"
                 >
-                    <p className="flex font-bold xl:text-[17px] 2xl:text-[20px] py-3 px-4 rounded-sm border-b-1 border-dashed border-gray-500">
+                    <p className="flex font-bold xl:text-[15px] 2xl:text-[20px] py-3 px-4 rounded-sm border-b-1 border-dashed border-gray-500">
                         {product.name}
                     </p>
                     <div className='w-full h-full p-4'>

@@ -16,12 +16,12 @@ const NewSalesPage = () => {
             ) : (
                 <StaffSidemenu />
             )}
-            <div className="h-full w-full scrollbar-thin overflow-y-auto">
+            <div className="h-full w-full scrollbar-thin overflow-y-auto bg-gray-300">
                 <Header />
                 <div className="flex flex-col h-full w-full gap-5">
                     <Breadcrumb />
-                    <div className="w-full px-5 bg-red-600">
-
+                    <div className="w-full h-full px-5">
+                        <CreateTransaction />
                     </div>
                 </div>
             </div>  
