@@ -164,7 +164,7 @@ useEffect(() => {
   const fetchCategories = async () => {
     try {
       const response = await api.get('/categories');
-      setCategories(response.data);
+      setCategories(response.data.data);
     } catch (error) {
       setError(error.response.data.error);
       setShowSnackbar(true);
@@ -174,13 +174,13 @@ useEffect(() => {
 
   const deleteCategory = async (id) => {
     try {
-      const response = await api.delete(`/delete/category/${id}`);
+      const response = await api.patch(`/category/disable/${id}`);
       setMessage(response.data.message);
       setShowCategoryModal(false);
       setRefreshKey(prev => prev + 1);
       setShowSnackbar(true);
     } catch (error) {
-      setError(prev, response.data.error);
+      setError(error.message);
       setShowSnackbar(true);
     }
   }
@@ -238,9 +238,9 @@ useEffect(() => {
             </button>
             <button 
               onClick={() => handleDeleteClick(row)}
-              className="text-white bg-rose-500 hover:bg-rose-400 cursor-pointer rounded-sm px-2 py-2"
+              className="text-white bg-red-400 hover:bg-red-300 cursor-pointer rounded-sm px-2 py-2"
             >
-              <Trash size={15} />
+              <X size={15} />
             </button>
           </div>
         ),
