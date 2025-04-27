@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Trash, Tags, Trash2, Settings } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Tags, Trash2, Settings, Notebook, Package } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 
@@ -33,6 +33,7 @@ const InventoryTable = () => {
   const [error, setError] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0); // Refresh trigger
   const [loading, setLoading] = useState(true);
+  const [selectionModal, setSelectionModal] = useState(false);
 
 
   // New Product States
@@ -231,7 +232,7 @@ useEffect(() => {
               <Eye size={15} />
             </button>
             <button 
-              onClick={() => handleUpdateClick(row)}
+              onClick={() => {setSelectionModal(true);}}
               className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
@@ -313,6 +314,37 @@ useEffect(() => {
             </div>
           </div>
       </div>
+
+      {/* Update Selection Modal */}
+      {selectionModal && (
+        <div
+          className="fixed h-screen inset-0 flex flex-col items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        >
+          <div className='flex justify-end w-[400px] mb-2'>
+            <button 
+              onClick={() => setSelectionModal(false)}
+              className='bg-gray-700 rounded-full p-1 cursor-pointer'
+            >
+              <X size={18} className='text-gray-200' />
+            </button>
+          </div>
+          <div className='grid grid-cols-2 gap-3 bg-white w-[400px] h-[200px] p-5 rounded-sm'>
+            <button
+              type='button' 
+              className='flex flex-col gap-3 justify-center items-center bg-blue-600 hover:bg-blue-500 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-blue-800'>
+              <p className='font-medium text-white'>Update Details</p>
+              <Notebook size={30} className='text-white' />
+            </button>
+            <button
+              type='button' 
+              className='flex flex-col gap-3 justify-center items-center bg-blue-600 hover:bg-blue-500 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-blue-800'>
+              <p className='font-medium text-white'>Update Stock</p>
+              <Package size={30} className='text-white' />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Add Category Modal */}
       <div 
