@@ -34,6 +34,8 @@ const InventoryTable = () => {
   const [refreshKey, setRefreshKey] = useState(0); // Refresh trigger
   const [loading, setLoading] = useState(true);
   const [selectionModal, setSelectionModal] = useState(false);
+  const [selectRow, setSelectRow] = useState(null);
+  const [showUpdateStockModal, setShowUpdateStockModal] = useState(false);
 
 
   // New Product States
@@ -41,6 +43,13 @@ const InventoryTable = () => {
     name: '',
     price: '',
     stock_quantity: 0,
+    category_id: undefined,
+  });
+
+
+  const [newDetails, setNewDetails] = useState({
+    name: '',
+    price: '',
     category_id: '',
   });
 
@@ -82,6 +91,34 @@ const InventoryTable = () => {
   };
 
 
+  const handleNewDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setNewDetails(prev => ({
+      ...prev, [name]: name === 'category_id' ? (value === '' ? null : Number(value)) : value
+    }));
+  };
+
+
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();    
+    try {
+        if (!selectedRow || !selectedRow.id) {
+            console.error('No product selected for update');
+            return;
+        }
+
+        const response = await api.put(`/product/${selectedRow.id}`, newDetails);
+        setMessage(response.data.message);
+        setShowUpdateModal(false);
+        setShowSnackbar(true);
+        setRefreshKey(prev => prev + 1);
+    } catch (error) {
+        setError(error.response.data.message);
+        console.error('Failed to update product:', error);
+    }
+  };
+
+
 useEffect(() => {
   if(stockAction == 'stock-in') {
     setNewStock(Number(currentStock) + Number(toStock));
@@ -94,7 +131,20 @@ useEffect(() => {
 
   const handleUpdateClick = (row) => {
     setSelectedRow(row.original);
+    setNewDetails({
+      name: row.original.name,
+      price: row.original.price,
+      category_id: row.original.category_id
+    });
     setShowUpdateModal(true);
+    setSelectionModal(false);
+  };
+
+
+  const handleUpdateStockClick = (row) => {
+    setSelectRow(row.original);
+    setShowUpdateStockModal(true);
+    setSelectionModal(false);
   };
 
 
@@ -232,7 +282,7 @@ useEffect(() => {
               <Eye size={15} />
             </button>
             <button 
-              onClick={() => {setSelectionModal(true);}}
+              onClick={() => {setSelectionModal(true); setSelectRow(row);}}
               className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
@@ -331,12 +381,14 @@ useEffect(() => {
           </div>
           <div className='grid grid-cols-2 gap-3 bg-white w-[400px] h-[200px] p-5 rounded-sm'>
             <button
+              onClick={() => handleUpdateClick(selectRow)}
               type='button' 
               className='flex flex-col gap-3 justify-center items-center bg-blue-600 hover:bg-blue-500 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-blue-800'>
               <p className='font-medium text-white'>Update Details</p>
               <Notebook size={30} className='text-white' />
             </button>
             <button
+              onClick={() => handleUpdateStockClick(selectRow)}
               type='button' 
               className='flex flex-col gap-3 justify-center items-center bg-blue-600 hover:bg-blue-500 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-blue-800'>
               <p className='font-medium text-white'>Update Stock</p>
@@ -505,17 +557,21 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Update Modal */}
+      {/* Update Details Modal */}
       {showUpdateModal && selectedRow && (
         <div
           className="fixed inset-0 flex items-center justify-center z-1000"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
-          <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+          <form 
+            onSubmit={handleSaveChanges}
+            className="min-w-[500px] max-w-[500px] bg-white pb-5 rounded-sm shadow-lg"
+          >
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-              Update Product
+              Update Product Details
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
+                  type='button'
                   onClick={() => {setShowUpdateModal(false); setStockAction('none')}}
                   className="cursor-pointer"
                 >
@@ -523,24 +579,29 @@ useEffect(() => {
                 </button>
               </span>
             </p>
-            <div className='grid grid-cols-2 gap-7 w-full px-5 mb-12 flex-wrap'>
+            <div className='grid grid-cols-1 gap-7 w-full px-5 mb-12 flex-wrap'>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
                 <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                 <input
                   id='productName'
                   type='text'
-                  value={selectedRow.name || ''}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  name='name'
+                  value={newDetails.name || ''}
+                  onChange={handleNewDetailsChange}
+                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
                 <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
                 <select
                   id="category"
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  name='category_id'
+                  value={newDetails.category_id || ''}
+                  onChange={handleNewDetailsChange}
+                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                 >
-                  {['Water', 'Container'].map((category, index) => (
-                    <option key={index} value={category}>{category}</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>{category.name}</option>
                   ))}
                 </select>
               </div>
@@ -549,81 +610,46 @@ useEffect(() => {
                 <input
                   id='price'
                   type='text'
-                  value={selectedRow.price || ''}
-                  className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  name='price'
+                  value={newDetails.price || ''}
+                  onChange={handleNewDetailsChange}
+                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                 />
-              </div>
-              <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label htmlFor="current_stock" className='text-[14px] font-medium text-blue-800'>Current Stock</label>
-                <input
-                  id='current_stock'
-                  type='number'
-                  value={selectedRow.stock_quantity || 0}
-                  className='w-full text-[13px] text-white bg-blue-800 px-3 py-1 rounded-sm outline-none'
-                  readOnly
-                />
-              </div>
-            </div>
-            <div className='w-full border-t-1 border-dashed border-gray-400 p-5'>
-              <p className='font-medium text-blue-900 text-[17px]'>Update Stock</p>
-              <div className='w-full py-5 space-y-4'>
-                <div className='w-full space-y-3'>
-                  <select 
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
-                    onChange={(e) => {setStockAction(e.target.value); setCurrentStock(selectedRow.stock)}}
-                    value={stockAction}
-                  >
-                    <option value='none'>-- Select Action --</option>
-                    <option value="stock-in">Stock-in</option>
-                    <option value="stock-out">Stock-out</option>
-                  </select>
-                  <input
-                    id="quantity_update"
-                    type='number'
-                    onChange={(e) => {setToStock(e.target.value)}}
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
-                    placeholder='Enter Quantity'
-                    min={0}
-                  />
-                  <div className='flex flex-col w-full border-1 border-gray-300 mt-5 rounded-md space-y-3 p-3'>
-                    <div className='flex justify-between'>
-                      <p className='text-[14px] text-blue-800'>Current Stock</p>
-                      <input 
-                        className='text-right text-[15px] text-blue-800 font-medium outline-none'
-                        readOnly
-                        value={
-                          stockAction == 'stock-in' ? '+ '+ toStock : stockAction == 'stock-out' ? '- '+ toStock : ''
-                        }
-                      />
-                    </div>
-                    <div className='flex justify-between'>
-                      <p className='text-[15px] text-blue-800 font-medium'>New Stock</p>
-                      <input 
-                        className='text-right text-[15px] text-blue-800 font-medium outline-none'
-                        readOnly
-                        type='text'
-                        value={newStock < 0 ? 'Out of bounds' : newStock}
-                      />
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <div className='flex justify-end w-full space-x-2 px-5'>
               <button 
-                onClick={() => {setShowUpdateModal(false); setStockAction('none')}}
-                className='text-[12px] text-white bg-blue-500 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
-                Cancel
-              </button>
-              <button 
-                onClick={() => setShowUpdateModal(false)}
+                type='submit'
                 className='text-[12px] text-white bg-blue-900 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
                 Save Changes
               </button>
             </div>
+          </form>
+        </div>
+      )}
+
+      {/* Update Stock Modal */}
+      {showUpdateStockModal && selectRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+        >
+          <div className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+              Update Stock
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  onClick={() => setShowUpdateStockModal(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
           </div>
         </div>
       )}
+
 
       {/* Delete Modal */}
       {showDeleteModal && selectedRow && (
