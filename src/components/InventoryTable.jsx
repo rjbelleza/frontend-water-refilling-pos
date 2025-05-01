@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Tags, Trash2, Settings, Notebook, Package } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Eye, Tags, Trash2, Settings, Notebook, Package, Trash } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 
@@ -43,7 +43,7 @@ const InventoryTable = () => {
     name: '',
     price: '',
     stock_quantity: 0,
-    category_id: undefined,
+    category_id: '',
   });
 
 
@@ -52,6 +52,21 @@ const InventoryTable = () => {
     price: '',
     category_id: '',
   });
+
+  const deleteProduct = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.patch(`/product/delete/${selectedRow.id}`);
+      setMessage(response.data.message);
+      setShowDeleteModal(false);
+      setRefreshKey(prev => prev + 1);
+      setShowSnackbar(true);
+    } catch (error) {
+      setError(error.response.data.message);
+      setShowDeleteModal(false);
+      setShowSnackbar(true);
+    }
+  };
 
 
   const AddProduct = async (e) => {
@@ -62,9 +77,22 @@ const InventoryTable = () => {
       setMessage(response.data.message);
       setShowModal(false); 
       setRefreshKey(prev => prev + 1);
+      setNewProduct({
+        name: '',
+        price: '',
+        stock_quantity: 0,
+        category_id: ''});
+      console.log(newProduct);
       setShowSnackbar(true);
     } catch (error) {
-      setError(response.data.error);
+      setError(error.response.data.message);
+      setNewProduct({
+        name: '',
+        price: '',
+        stock_quantity: 0,
+        category_id: ''});
+      console.log(newProduct);
+      setShowModal(false);
       setShowSnackbar(true);
     }
   };
@@ -170,7 +198,7 @@ useEffect(() => {
     else {
         return 'bg-green-500'
     }
-  }
+  } 
 
 
   const capitalize = (string) => {
@@ -206,6 +234,7 @@ useEffect(() => {
       setRefreshKey(prev => prev + 1);
     } catch (error) {
       setError(error.response.data.message);
+      setNewCategory({ name: '' });
       setShowCategoryModal(false);
       setShowSnackbar(true);
     }
@@ -266,7 +295,7 @@ useEffect(() => {
       },
       {
         accessorKey: 'stock_quantity',
-        header: 'Stock qty.',
+        header: 'Stock',
         cell: info => info.getValue(),
         size: 260,
       },
@@ -291,7 +320,7 @@ useEffect(() => {
               onClick={() => handleDeleteClick(row)}
               className="text-white bg-red-400 hover:bg-red-300 cursor-pointer rounded-sm px-2 py-2"
             >
-              <X size={15} />
+              <Trash size={15} />
             </button>
           </div>
         ),
@@ -331,7 +360,7 @@ useEffect(() => {
       <div className='flex justify-between w-full'>
         <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
           <div className='text-[23px] font-medium text-sky-800'>Products List</div>
-            <div className='flex gap-3'>
+            <div className='flex gap-1'>
                 <div className='flex items-center h-[35px]'>
                     <Search className='mr-[-30px] text-gray-600' />
                     <input 
@@ -348,7 +377,7 @@ useEffect(() => {
                 </select>
                 <button 
                   onClick={() => {setShowCategoryModal(true); fetchCategories();}}
-                  className='flex items-center gap-2 h-[35px] bg-sky-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
                   <Tags size={15} />
                   Categories
                 </button>
@@ -358,7 +387,7 @@ useEffect(() => {
                     <CirclePlus size={13} />
                     Add Product
                 </button>
-                <button className='bg-primary px-2 rounded-md'>
+                <button className='bg-blue-800 px-2 rounded-md'>
                   <Settings size={20} className='text-white' />
                 </button>
             </div>
@@ -458,7 +487,7 @@ useEffect(() => {
       {/* View Modal */}
       {showViewModal && selectedRow && (
         <div
-          className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-5 scrollbar-thin"
+          className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-15 scrollbar-thin"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         >
           <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
@@ -526,30 +555,14 @@ useEffect(() => {
                 <thead>
                   <tr className='text-left text-[13px] rounded-md'>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>User</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Action</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Previous</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Updated</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Field Changed</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Old Value</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>New Value</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Date & Time</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    [
-                      {user: 'Jack Frost', action: 'Stock in', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
-                      {user: 'Jack Frost', action: 'Stock out', previous: '0', update: '0', dateTime: '0000-00-00, 00:00'},
-                    ].map((data, index) => (
-                      <tr key={index} className='text-[13px]'>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.user}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.action}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.previous}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.update}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.dateTime}</td>
-                      </tr>
-                    ))}
+                  
                 </tbody>
               </table>
             </div>
@@ -657,11 +670,14 @@ useEffect(() => {
           className="fixed inset-0 flex items-center justify-center z-1000"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
-          <div className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+          <form
+            onSubmit={deleteProduct} 
+            className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-              Delete Product
+              Remove Product
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
+                  type='button'
                   onClick={() => setShowDeleteModal(false)}
                   className="cursor-pointer"
                 >
@@ -670,18 +686,19 @@ useEffect(() => {
               </span>
             </p>
             <div className='w-full px-5 space-y-7 mb-15'>
-              <p className='font-medium text-center'>Are you sure you want to delete this product?</p>
+              <p className='text-center'>Are you sure you want to remove this product?</p>
               <div className='w-full text-center'>
                 <p className='text-[20px] text-blue-700 font-bold mb-3'>"{selectedRow.name || ''}"</p>
-                <div className='w-full border border-gray-300'></div>
               </div>
             </div>
             <div className='flex justify-end w-full text-[12px] space-x-2 px-5'>
-              <button className='text-white bg-blue-950 px-4 py-[6px] rounded-md cursor-pointer hover:bg-blue-900'>
+              <button
+                type='submit' 
+                className='text-white bg-blue-950 px-4 py-2 rounded-md cursor-pointer hover:bg-blue-900'>
                 Confirm
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
@@ -875,9 +892,9 @@ useEffect(() => {
                       className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                     >
                       <option value=''>-- Select Category --</option> 
-                      {categories.map((category, index) => (
+                      {categories.map((category) => (
                         <option 
-                          key={index} 
+                          key={category.id} 
                           value={category.id}
                         > 
                           {category.name}
