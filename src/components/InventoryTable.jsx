@@ -36,6 +36,8 @@ const InventoryTable = () => {
   const [selectionModal, setSelectionModal] = useState(false);
   const [selectRow, setSelectRow] = useState(null);
   const [showUpdateStockModal, setShowUpdateStockModal] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [nameFilter, setNameFilter] = useState('');
 
 
   // New Product States
@@ -276,12 +278,14 @@ useEffect(() => {
         accessorFn: (row, index) => index + 1,
       },
       {
+        id: 'name',
         accessorKey: 'name',
         header: 'Name',
         cell: info => info.getValue(),
         size: 290,
       },
       {
+        id: 'category.name',
         accessorKey: 'category.name',
         header: 'Category',
         cell: info => info.getValue(),
@@ -330,13 +334,28 @@ useEffect(() => {
     []
   );
 
+  const columnFilters = useMemo(() => {
+    const filters = [];
+  
+    if (nameFilter) {
+      filters.push({ id: 'name', value: nameFilter });
+    }
+  
+    if (categoryFilter) {
+      filters.push({ id: 'category.name', value: categoryFilter });
+    }
+  
+    return filters;
+  }, [nameFilter, categoryFilter]);
+  
   // Initialize the table
   const table = useReactTable({
-    data: data,
+    data,
     columns,
     state: {
       sorting,
       pagination,
+      columnFilters,
     },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
@@ -345,6 +364,16 @@ useEffect(() => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const uniqueCategories = useMemo(() => {
+    const names = new Set();
+    categories.forEach((item) => {
+      if (item.category?.name) {
+        names.add(item.category.name);
+      }
+    });
+    return Array.from(names);
+  }, [categories]);
 
   return (
     <div className="w-full">
@@ -366,13 +395,18 @@ useEffect(() => {
                     <input 
                         type='text' 
                         placeholder='Search' 
+                        value={nameFilter}
+                        onChange={(e) => setNameFilter(e.target.value)}
                         className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
                     />
                 </div>
-                <select className='h-[35px] border border-gray-400 rounded-sm px-2'>
-                    <option>All</option>
-                    {categories.map((category) => (
-                      <option key={category.id}>{category.name}</option>
+                <select 
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  className='h-[35px] border border-gray-400 rounded-sm px-2'>
+                    <option value="">All</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.name}>{cat.name}</option>
                     ))}
                 </select>
                 <button 
