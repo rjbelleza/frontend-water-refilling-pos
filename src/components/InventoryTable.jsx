@@ -310,13 +310,13 @@ useEffect(() => {
           <div className='flex space-x-1'>
             <button 
               onClick={() => handleViewClick(row)}
-              className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+              className="text-white bg-primary hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <Eye size={15} />
             </button>
             <button 
               onClick={() => {setSelectionModal(true); setSelectRow(row);}}
-              className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+              className="text-white bg-primary hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
             </button>
@@ -386,19 +386,21 @@ useEffect(() => {
         />
       )}
 
-      <div className='flex justify-between w-full'>
-        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
-          <div className='text-[23px] font-medium text-sky-800'>Products List</div>
+      <div className='flex justify-between'>
+        <div></div>
+          <div className='w-fit pb-5'>
             <div className='flex gap-1'>
                 <div className='flex items-center h-[35px]'>
-                    <Search className='mr-[-30px] text-gray-600' />
-                    <input 
-                        type='text' 
-                        placeholder='Search' 
-                        value={nameFilter}
-                        onChange={(e) => setNameFilter(e.target.value)}
-                        className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
-                    />
+                    <div className='relative'>
+                      <Search size={20} className='absolute top-2 left-2 text-gray-500' />
+                      <input 
+                          type='text' 
+                          placeholder='Search' 
+                          value={nameFilter}
+                          onChange={(e) => setNameFilter(e.target.value)}
+                          className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
+                      />
+                    </div>
                 </div>
                 <select 
                   value={categoryFilter}
@@ -411,21 +413,21 @@ useEffect(() => {
                 </select>
                 <button 
                   onClick={() => {setShowCategoryModal(true); fetchCategories();}}
-                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
                   <Tags size={15} />
                   Categories
                 </button>
                 <button 
                     onClick={() => setShowModal(true)}
-                    className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
                     <CirclePlus size={13} />
                     Add Product
                 </button>
-                <button className='bg-blue-800 px-2 rounded-md'>
+                <button className='bg-primary px-2 rounded-md'>
                   <Settings size={20} className='text-white' />
                 </button>
             </div>
-          </div>
+        </div>
       </div>
 
       {/* Update Selection Modal */}

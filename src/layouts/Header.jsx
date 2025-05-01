@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from "react";
+import { LogOut } from 'lucide-react';
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
@@ -21,15 +22,15 @@ const Header = () => {
 
 
     return (
-        <div className="flex items-center justify-between h-15 w-full bg-primary-500 sticky top-0 px-5 z-999">
+        <div className="flex items-center justify-between h-13 w-full bg-primary sticky top-0 px-5 z-999">
             <Link to="/admin-dashboard">
-                <img src="/images/Aqua2.png" alt="Logo" className="h-10 cursor-pointer" />
+                <img src="/images/Aqua2.png" alt="Logo" className="h-8 cursor-pointer" />
             </Link>
             <button 
                 onClick={() => setShowModal(true)}
                 className="text-white cursor-pointer px-4 py-2"
                 aria-label="Logout">
-                Logout
+                <LogOut />
             </button>
 
             {/* Logout Confirmation Modal */}
