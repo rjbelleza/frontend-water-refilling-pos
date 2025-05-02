@@ -59,49 +59,49 @@ const AdminSidemenu = () => {
                     >
                         <Link to="/admin-dashboard"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <CircleGauge />
                         </Link>
 
                         <Link to="/inventory"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <Package />
                         </Link>
         
                         <Link to="/sales"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <Coins />
                         </Link>
 
                         <Link to="/new-sales"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <Wallet />
                         </Link>
         
                         <Link to="/expenses"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <Calculator />
                         </Link>
         
                         <Link to="/netProfit" 
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <ChartNoAxesCombined />
                         </Link>
         
                         <Link to="/users"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-5"
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <Users />   
                         </Link>
@@ -119,7 +119,7 @@ const SideMenuBtn = () => {
         <div className="flex flex-col h-full w-full text-white font-medium">
             <Link to="/admin-dashboard" 
                   className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
+                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
@@ -130,7 +130,7 @@ const SideMenuBtn = () => {
 
             <Link to="/inventory" 
                 className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
+                               rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Inventory</p>
@@ -140,7 +140,7 @@ const SideMenuBtn = () => {
 
             <Link to="/sales"
                   className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
+                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
@@ -151,7 +151,7 @@ const SideMenuBtn = () => {
 
             <Link to="/new-sales"
                   className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3"
+                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3"
             >
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
@@ -162,7 +162,7 @@ const SideMenuBtn = () => {
 
             <Link to="/expenses" 
                 className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
+                               rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Expenses</p>
@@ -172,7 +172,7 @@ const SideMenuBtn = () => {
 
             <Link to="/netProfit"
                 className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all mb-3">
+                               rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Profit</p>
@@ -182,7 +182,7 @@ const SideMenuBtn = () => {
 
             <Link to="/users" 
                 className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                               rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all">
+                               rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all">
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
                     <p>Users</p>

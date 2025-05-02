@@ -59,7 +59,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-[url('/images/login-background.png')] bg-cover bg-center bg-no-repeat p-4">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-[url('/images/bg1.png')] bg-cover bg-center bg-no-repeat p-4">
             <div className="flex flex-col items-center justify-center text-center mb-8">
                 <h1 className="text-2xl font-bold">Aqua Springs</h1>
                 <h2 className="text-lg">POS System</h2>

@@ -23,8 +23,8 @@ const InventoryTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [toStock, setToStock] = useState(0);
-  const [newStock, setNewStock] = useState(0);
   const [currentStock, setCurrentStock] = useState(0);
+  const [newStock, setNewStock] = useState(currentStock);
   const [stockAction, setStockAction] = useState('');
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState({ name: ''});
@@ -143,21 +143,34 @@ const InventoryTable = () => {
         setShowSnackbar(true);
         setRefreshKey(prev => prev + 1);
     } catch (error) {
-        setError(error.response.data.message);
+        setError(error.response.data.error);
         console.error('Failed to update product:', error);
+        setShowUpdateModal(false);
+        setShowSnackbar(true);
     }
   };
 
 
-useEffect(() => {
-  if(stockAction == 'stock-in') {
-    setNewStock(Number(currentStock) + Number(toStock));
-  }
-  else if (stockAction == 'stock-out') {
-    setNewStock(Number(currentStock) - Number(toStock));
-  }
-}, [toStock, stockAction])
+  useEffect(() => {
+    const curr = Number(currentStock);
+    const to = Number(toStock);
 
+    if (isNaN(curr) || isNaN(to)) return;
+
+    if (stockAction === 'stock-in') {
+      setNewStock(curr + to);
+    } else if (stockAction === 'stock-out') {
+      setNewStock(curr - to);
+    }
+  }, [toStock, stockAction, currentStock]);
+
+  const handleToStockChange = (e) => {
+    const value = Number(e.target.value);
+    if (!isNaN(value)) {
+      setToStock(value);
+    }
+  };
+  
 
   const handleUpdateClick = (row) => {
     setSelectedRow(row.original);
@@ -175,6 +188,7 @@ useEffect(() => {
     setSelectRow(row.original);
     setShowUpdateStockModal(true);
     setSelectionModal(false);
+    setCurrentStock(row.original.stock_quantity);
   };
 
 
@@ -310,13 +324,13 @@ useEffect(() => {
           <div className='flex space-x-1'>
             <button 
               onClick={() => handleViewClick(row)}
-              className="text-white bg-primary hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+              className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"
             >
               <Eye size={15} />
             </button>
             <button 
-              onClick={() => {setSelectionModal(true); setSelectRow(row);}}
-              className="text-white bg-primary hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+              onClick={() => {setSelectionModal(true); setSelectRow(row)}}
+              className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"
             >
               <SquarePen size={15} />
             </button>
@@ -413,13 +427,13 @@ useEffect(() => {
                 </select>
                 <button 
                   onClick={() => {setShowCategoryModal(true); fetchCategories();}}
-                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                   <Tags size={15} />
                   Categories
                 </button>
                 <button 
                     onClick={() => setShowModal(true)}
-                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                     <CirclePlus size={13} />
                     Add Product
                 </button>
@@ -448,14 +462,14 @@ useEffect(() => {
             <button
               onClick={() => handleUpdateClick(selectRow)}
               type='button' 
-              className='flex flex-col gap-3 justify-center items-center bg-blue-600 hover:bg-blue-500 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-blue-800'>
+              className='flex flex-col gap-3 justify-center items-center bg-primary hover:bg-primary-100 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-black'>
               <p className='font-medium text-white'>Update Details</p>
               <Notebook size={30} className='text-white' />
             </button>
             <button
               onClick={() => handleUpdateStockClick(selectRow)}
               type='button' 
-              className='flex flex-col gap-3 justify-center items-center bg-blue-600 hover:bg-blue-500 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-blue-800'>
+              className='flex flex-col gap-3 justify-center items-center bg-primary hover:bg-primary-100 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-black'>
               <p className='font-medium text-white'>Update Stock</p>
               <Package size={30} className='text-white' />
             </button>
@@ -669,7 +683,7 @@ useEffect(() => {
             <div className='flex justify-end w-full space-x-2 px-5'>
               <button 
                 type='submit'
-                className='text-[12px] text-white bg-blue-900 rounded-md px-3 py-2 cursor-pointer hover:bg-blue-800'>
+                className='text-[12px] text-white bg-primary rounded-md px-3 py-2 cursor-pointer hover:bg-primary-100'>
                 Save Changes
               </button>
             </div>
@@ -688,13 +702,51 @@ useEffect(() => {
               Update Stock
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
-                  onClick={() => setShowUpdateStockModal(false)}
+                  onClick={() => {setShowUpdateStockModal(false); setStockAction('')}}
                   className="cursor-pointer"
                 >
                   <X size={20} />
                 </button>
               </span>
             </p>
+            <div className='flex flex-col gap-3 w-full px-5'>
+              <p className='text-[15px]'>Select action</p>
+              <div className='flex gap-2 w-full'>
+                <button
+                  type='button'
+                  onClick={() => setStockAction('stock-in')} 
+                  className={`${stockAction == 'stock-in' ? 'bg-primary-100' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
+                  Stock-in
+                </button>
+                <button
+                  type='button' 
+                  onClick={() => setStockAction('stock-out')} 
+                  className={`${stockAction == 'stock-out' ? 'bg-primary-100' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
+                  Stock-out
+                </button>
+              </div>
+              <div className='w-full'>
+                <input 
+                  value={toStock}
+                  onChange={handleToStockChange}
+                  disabled={!stockAction}
+                  className={`${stockAction ? 'border border-gray-500 w-full px-4 py-2 rounded-sm' : 'hidden'}`}
+                  placeholder={!stockAction ? '' : 'Enter Quantity'}
+                />
+              </div>
+              <div className={`${stockAction ? 'w-full mt-5 text-[14px] space-y-2' : 'hidden'}`}>
+                <p>Current Stock: <span className='font-medium'>{selectRow.stock_quantity}</span></p>
+                <p>New Stock: <span className='font-medium'>{newStock}</span></p>
+              </div>
+              <div className='flex justify-end w-full'>
+                <button 
+                  type='button'
+                  className={stockAction ? 'text-[14px] bg-primary text-white px-4 py-2 rounded-sm cursor-pointer hover:bg-primary-100' : 'hidden'}
+                >
+                  Confirm
+                </button>
+            </div>
+            </div>
           </div>
         </div>
       )}
