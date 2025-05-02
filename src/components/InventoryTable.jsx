@@ -29,8 +29,7 @@ const InventoryTable = () => {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState({ name: ''});
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [message, setMessage ] = useState([]);
-  const [error, setError] = useState([]);
+  const [message, setMessage ] = useState('');
   const [refreshKey, setRefreshKey] = useState(0); // Refresh trigger
   const [loading, setLoading] = useState(true);
   const [selectionModal, setSelectionModal] = useState(false);
@@ -38,6 +37,7 @@ const InventoryTable = () => {
   const [showUpdateStockModal, setShowUpdateStockModal] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [nameFilter, setNameFilter] = useState('');
+  const [responseStatus, setResponseStatus] = useState('');
 
 
   // New Product States
@@ -46,6 +46,7 @@ const InventoryTable = () => {
     price: '',
     stock_quantity: 0,
     category_id: '',
+    unit: '',
   });
 
 
@@ -53,18 +54,21 @@ const InventoryTable = () => {
     name: '',
     price: '',
     category_id: '',
+    unit: ''
   });
 
   const deleteProduct = async (e) => {
     e.preventDefault();
     try {
       const response = await api.patch(`/product/delete/${selectedRow.id}`);
-      setMessage(response.data.message);
+      setMessage(response.data?.message);
+      setResponseStatus(response.data?.status);
       setShowDeleteModal(false);
       setRefreshKey(prev => prev + 1);
       setShowSnackbar(true);
     } catch (error) {
-      setError(error.response.data.message);
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
       setShowDeleteModal(false);
       setShowSnackbar(true);
     }
@@ -76,24 +80,26 @@ const InventoryTable = () => {
 
     try {
       const response = await api.post('/product', newProduct);
-      setMessage(response.data.message);
+      setMessage(response.data?.message);
+      setResponseStatus(response.data?.status)
       setShowModal(false); 
       setRefreshKey(prev => prev + 1);
       setNewProduct({
         name: '',
         price: '',
         stock_quantity: 0,
-        category_id: ''});
-      console.log(newProduct);
+        category_id: '',
+        unit: ''});
       setShowSnackbar(true);
     } catch (error) {
-      setError(error.response.data.message);
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
       setNewProduct({
         name: '',
         price: '',
         stock_quantity: 0,
-        category_id: ''});
-      console.log(newProduct);
+        category_id: '', 
+        unit: ''});
       setShowModal(false);
       setShowSnackbar(true);
     }
@@ -106,7 +112,8 @@ const InventoryTable = () => {
       setData(response.data);
       setLoading(false);
     } catch (error) {
-      setError(response.data.error);
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
       setShowSnackbar(true);
     }
   };
@@ -133,18 +140,18 @@ const InventoryTable = () => {
     e.preventDefault();    
     try {
         if (!selectedRow || !selectedRow.id) {
-            console.error('No product selected for update');
             return;
         }
 
         const response = await api.put(`/product/${selectedRow.id}`, newDetails);
-        setMessage(response.data.message);
+        setMessage(response.data?.message);
+        setResponseStatus(response.data?.status);
         setShowUpdateModal(false);
         setShowSnackbar(true);
         setRefreshKey(prev => prev + 1);
     } catch (error) {
-        setError(error.response.data.error);
-        console.error('Failed to update product:', error);
+        setMessage(error.response?.data?.message);
+        setResponseStatus(error.response?.data?.status);
         setShowUpdateModal(false);
         setShowSnackbar(true);
     }
@@ -177,7 +184,8 @@ const InventoryTable = () => {
     setNewDetails({
       name: row.original.name,
       price: row.original.price,
-      category_id: row.original.category_id
+      category_id: row.original.category_id,
+      unit: row.original.unit
     });
     setShowUpdateModal(true);
     setSelectionModal(false);
@@ -243,13 +251,15 @@ const InventoryTable = () => {
 
     try {
       const response = await api.post('/category', newCategory);
-      setMessage(response.data.message);
+      setMessage(response.data?.message);
+      setResponseStatus(response.data?.status);
       setNewCategory({ name: '' });
       setShowCategoryModal(false);
       setShowSnackbar(true);
       setRefreshKey(prev => prev + 1);
     } catch (error) {
-      setError(error.response.data.message);
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
       setNewCategory({ name: '' });
       setShowCategoryModal(false);
       setShowSnackbar(true);
@@ -260,9 +270,10 @@ const InventoryTable = () => {
   const fetchCategories = async () => {
     try {
       const response = await api.get('/categories');
-      setCategories(response.data.data);
+      setCategories(response.data?.data);
     } catch (error) {
-      setError(error.response.data.error);
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
       setShowSnackbar(true);
     }
   }
@@ -271,15 +282,39 @@ const InventoryTable = () => {
   const deleteCategory = async (id) => {
     try {
       const response = await api.patch(`/category/disable/${id}`);
-      setMessage(response.data.message);
+      setMessage(response.data?.message);
+      setResponseStatus(response.data?.status);
       setShowCategoryModal(false);
       setRefreshKey(prev => prev + 1);
       setShowSnackbar(true);
     } catch (error) {
-      setError(error.message);
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
       setShowSnackbar(true);
     }
   }
+
+
+  const updateStock = async () => {
+    try {
+      const response = await api.put(`product/${selectRow.id}/update-stock`, {
+        stockAction,
+        toStock
+      }); 
+      setMessage(response.data?.message);
+      setResponseStatus(response.data?.status);
+      setShowUpdateStockModal(false);
+      setRefreshKey(prev => prev + 1);
+      setShowSnackbar(true);
+    } catch (error) {
+      setMessage(error.response?.data?.message);
+      console.log(error);
+      setResponseStatus(error.response?.data?.status)
+      setShowUpdateStockModal(false);
+      setShowSnackbar(true);
+    }
+  };
+
 
   // Define columns
   const columns = useMemo(
@@ -314,6 +349,12 @@ const InventoryTable = () => {
       {
         accessorKey: 'stock_quantity',
         header: 'Stock',
+        cell: info => info.getValue(),
+        size: 260,
+      },
+      {
+        accessorKey: 'unit',
+        header: 'Unit',
         cell: info => info.getValue(),
         size: 260,
       },
@@ -379,23 +420,13 @@ const InventoryTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const uniqueCategories = useMemo(() => {
-    const names = new Set();
-    categories.forEach((item) => {
-      if (item.category?.name) {
-        names.add(item.category.name);
-      }
-    });
-    return Array.from(names);
-  }, [categories]);
-
   return (
     <div className="w-full">
 
       {showSnackbar && (
         <Snackbar 
-          message={message.length > 0 ? message : error.length > 0 ? error : ''}
-          type={message.length > 0 ? 'success' : error.length > 0 ? 'error' : ''}
+          message={message && message}
+          type={responseStatus}
           onClose={() => setShowSnackbar(false)}
         />
       )}
@@ -558,7 +589,7 @@ const InventoryTable = () => {
                 <input 
                   id='productName'
                   value={selectedRow.name || ''}
-                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -567,7 +598,7 @@ const InventoryTable = () => {
                 <input 
                   id='category'
                   value={selectedRow.category.name || ''}
-                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -576,7 +607,7 @@ const InventoryTable = () => {
                 <input 
                   id='price'
                   value={selectedRow.price || ''}
-                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -585,7 +616,7 @@ const InventoryTable = () => {
                 <input 
                   id='added_by'
                   value={`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}
-                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -594,7 +625,16 @@ const InventoryTable = () => {
                 <input 
                   id='stock_quantity'
                   value={selectedRow.stock_quantity || 0}
-                  className='w-full text-[18px] bg-gray-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  readOnly 
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2'>
+                <label htmlFor="added_by" className='text-[14px] font-medium text-blue-800'>Unit</label>
+                <input 
+                  id='added_by'
+                  value={selectedRow.unit}
+                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -604,7 +644,7 @@ const InventoryTable = () => {
               <table className='w-full mt-5 border-collapse'>
                 <thead>
                   <tr className='text-left text-[13px] rounded-md'>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>User</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Updated By</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Field Changed</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Old Value</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>New Value</th>
@@ -672,9 +712,20 @@ const InventoryTable = () => {
                 <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱) <span className='text-red-700'>*</span></label>
                 <input
                   id='price'
-                  type='text'
+                  type='number'
                   name='price'
-                  value={newDetails.price || ''}
+                  value={newDetails.price || 0}
+                  onChange={handleNewDetailsChange}
+                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                />
+              </div>
+              <div className='flex flex-col w-full space-y-2 mx-auto'>
+                <label htmlFor="unit" className='text-[14px] font-medium text-blue-800'>Unit <span className='text-red-700'>*</span></label>
+                <input
+                  id='unit'
+                  type='text'
+                  name='unit'
+                  value={newDetails.unit || ''}
                   onChange={handleNewDetailsChange}
                   className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                 />
@@ -715,14 +766,14 @@ const InventoryTable = () => {
                 <button
                   type='button'
                   onClick={() => setStockAction('stock-in')} 
-                  className={`${stockAction == 'stock-in' ? 'bg-primary-100' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
-                  Stock-in
+                  className={`${stockAction == 'stock-in' ? 'bg-primary-100' : stockAction == 'stock-out' ? 'bg-gray-500' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
+                  Restock
                 </button>
                 <button
                   type='button' 
                   onClick={() => setStockAction('stock-out')} 
-                  className={`${stockAction == 'stock-out' ? 'bg-primary-100' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
-                  Stock-out
+                  className={`${stockAction == 'stock-out' ? 'bg-primary-100' : stockAction == 'stock-in' ? 'bg-gray-500' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
+                  Deduct
                 </button>
               </div>
               <div className='w-full'>
@@ -733,15 +784,18 @@ const InventoryTable = () => {
                   className={`${stockAction ? 'border border-gray-500 w-full px-4 py-2 rounded-sm' : 'hidden'}`}
                   placeholder={!stockAction ? '' : 'Enter Quantity'}
                 />
-              </div>
+              </div> 
               <div className={`${stockAction ? 'w-full mt-5 text-[14px] space-y-2' : 'hidden'}`}>
+                <p>Unit: <span className='font-medium'>{selectRow.unit}</span></p>
                 <p>Current Stock: <span className='font-medium'>{selectRow.stock_quantity}</span></p>
-                <p>New Stock: <span className='font-medium'>{newStock}</span></p>
+                <p>New Stock: <span className={`font-medium ${newStock < toStock ? 'text-red-600' : ''}`}>{newStock}</span></p>
               </div>
               <div className='flex justify-end w-full'>
                 <button 
                   type='button'
-                  className={stockAction ? 'text-[14px] bg-primary text-white px-4 py-2 rounded-sm cursor-pointer hover:bg-primary-100' : 'hidden'}
+                  onClick={updateStock}
+                  disabled={newStock < toStock}
+                  className={`${!stockAction && 'hidden'} ${newStock < toStock ? 'bg-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-100 cursor-pointer'} text-white px-3 py-2 rounded-sm text-[14px]`}
                 >
                   Confirm
                 </button>
@@ -999,6 +1053,16 @@ const InventoryTable = () => {
                       onChange={handleNewProductChange}
                       value={newProduct.stock_quantity}
                       min={1}
+                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                    />
+                  </div>
+                  <div className='flex flex-col w-full space-y-2 mx-auto'>
+                    <label htmlFor="unit" className='text-[14px] font-medium text-blue-800'>Unit <span className='text-red-700'>*</span></label>
+                    <input
+                      id='unit'
+                      name='unit'
+                      onChange={handleNewProductChange}
+                      value={newProduct.unit}
                       className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
                     />
                   </div>
