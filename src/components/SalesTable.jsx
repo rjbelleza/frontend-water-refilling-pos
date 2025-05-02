@@ -75,8 +75,8 @@ const SalesTable = () => {
         cell: ({ row }) => (
           <button 
             onClick={() => handleViewModal(row)}
-            className="text-white bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-sm px-3 py-2">
-            <Eye className='text-white' size={15} />
+            className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2">
+            <Eye className='text-white' size={17} />
           </button>
         ),
         size: 20,
@@ -113,19 +113,18 @@ const SalesTable = () => {
   return (
     <div className="w-full">
       {/* Search Controls */}
-      <div className="flex flex-col w-full sm:flex-row gap-2">
-        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
-          <div className='text-[23px] font-medium text-sky-800 w-[200px]'>Sales List</div>
-            <div className='flex justify-end gap-3 w-full'>
+      <div className="flex flex-col w-full sm:flex-row">
+        <div className='flex justify-between w-full p-3 pl-5 rounded-2xl'>
+            <div className='flex justify-end w-full'>
               <button 
-                className='flex items-center gap-2 h-[35px] bg-sky-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                   <Calendar size={13} />
                   Change Date Range
               </button>
               <div className='flex justify-end ml-2'>
                 <button 
                     onClick={() => navigate('/new-sales')}
-                    className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'
+                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'
                 >
                   <CirclePlus size={15} />
                   New Sale Entry

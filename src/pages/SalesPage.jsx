@@ -19,9 +19,9 @@ const SalesPage = () => {
             )}
             <div className="h-full w-full overflow-y-auto scrollbar-thin">
                 <Header />
-                <div className="flex flex-col w-full h-fit gap-5">
+                <div className="flex flex-col w-full h-fit">
                     <Breadcrumb />
-                    <div className="h-full w-full px-5">
+                    <div className="h-full w-full px-5 mb-5">
                         <SalesTable />
                     </div>
                     <Footer />

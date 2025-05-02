@@ -17,26 +17,26 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
 
     return (
         <div className="flex items-center min-h-[30px] justify-between gap-15 w-full border-l-5 border-1 border-gray-400 
-        border-l-blue-600 bg-white rounded-sm p-3">
+        border-l-primary bg-white rounded-sm p-3">
             <div>
                 <p className="font-medium text-[15px]">{product.name}</p>
                 <p className="text-[14px]">₱{product.price.toFixed(2)}</p>
             </div>
             <div className="flex items-center gap-3">  
                 <button type="button" onClick={() => add(product)}>
-                    <Plus size={28} className="p-1 bg-blue-800 text-white rounded-full cursor-pointer" />
+                    <Plus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
                 </button> 
                 <input 
                     id="quantity"
                     type="text" 
                     className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm" 
                     min="1"
-                    max={product.stock}
+                    max={product.stock_quantity}
                     value={quantity}
                     onChange={(e) => handleQuantityChange(e.target.value)}
                 />
                 <button type="button" onClick={() => minus(product)}>
-                    <Minus size={28} className="p-1 bg-blue-800 text-white rounded-full cursor-pointer" />
+                    <Minus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
                 </button>
                 <button 
                     type="button"

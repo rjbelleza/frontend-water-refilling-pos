@@ -30,7 +30,7 @@ const Header = () => {
                 onClick={() => setShowModal(true)}
                 className="text-white cursor-pointer px-4 py-2"
                 aria-label="Logout">
-                <LogOut />
+                <LogOut size={20} />
             </button>
 
             {/* Logout Confirmation Modal */}
