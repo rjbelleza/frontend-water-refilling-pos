@@ -10,6 +10,7 @@ import {
 import { format, parseISO, isSameDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Eye, X, CirclePlus, Printer } from 'lucide-react';
+import api from '../api/axios';
 
 const SalesTable = () => {
   // Data state
@@ -20,6 +21,8 @@ const SalesTable = () => {
   const [searchDate, setSearchDate] = useState('');
   const [viewModal, setViewModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,18 +31,39 @@ const SalesTable = () => {
     setViewModal(true);
   }
 
+  const capitalize = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const handleModalClose = (e) => {
     e.preventDefault();
     setViewModal(false);
   }
 
-  // Fetch data from recentTrans.json
   useEffect(() => {
-    fetch('/data/recentTrans.json')
-      .then(response => response.json())
-      .then(jsonData => setData(jsonData))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+    const fetchSaleProducts = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get('/sales', {
+          params: {
+            page: pagination.pageIndex + 1,
+            pageSize: pagination.pageSize,
+          },
+        });
+  
+        setData(res.data.data); // paginated sale product rows
+        setTotalRecords(res.data.total);
+      } catch (err) {
+        console.error('Failed to fetch sale products', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchSaleProducts();
+  }, [pagination.pageIndex, pagination.pageSize]);
+  
+  
 
   // Define columns
   const columns = useMemo(
@@ -52,7 +76,7 @@ const SalesTable = () => {
         accessorFn: (row, index) => index + 1,
       },
       {
-        accessorKey: 'dateTime',
+        accessorKey: 'created_at',
         header: 'Date & Time',
         cell: info => format(parseISO(info.getValue()), "MMM dd yyyy, hh:mm:ss a"),
         size: 290,
@@ -60,13 +84,13 @@ const SalesTable = () => {
       {
         accessorKey: 'customer',
         header: 'Customer',
-        cell: info => info.getValue(),
+        cell: info => capitalize(info.getValue()),
         size: 290,
       },
       {
-        accessorKey: 'totalAmount',
-        header: 'Total Amount',
-        cell: info => `₱${info.getValue().toFixed(2)}`,
+        accessorKey: 'total_amount',
+        header: 'Total Amount (₱)',
+        cell: info => `${info.getValue().toFixed(2)}`,
         size: 290,
       },
       {
@@ -155,11 +179,11 @@ const SalesTable = () => {
             <div className='flex gap-20 w-full px-5 mb-7'>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Customer</p>
-                <p className='text-[17px] font-bold text-blue-900'>{selectedRow.customer || ''}</p>
+                <p className='text-[17px] font-bold text-blue-900'>{capitalize(selectedRow.customer || '')}</p>
               </div>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Date & Time</p>
-                <p className='text-[17px] font-bold text-blue-900'>{format(parseISO(selectedRow.dateTime), "yyyy-MM-dd, hh:mm a")}</p>
+                <p className='text-[17px] font-bold text-blue-900'>{format(parseISO(selectedRow.created_at), "yyyy-MM-dd, hh:mm a")}</p>
               </div>
             </div>
             <div className='w-full px-5'>
@@ -170,37 +194,29 @@ const SalesTable = () => {
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Product</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Price (₱)</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Total Cost (₱)</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Subtotal (₱)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    [
-                      {product: "Product name", price: 0, quantity: 0, total: 0},
-                      {product: "Product name", price: 0, quantity: 0, total: 0},
-                      {product: "Product name", price: 0, quantity: 0, total: 0},
-                      {product: "Product name", price: 0, quantity: 0, total: 0},
-                      {product: "Product name", price: 0, quantity: 0, total: 0},
-
-                  ].map((data, index) => (
-                      <tr key={index} className='text-[13px]'>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.product}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.price.toFixed(2)}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.quantity}</td>
-                        <td className='px-3 py-2 border-b border-gray-200'>{data.total.toFixed(2)}</td>
-                      </tr>
-                    ))}
+                  {selectedRow.sale_products.map((product) => (
+                    <tr className='text-[13px]' key={product.id}>
+                    <td className='px-3 py-2 border-b border-gray-200'>{product.product.name}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{product.product.price}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{product.quantity}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{product.subtotal}</td>
+                </tr>
+                  ))}
                 </tbody>
               </table>
               <div className='flex justify-end w-full py-4'>
                 <div className='w-1/2 border border-gray-300 text-[14px] rounded-md'>
                   <div className='flex justify-between p-3'>
                     <p>Discount</p>
-                    <p>₱20.00</p>
+                    <p>- ₱{selectedRow.discount.toFixed(2)}</p>
                   </div>
                   <div className='flex justify-between p-3'>
                     <p>Total Amount</p>
-                    <p>₱{selectedRow.totalAmount.toFixed(2)}</p>
+                    <p>₱{selectedRow.total_amount.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
@@ -271,7 +287,7 @@ const SalesTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  No records found
+                  {loading ? 'Fetching records...' : 'No records found'}
                 </td>
               </tr>
             )}

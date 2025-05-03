@@ -327,10 +327,10 @@ const change = useMemo(() => {
                             </button>
                             <button
                                 type="button" 
-                                className={`${discountType === 'currency' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer`}
-                                onClick={() => setDiscountType('currency')}
+                                className={`${discountType === 'fixed' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer`}
+                                onClick={() => setDiscountType('fixed')}
                             >
-                                Currency
+                                Fixed
                             </button>
                         </div>
                         <input 
@@ -436,7 +436,7 @@ const change = useMemo(() => {
                                 <p><strong>Customer:</strong> {custName}</p>
                                 <p><strong>Total Items:</strong> {selectedProduct.reduce((sum, p) => sum + p.quantity, 0)}</p>
                                 <p><strong>Subtotal:</strong> ₱{totalAmount.toFixed(2)}</p>
-                                <p><strong>Discount:</strong> {discountType === 'percentage' ? `${discount}%` : `₱${discount.toFixed(2)}`}</p>
+                                <p><strong>Discount:</strong> {discountType === 'percentage' ? `${discount}%` : `₱${discount}`}</p>
                                 <p><strong>Total:</strong> ₱{discountedAmount.toFixed(2)}</p>
                                 <p><strong>Amount Paid:</strong> ₱{amountPaid.toFixed(2)}</p>
                                 <p><strong>Change:</strong> ₱{change.toFixed(2)}</p>
