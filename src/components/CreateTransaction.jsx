@@ -9,15 +9,15 @@ const CreateTransaction = () => {
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const [discount, setDiscount] = useState(0);
-    const [discountType, setDiscountType] = useState('percentage'); // 'percentage' or 'currency'
+    const [discountType, setDiscountType] = useState('percentage'); 
     const [placeOrder, setPlaceOrder] = useState(false);
     const [custName, setCustName] = useState('');
-    const [amountPaid, setAmountPaid] = useState(0);
     const [message, setMessage] = useState('');
     const [responseStatus, setResponseStatus] = useState('');
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [amountPaid, setAmountPaid] = useState(''); 
+    const [discount, setDiscount] = useState(''); 
 
     const fetchProducts = async () => {
         try {
@@ -98,26 +98,27 @@ const CreateTransaction = () => {
         );
     };
 
-    // Calculate total
-    const totalAmount = useMemo(() => 
-        selectedProduct.reduce((sum, product) => 
-            sum + (parseFloat(product.price) * (product.quantity || 1)), 
-        0
-    ), [selectedProduct]);
+const numericDiscount = discount === '' ? 0 : parseFloat(discount);
+const numericAmountPaid = amountPaid === '' ? 0 : parseFloat(amountPaid);
 
-    // Calculate discounted amount
-    const discountedAmount = useMemo(() => {
-        if (discountType === 'percentage') {
-            return totalAmount - (totalAmount * (discount / 100));
-        } else {
-            return totalAmount - discount;
-        }
-    }, [totalAmount, discount, discountType]);
+// Calculate total
+const totalAmount = useMemo(() => 
+    selectedProduct.reduce((sum, product) => 
+        sum + (parseFloat(product.price) * (product.quantity || 1)), 
+    0
+), [selectedProduct]);
 
-    // Calculate change
-    const change = useMemo(() => {
-        return amountPaid - discountedAmount;
-    }, [amountPaid, discountedAmount]);
+const discountedAmount = useMemo(() => {
+  if (discountType === 'percentage') {
+    return totalAmount - (totalAmount * (numericDiscount / 100));
+  } else {
+    return totalAmount - numericDiscount;
+  }
+}, [totalAmount, numericDiscount, discountType]);
+
+const change = useMemo(() => {
+  return numericAmountPaid - discountedAmount;
+}, [numericAmountPaid, discountedAmount]);
 
     // Filtered products
     const filteredProducts = useMemo(() => 
@@ -137,21 +138,20 @@ const CreateTransaction = () => {
     };
 
     const handleAmountPaid = (e) => {
-        const inputValue = e.target.value;
-        
-        // If input is empty or just a decimal point, set to empty string
-        if (inputValue === '' || inputValue === '.') {
-            setAmountPaid('');
-            return;
+        const value = e.target.value;
+        // Allow empty string or valid numbers
+        if (value === '' || !isNaN(value)) {
+          setAmountPaid(value);
         }
-        
-        const numericValue = parseFloat(inputValue);
-        
-        // If valid positive number
-        if (!isNaN(numericValue) && numericValue >= 0) {
-            setAmountPaid(numericValue);
-        } else {
-            setAmountPaid('');  // Clear for invalid inputs
+      };
+      
+    const handleDiscountChange = (e) => {
+        const value = e.target.value;
+        // Prevent multiple decimal points
+        if ((value.match(/\./g) || []).length > 1) return;
+        // Allow empty string or valid numbers
+        if (value === '' || !isNaN(value)) {
+            setDiscount(value);
         }
     };
 
@@ -175,7 +175,7 @@ const CreateTransaction = () => {
                 change: change
             };
 
-            const response = await api.post('/transactions', transactionData);
+            const response = await api.post('/sales', transactionData);
             
             // Reset form on success
             setSelectedProduct([]);
@@ -185,8 +185,8 @@ const CreateTransaction = () => {
             setPlaceOrder(false);
             
             // Show success message
-            setMessage("Transaction created successfully!");
-            setResponseStatus("success");
+            setMessage(response.data?.message);
+            setResponseStatus(response.data?.status);
             setShowSnackbar(true);
             
             // Refresh products to update stock
@@ -194,7 +194,7 @@ const CreateTransaction = () => {
             
         } catch (error) {
             setMessage(error.response?.data?.message || "Failed to create transaction");
-            setResponseStatus("error");
+            setResponseStatus(error.response?.data?.status);
             setShowSnackbar(true);
         }
     };
@@ -339,7 +339,7 @@ const CreateTransaction = () => {
                             max={discountType === 'percentage' ? 100 : totalAmount}
                             disabled={selectedProduct.length === 0}
                             value={discount}
-                            onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+                            onChange={handleDiscountChange}
                             className="border border-gray-400 text-[15px] min-h-[40px] rounded-sm px-5 py-1"
                         />
                     </div>
