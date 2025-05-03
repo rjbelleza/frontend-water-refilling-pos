@@ -136,6 +136,25 @@ const CreateTransaction = () => {
         );
     };
 
+    const handleAmountPaid = (e) => {
+        const inputValue = e.target.value;
+        
+        // If input is empty or just a decimal point, set to empty string
+        if (inputValue === '' || inputValue === '.') {
+            setAmountPaid('');
+            return;
+        }
+        
+        const numericValue = parseFloat(inputValue);
+        
+        // If valid positive number
+        if (!isNaN(numericValue) && numericValue >= 0) {
+            setAmountPaid(numericValue);
+        } else {
+            setAmountPaid('');  // Clear for invalid inputs
+        }
+    };
+
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
         
@@ -329,10 +348,10 @@ const CreateTransaction = () => {
                 <div className="flex flex-col gap-3 h-[60px] w-full mt-2 p-5 mb-15">
                     <div className="flex justify-between w-full">
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            Amount - Discount
+                            Discount Applied
                         </p>
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            ₱{discountedAmount.toFixed(2)}
+                            -₱{(totalAmount - discountedAmount).toFixed(2)}
                         </p>
                     </div>
                     <div className="flex justify-between w-full">
@@ -354,7 +373,7 @@ const CreateTransaction = () => {
                             min={0}
                             step="0.01"
                             disabled={selectedProduct.length === 0}
-                            onChange={(e) => setAmountPaid(parseFloat(e.target.value) || 0)}
+                            onChange={handleAmountPaid}
                             value={amountPaid}  
                             className={`min-h-[45px] text-[20px] font-medium bg-white w-full border-1 border-gray-700 rounded-sm px-5 ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-black'}`}
                         />
@@ -383,7 +402,7 @@ const CreateTransaction = () => {
                         type="submit"
                         disabled={!custName || amountPaid < discountedAmount || selectedProduct.length === 0}
                         className={`
-                            bg-primary w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md shadow-black transition-colors duration-200
+                            bg-primary w-full h-[50px] text-white text-[20px] font-medium rounded-md shadow-md disabled:cursor-not-allowed shadow-black transition-colors duration-200
                             ${!custName || amountPaid < discountedAmount || selectedProduct.length === 0
                             ? 'opacity-50 cursor-default' 
                             : 'cursor-pointer hover:bg-primary-100'}`}

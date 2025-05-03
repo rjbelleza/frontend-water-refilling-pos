@@ -32,10 +32,10 @@ const AdminSidemenu = () => {
         >
             <div className={`${!isClose ? 'justify-center' : 'justify-end'} flex w-full`}>
                 <button 
-                    className='cursor-pointer hover:bg-sky-200 rounded-md p-1 transition-all'
+                    className='cursor-pointer hover:bg-primary-100 rounded-md p-1 transition-all'
                     onClick={() => close()}
                 >
-                    <Menu size={30} className='text-primary' />
+                    <Menu size={30} className='text-primary hover:text-white' />
                 </button>
             </div>
             <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3 px-2`}>
