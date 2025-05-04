@@ -9,6 +9,9 @@ import {
 } from '@tanstack/react-table';
 import { CirclePlus, X, Calendar } from 'lucide-react';
 import { format, parseISO, isSameDay } from 'date-fns';
+import api from '../api/axios';
+import Snackbar from './Snackbar';
+import LoadingAnimation from './LoadingAnimation';
 
 const ExpensesTable = () => {
   // Data state
@@ -16,24 +19,68 @@ const ExpensesTable = () => {
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [showModal, setShowModal] = useState(false);
-
-
-  const stockColorCode = (stock_quantity) => {
-    if(stock_quantity <= 25) {
-        return 'bg-red-500'
-    } 
-    else if(stock_quantity > 25 && stock_quantity <= 50) {
-        return 'bg-yellow-500'
-    }
-    else {
-        return 'bg-green-500'
-    }
-  }
+  const [newExpense, setNewExpense] =useState({description: '', amount: ''});
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const [responseStatus, setResponseStatus] = useState('');
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setNewExpense(prev => ({
+      ...prev, [name]: name === 'amount' ? (value === '' ? null : Number(value)) : value
+    }));
+  };
+
+
+  const handleAddExpense = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await api.post('/expense', newExpense);
+      setMessage(response.data?.message);
+      setResponseStatus(response.data?.status);
+      setShowModal(false);
+      setNewExpense({description: '', amount: ''});
+      setRefreshKey(prev => prev + 1);
+      setShowSnackbar(true);
+    } catch (error) {
+      setMessage(error.response?.data?.message);
+      setResponseStatus(error.response?.data?.status);
+      setShowModal(false);
+      setShowSnackbar(true);
+    }
+  };
+
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await api.get('/expenses', {
+        params: {
+          page: pagination.pageIndex + 1,
+          pageSize: pagination.pageSize,
+        },
+      });
+      setData(response.data?.data);
+      setLoading(false);
+    } catch (error) {
+      setMessage(error.response?.data?.data?.message);
+      setResponseStatus(error.response?.data?.data?.status);
+      setShowSnackbar(true);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchExpenses();
+  }, [refreshKey]);
 
 
   // Define columns
@@ -47,7 +94,7 @@ const ExpensesTable = () => {
         accessorFn: (row, index) => index + 1,
       },
       {
-        accessorKey: 'date',
+        accessorKey: 'created_at',
         header: 'Date Paid',
         cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy"),
         size: 160,
@@ -65,7 +112,8 @@ const ExpensesTable = () => {
         size: 160,
       },
       {
-        accessorKey: 'user',
+        id: 'name',
+        accessorFn: row => `${row.user.fname} ${row.user.lname} - ${capitalize(row.user.role)}`,
         header: 'Recorded By',
         cell: info => info.getValue(),
         size: 160,
@@ -94,6 +142,15 @@ const ExpensesTable = () => {
     <div className="w-full">
 
       <div className='flex justify-between w-full'>
+
+        {showSnackbar && (
+          <Snackbar 
+            message={message && message}
+            type={responseStatus}
+            onClose={() => setShowSnackbar(false)}
+          />
+        )}
+
         <div className='flex justify-end w-full mb-3'>
             <div className='flex gap-3'>
               <button 
@@ -167,7 +224,7 @@ const ExpensesTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  No records found
+                  {loading ? <LoadingAnimation /> : 'No records found'}
                 </td>
               </tr>
             )}
@@ -243,7 +300,7 @@ const ExpensesTable = () => {
         </div>
       </div>
 
-      {/* Add product modal */}
+      {/* Add expense modal */}
       <div 
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
             className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
@@ -263,28 +320,37 @@ const ExpensesTable = () => {
                       </button>
                     </span>
                   </p>
-                <form className='flex flex-col gap-2 w-full p-5'>
-                    <label className='text-[14px] font-medium text-blue-800'>Description <span className='text-red-500'>*</span></label>
+                <form onSubmit={handleAddExpense} className='flex flex-col gap-2 w-full px-5'>
+                    <label htmlFor='description' className='text-[14px] font-medium text-blue-800'>Description <span className='text-red-500'>*</span></label>
                     <input 
+                        id='description'
                         type='text' 
+                        name='description'
+                        value={newExpense.description}
+                        onChange={handleChangeInput}
                         required
                         className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'                      
                     />
-                    <label className='text-[14px] font-medium text-blue-800'>Amount <span className='text-red-500'>*</span></label>
+                    <label htmlFor='amount' className='text-[14px] font-medium text-blue-800'>Amount <span className='text-red-500'>*</span></label>
                     <input 
+                        id='amount'
                         type='number' 
+                        name='amount'
+                        value={newExpense.amount}
+                        onChange={handleChangeInput}
                         required
                         className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'                      
                         min={0}
                     />
-                </form>
-                <div className='flex justify-end w-full px-5 mt-5'>
-                  <button
-                    className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
-                  >
-                    Submit
-                  </button>
-                </div>
+                    <div className='flex justify-end w-full px-5 mt-5'>
+                      <button
+                        type='submit'
+                        className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </form>
             </div>
         </div>
     </div>

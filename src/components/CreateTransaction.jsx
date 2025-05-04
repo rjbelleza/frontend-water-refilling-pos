@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import Snackbar from "./Snackbar";
-import { Search, Funnel, Store, X, Plus, Minus } from "lucide-react";
+import { Search, Funnel, Store, X, Plus, Minus, Printer } from "lucide-react";
 import api from "../api/axios";
 import LoadingAnimation from "./LoadingAnimation";
 
@@ -19,6 +19,11 @@ const CreateTransaction = () => {
     const [loading, setLoading] = useState(true);
     const [amountPaid, setAmountPaid] = useState(''); 
     const [discount, setDiscount] = useState(''); 
+
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0].replaceAll('-', '/');
+    const now = new Date();
+    const time = now.toLocaleTimeString();
 
     const fetchProducts = async () => {
         try {
@@ -177,13 +182,8 @@ const change = useMemo(() => {
             };
 
             const response = await api.post('/sales', transactionData);
-            
-            // Reset form on success
-            setSelectedProduct([]);
-            setCustName('');
-            setAmountPaid(0);
-            setDiscount(0);
-            setPlaceOrder(false);
+
+            setPlaceOrder(true);
             
             // Show success message
             setMessage(response.data?.message);
@@ -267,7 +267,7 @@ const change = useMemo(() => {
                     <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
                         {selectedProduct.length === 0 && 
                             <div className="flex justify-center items-center h-full w-full">
-                                <p className="text-[17px] font-medium text-gray-500 my-5">Select a product to create new transaction</p>
+                                <p className="text-[17px] font-medium text-gray-500 my-5">Select a product to create new sale</p>
                             </div>
                         }
 
@@ -324,7 +324,7 @@ const change = useMemo(() => {
                                 className={`${discountType === 'percentage' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer`}
                                 onClick={() => setDiscountType('percentage')}
                             >
-                                Percentage
+                                Percent
                             </button>
                             <button
                                 type="button" 
@@ -416,49 +416,53 @@ const change = useMemo(() => {
             {/* Place Order Modal */}
             {placeOrder && custName && (
                 <div
-                    className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-5 scrollbar-thin"
+                    className="fixed h-screen inset-0 flex flex-col items-center justify-center z-1000 overflow-y-auto pb-5 scrollbar-thin pt-10"
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
-                    <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
-                        <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-                            Confirm Order
-                            <span className="text-gray-800 hover:text-gray-600 font-normal">
-                                <button
-                                    onClick={() => setPlaceOrder(false)}
-                                    className="cursor-pointer"
-                                >
-                                    <X size={20} />
-                                </button>
-                            </span>
-                        </p>
-                        <div className="p-5">
-                            <h3 className="text-lg font-bold mb-4">Order Summary</h3>
-                            <div className="mb-4">
-                                <p><strong>Customer:</strong> {custName}</p>
-                                <p><strong>Total Items:</strong> {selectedProduct.reduce((sum, p) => sum + p.quantity, 0)}</p>
-                                <p><strong>Subtotal:</strong> ₱{totalAmount.toFixed(2)}</p>
-                                <p><strong>Discount:</strong> {discountType === 'percentage' ? `${discount}%` : `₱${discount}`}</p>
-                                <p><strong>Total:</strong> ₱{discountedAmount.toFixed(2)}</p>
-                                <p><strong>Amount Paid:</strong> ₱{amountPaid.toFixed(2)}</p>
-                                <p><strong>Change:</strong> ₱{change.toFixed(2)}</p>
-                            </div>
-                            <div className="flex justify-end gap-4 mt-6">
-                                <button
-                                    type="button"
-                                    onClick={() => setPlaceOrder(false)}
-                                    className="px-4 py-2 bg-gray-300 rounded-md"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handlePlaceOrder}
-                                    className="px-4 py-2 bg-primary text-white rounded-md"
-                                >
-                                    Confirm Order
-                                </button>
-                            </div>
+                    <div className="min-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
+                        <div className="flex flex-col items-center justify-center w-full">
+                            <p className="font-bold text-[17px] font-mono">{'receipt of sale'.toUpperCase()}</p>
+                            <p className="font-bold text-[20px] font-mono mb-3">{'aqua springs'.toUpperCase()}</p>
+                            <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
                         </div>
+                        <div className="w-full flex justify-between px-20 py-5 mb-7">
+                            <p className="font-mono">{formattedDate}</p>
+                            <p className="font-mono">{time}</p>
+                        </div>
+                        <div className="w-full grid grid-cols-3 px-5">
+                            <p className="font-mono">QTY</p>
+                            <p className="font-mono">Name</p>
+                            <p className="font-mono ml-7">AMT</p>
+                        </div>
+                        <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
+                        <div className="w-full px-5 py-5">
+                            {selectedProduct.map((p) => (
+                                <div key={p.id} className="w-full grid grid-cols-3 font-mono">
+                                  <p>{p.quantity}</p>
+                                  <p>{p.name}</p>
+                                  <p className="ml-7">₱{(parseFloat(p.price) * parseFloat(p.quantity)).toFixed(2)}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
+                        <div className="grid grid-cols-2 w-full p-5 mb-10">
+                            <p className="font-bold font-mono text-[15px]">Discount: </p>
+                            <p className="font-bold font-mono text-[15px] text-right">- ₱{(totalAmount - discountedAmount).toFixed(2)}</p>
+                            <p className="font-bold font-mono text-[20px]">Total: </p>
+                            <p className="font-bold font-mono text-[20px] text-right mb-5">₱{discountedAmount.toFixed(2)}</p>
+                            <p className="font-mono text-[15px]">CASH: </p>
+                            <p className="font-mono text-[15px] text-right">₱{Number(amountPaid).toFixed(2)}</p>
+                            <p className="font-mono text-[15px]">CHANGE: </p>
+                            <p className="font-mono text-[15px] text-right">₱{Number(change).toFixed(2)}</p>
+                        </div>
+                        <p className="text-center font-mono text-[20px]">THANK YOU!</p>
+                    </div>
+                    <div className="w-[600px] flex justify-end bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
+                        <button
+                            className="flex items-center text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
+                        >   
+                            <Printer size={17} /> Print
+                        </button>
                     </div>
                 </div>
             )}
@@ -484,10 +488,10 @@ const Card2 = ({ products, add, selectedProducts }) => {
                         <p className="flex font-bold xl:text-[15px] 2xl:text-[20px] py-3 px-4 rounded-sm border-b-1 border-dashed border-gray-500">
                             {product.name}
                         </p>
+                        <p className="xl:text-[15px] 2xl:text-[15px] text-white bg-primary px-4 py-1">
+                            {product.category.name}
+                        </p>
                         <div className='w-full h-full p-4'>
-                            <p className="xl:text-[15px] 2xl:text-[15px] text-gray-500">
-                                {typeof product.category === 'object' ? product.category.name : product.category}
-                            </p>
                             <p className='xl:text-[15px] 2xl:text-[18px]'>
                                 Stock: <span className={`${
                                     availableStock <= 0 ? 'text-red-500' : ''
