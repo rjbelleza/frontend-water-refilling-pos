@@ -459,9 +459,9 @@ const change = useMemo(() => {
                     </div>
                     <div className="w-[600px] flex justify-end bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
                         <button
-                            className="flex items-center text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
+                            className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
                         >   
-                            <Printer size={17} /> Print
+                            <Printer size={14} /> Print
                         </button>
                     </div>
                 </div>
