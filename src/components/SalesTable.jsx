@@ -11,6 +11,7 @@ import { format, parseISO, isSameDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Eye, X, CirclePlus, Printer } from 'lucide-react';
 import api from '../api/axios';
+import LoadingAnimation from './LoadingAnimation';
 
 const SalesTable = () => {
   // Data state
@@ -166,7 +167,7 @@ const SalesTable = () => {
         >
           <div className="min-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-              Sales Detail
+              Sale Detail
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
                   onClick={() => setViewModal(false)}
@@ -185,6 +186,10 @@ const SalesTable = () => {
                 <p className='text-[14px] font-medium text-blue-600'>Date & Time</p>
                 <p className='text-[17px] font-bold text-blue-900'>{format(parseISO(selectedRow.created_at), "yyyy-MM-dd, hh:mm a")}</p>
               </div>
+              <div className='space-y-2'>
+                <p className='text-[14px] font-medium text-blue-600'>Cashier</p>
+                <p className='text-[17px] font-bold text-blue-900'>{`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}</p>
+              </div>
             </div>
             <div className='w-full px-5'>
               <p className='text-[14px] font-medium text-blue-600 mb-2'>Order Summary</p>
@@ -194,6 +199,7 @@ const SalesTable = () => {
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Product</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Price (₱)</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Unit</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Subtotal (₱)</th>
                   </tr>
                 </thead>
@@ -203,6 +209,7 @@ const SalesTable = () => {
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.name}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.price}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.quantity}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{product.product.unit}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.subtotal}</td>
                 </tr>
                   ))}
@@ -287,7 +294,7 @@ const SalesTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  {loading ? 'Fetching records...' : 'No records found'}
+                  {loading ? <LoadingAnimation /> : 'No records found'}
                 </td>
               </tr>
             )}

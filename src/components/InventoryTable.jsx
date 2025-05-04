@@ -10,6 +10,7 @@ import {
 import { X, SquarePen, Search, CirclePlus, Eye, Tags, Trash2, Settings, Notebook, Package, Trash } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
+import LoadingAnimation from './LoadingAnimation';
 
 const InventoryTable = () => {
   // Data state
@@ -900,7 +901,7 @@ const InventoryTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  {loading ? 'Fetching Products...' : 'No product available'}
+                  {loading ? <LoadingAnimation /> : 'No product available'}
                 </td>
               </tr>
             )}

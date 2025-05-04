@@ -75,10 +75,10 @@ const NetProfitTable = () => {
     <div className="w-full">
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row gap-2">
-        <div className='flex justify-between w-full gap-20 mb-4'>
+        <div className='flex justify-between w-full gap-20 mb-3'>
             <div className='flex justify-end gap-3 w-full'>
               <button 
-                className='flex items-center gap-2 h-[35px] bg-sky-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                   <Calendar size={13} />
                   Change Date Range
               </button>

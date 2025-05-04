@@ -7,9 +7,10 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, Pencil, CirclePlus, Search } from 'lucide-react';
+import { X, Pencil, CirclePlus, Search, Trash } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import api from '../api/axios';
+import LoadingAnimation from './LoadingAnimation';
 
 const UsersTable = () => {
   // Data state
@@ -56,50 +57,56 @@ const UsersTable = () => {
         id: 'rowNumber',
         header: '#',
         cell: ({ row }) => row.index + 1,
-        size: 50,
+        size: 100,
         accessorFn: (row, index) => index + 1,
       },
       {
         accessorKey: 'fname',
         header: 'First Name',
         cell: info => info.getValue(),
-        size: 150,
+        size: 200,
       },
       {
         accessorKey: 'lname',
         header: 'Last Name',
         cell: info => info.getValue(),
-        size: 150,
+        size: 200,
       },
       {
         accessorKey: 'username',
         header: 'Username',
         cell: info => info.getValue(),
-        size: 150,
+        size: 200,
       },
       {
         accessorKey: 'role',
         header: 'Role',
         cell: info => capitalize(info.getValue()),
-        size: 100,
+        size: 150,
       },
       {
         accessorKey: 'created_at',
         header: 'Created At',
         cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy, hh:mm a"),
-        size: 200,
+        size: 250,
       },
       {
         id: 'actions',
-        header: 'Edit',
+        header: 'Action',
         cell: ({ row }) => (
              <div className='flex space-x-1'>
                  <button 
                      onClick={() => handleEditClick(row)}
-                     className="text-white bg-blue-700 hover:bg-blue-500 cursor-pointer rounded-sm px-2 py-2"
+                     className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"
                  >
                      <Pencil size={15} />
                  </button>
+                 <button 
+                    onClick={() => handleDeleteClick(row)}
+                    className="text-white bg-red-400 hover:bg-red-300 cursor-pointer rounded-sm px-2 py-2"
+                  >
+                    <Trash size={15} />
+                  </button>
              </div>
         ),
         size: 20,
@@ -128,8 +135,7 @@ const UsersTable = () => {
     <div className="w-full">
 
       <div className='flex justify-between w-full'>
-        <div className='flex justify-between w-full gap-20 border border-gray-300 p-3 pl-5 rounded-2xl mb-4'>
-          <div className='text-[23px] font-medium text-sky-800'>Users List</div>
+        <div className='flex justify-end w-full mb-3'>
             <div className='flex gap-3'>
               <div className='flex items-center h-[35px]'>
                   <Search className='mr-[-30px] text-gray-600' />
@@ -141,7 +147,7 @@ const UsersTable = () => {
               </div>
               <button 
                   onClick={() => setAddUserModal(true)}
-                  className='flex items-center gap-2 h-[35px] bg-blue-800 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-blue-700'>
+                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                   <CirclePlus size={13} />
                   Add User
               </button>
@@ -293,7 +299,7 @@ const UsersTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  {loading ? 'Fetching data...' : error ? 'Error fetching data!' : 'No records found'}
+                  {loading ? <LoadingAnimation /> : error ? 'Error fetching data!' : 'No records found'}
                 </td>
               </tr>
             )}

@@ -70,19 +70,19 @@ const AdminSidemenu = () => {
                         >
                             <Package />
                         </Link>
-        
-                        <Link to="/sales"
-                            className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
-                        >
-                            <Coins />
-                        </Link>
 
                         <Link to="/new-sales"
                             className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
                                     rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
                         >
                             <Wallet />
+                        </Link>
+
+                        <Link to="/sales"
+                            className="flex justify-center items-center gap-3 h-11 w-3/4 bg-primary rounded-full
+                                    rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5"
+                        >
+                            <Coins />
                         </Link>
         
                         <Link to="/expenses"
@@ -133,19 +133,8 @@ const SideMenuBtn = () => {
                                rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3">
                 <div className="h-full w-2 bg-primary-500"></div>
                 <div className="flex justify-between w-full">
-                    <p>Inventory</p>
+                    <p>Products</p>
                     <Package className='mr-3' />
-                </div>
-            </Link>
-
-            <Link to="/sales"
-                  className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
-                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3"
-            >
-                <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Sales</p>
-                    <Coins className='mr-3' />
                 </div>
             </Link>
 
@@ -157,6 +146,17 @@ const SideMenuBtn = () => {
                 <div className="flex justify-between w-full">
                     <p>New Sale</p>
                     <Wallet className='mr-3' />
+                </div>
+            </Link>
+
+            <Link to="/sales"
+                  className="flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full bg-primary rounded-tr-full
+                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3"
+            >
+                <div className="h-full w-2 bg-primary-500"></div>
+                <div className="flex justify-between w-full">
+                    <p>Sales</p>
+                    <Coins className='mr-3' />
                 </div>
             </Link>
 

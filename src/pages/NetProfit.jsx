@@ -12,7 +12,7 @@ const NetProfit = () => {
             <AdminSidemenu />
             <div className="h-full w-full overflow-y-auto scrollbar-thin">
                 <Header />
-                <div className="flex flex-col w-full h-fit gap-5">
+                <div className="flex flex-col w-full h-fit gap-3">
                     <Breadcrumb />
                     <div className="h-full w-full px-5">
                         <NetProfitTable />

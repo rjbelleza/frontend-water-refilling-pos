@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import Snackbar from "./Snackbar";
 import { Search, Funnel, Store, X, Plus, Minus } from "lucide-react";
 import api from "../api/axios";
+import LoadingAnimation from "./LoadingAnimation";
 
 const CreateTransaction = () => {
     const [products, setProducts] = useState([]);
@@ -243,7 +244,7 @@ const change = useMemo(() => {
 
                 {loading ? (
                     <div className="flex justify-center items-center h-full">
-                        <p>Loading products...</p>
+                        <LoadingAnimation />
                     </div>
                 ) : (
                     <div className="grid grid-cols-3 gap-8 w-full scrollbar-thin overflow-y-auto">
