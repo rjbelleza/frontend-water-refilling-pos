@@ -489,9 +489,9 @@ const Card2 = ({ products, add, selectedProducts }) => {
                                 {typeof product.category === 'object' ? product.category.name : product.category}
                             </p>
                             <p className='xl:text-[15px] 2xl:text-[18px]'>
-                                Stock: <span className={`font-bold ${
+                                Stock: <span className={`${
                                     availableStock <= 0 ? 'text-red-500' : ''
-                                }`}>{availableStock}</span>
+                                }`}><strong>{availableStock} </strong><span className="text-gray-700">{product.unit}</span></span>
                             </p>
                             <div className='flex justify-between items-center w-full mt-3'>
                                 <p className="font-medium xl:text-[17px] 2xl:text-[19px]">
