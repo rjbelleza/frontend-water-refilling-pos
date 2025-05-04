@@ -18,12 +18,12 @@ const SalesTable = () => {
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const [searchTerm, setSearchTerm] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [viewModal, setViewModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
+  const pageCount = Math.ceil(totalRecords / pagination.pageSize);
 
   const navigate = useNavigate();
 
@@ -72,10 +72,10 @@ const SalesTable = () => {
       {
         id: 'rowNumber',
         header: '#',
-        cell: ({ row }) => row.index + 1,
+        cell: ({ row }) => pagination.pageIndex * pagination.pageSize + row.index + 1,
         size: 50,
-        accessorFn: (row, index) => index + 1,
-      },
+      }
+      ,
       {
         accessorKey: 'created_at',
         header: 'Date & Time',
@@ -107,26 +107,26 @@ const SalesTable = () => {
         size: 20,
       },
     ],
-    []
+    [pagination.pageIndex, pagination.pageSize]
   );
 
-  // Filter data based on search term and date
   const filteredData = useMemo(() => {
     return data.filter(item => {
-      const matchesSearch = item.customer.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesDate = searchDate ? isSameDay(parseISO(item.dateTime), new Date(searchDate)) : true;
-      return matchesSearch && matchesDate;
+      return searchDate ? isSameDay(parseISO(item.dateTime), new Date(searchDate)) : true;
     });
-  }, [data, searchTerm, searchDate]);
+  }, [data, searchDate]);  
 
   // Initialize the table
   const table = useReactTable({
     data: filteredData,
     columns,
+    pageCount: pageCount,
     state: {
       sorting,
       pagination,
     },
+    manualPagination: true,
+    manualSorting: true,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -323,14 +323,11 @@ const SalesTable = () => {
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span> to{' '}
+              Showing <span className="font-medium">{pagination.pageIndex * pagination.pageSize + 1}</span> to{' '}
               <span className="font-medium">
-                {Math.min(
-                  (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                  filteredData.length
-                )}
+                {(pagination.pageIndex * pagination.pageSize + 1) + (table.getFilteredRowModel().rows.length - 1)}
               </span>{' '}
-              of <span className="font-medium">{filteredData.length}</span> results
+              of <span className="font-medium">{table.getFilteredRowModel().rows.length}</span> results
             </p>
           </div>
           <div>
