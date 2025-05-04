@@ -89,10 +89,22 @@ const SalesTable = () => {
         size: 290,
       },
       {
-        accessorKey: 'total_amount',
+        accessorKey: 'subtotal',
+        header: 'Subtotal (₱)',
+        cell: info => info.getValue(),
+        size: 190,
+      },
+      {
+        accessorKey: 'discount',
+        header: 'Discount (₱)',
+        cell: info => '- ' + info.getValue(),
+        size: 190,
+      },
+      {
+        accessorFn: row => (Number(row.subtotal) - Number(row.discount)).toFixed(2),
         header: 'Total Amount (₱)',
-        cell: info => `${info.getValue().toFixed(2)}`,
-        size: 290,
+        cell: info => `${info.getValue()}`,
+        size: 190,
       },
       {
         id: 'actions',
@@ -200,7 +212,7 @@ const SalesTable = () => {
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Price (₱)</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Unit</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Subtotal (₱)</th>
+                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Total Price (₱)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,7 +222,7 @@ const SalesTable = () => {
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.price}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.quantity}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.unit}</td>
-                    <td className='px-3 py-2 border-b border-gray-200'>{product.subtotal}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{product.total_price}</td>
                 </tr>
                   ))}
                 </tbody>
@@ -218,12 +230,16 @@ const SalesTable = () => {
               <div className='flex justify-end w-full py-4'>
                 <div className='w-1/2 border border-gray-300 text-[14px] rounded-md'>
                   <div className='flex justify-between p-3'>
+                    <p>Subtotal</p>
+                    <p>₱{selectedRow.subtotal}</p>
+                  </div>
+                  <div className='flex justify-between p-3'>
                     <p>Discount</p>
-                    <p>- ₱{selectedRow.discount.toFixed(2)}</p>
+                    <p>- ₱{selectedRow.discount}</p>
                   </div>
                   <div className='flex justify-between p-3'>
                     <p>Total Amount</p>
-                    <p>₱{selectedRow.total_amount.toFixed(2)}</p>
+                    <p>₱{(Number(selectedRow.subtotal) - Number(selectedRow.discount)).toFixed(2)}</p>
                   </div>
                 </div>
               </div>

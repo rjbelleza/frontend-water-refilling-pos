@@ -28,7 +28,7 @@ const CreateTransaction = () => {
     const fetchProducts = async () => {
         try {
             const response = await api.get('/products');
-            setProducts(response.data.data || response.data); // Handle different response structures
+            setProducts(response.data.data || response.data);
             setLoading(false);
         } catch (error) {
             setMessage(error.response?.data?.message || "Failed to fetch products");
@@ -41,7 +41,6 @@ const CreateTransaction = () => {
     const fetchCategories = async () => {
         try {
             const response = await api.get('/categories');
-            // Ensure categories is an array and has 'All' option
             const cats = response.data?.data || response.data || [];
             setCategories(['All', ...cats]);
         } catch (error) {
@@ -56,7 +55,6 @@ const CreateTransaction = () => {
         fetchCategories();
     }, []);
 
-    // Add product handler
     const handleAddProduct = (product) => {
         if (product.stock_quantity <= 0) return;
         
@@ -80,7 +78,6 @@ const CreateTransaction = () => {
             if (existingIndex !== -1) {
                 const existing = prev[existingIndex];
                 if (existing.quantity <= 1) {
-                    // Remove if quantity would go to 0
                     return prev.filter(p => p.id !== product.id);
                 }
                 return prev.map(p => 
@@ -104,29 +101,29 @@ const CreateTransaction = () => {
         );
     };
 
-const numericDiscount = discount === '' ? 0 : parseFloat(discount);
-const numericAmountPaid = amountPaid === '' ? 0 : parseFloat(amountPaid);
+    const numericDiscount = discount === '' ? 0 : parseFloat(discount);
+    const numericAmountPaid = amountPaid === '' ? 0 : parseFloat(amountPaid);
 
-// Calculate total
-const totalAmount = useMemo(() => 
-    selectedProduct.reduce((sum, product) => 
-        sum + (parseFloat(product.price) * (product.quantity || 1)), 
-    0
-), [selectedProduct]);
+    // Calculate subtotal (sum of all products without discount)
+    const subtotal = useMemo(() => 
+        selectedProduct.reduce((sum, product) => 
+            sum + (parseFloat(product.price) * (product.quantity || 1)), 
+        0
+    ), [selectedProduct]);
 
-const discountedAmount = useMemo(() => {
-  if (discountType === 'percentage') {
-    return totalAmount - (totalAmount * (numericDiscount / 100));
-  } else {
-    return totalAmount - numericDiscount;
-  }
-}, [totalAmount, numericDiscount, discountType]);
+    // Calculate discounted amount (for display only)
+    const discountedAmount = useMemo(() => {
+        if (discountType === 'percentage') {
+            return subtotal - (subtotal * (numericDiscount / 100));
+        } else {
+            return subtotal - numericDiscount;
+        }
+    }, [subtotal, numericDiscount, discountType]);
 
-const change = useMemo(() => {
-  return numericAmountPaid - discountedAmount;
-}, [numericAmountPaid, discountedAmount]);
+    const change = useMemo(() => {
+        return numericAmountPaid - discountedAmount;
+    }, [numericAmountPaid, discountedAmount]);
 
-    // Filtered products
     const filteredProducts = useMemo(() => 
         products.filter(product => {
             const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -145,17 +142,14 @@ const change = useMemo(() => {
 
     const handleAmountPaid = (e) => {
         const value = e.target.value;
-        // Allow empty string or valid numbers
         if (value === '' || !isNaN(value)) {
-          setAmountPaid(value);
+            setAmountPaid(value);
         }
-      };
+    };
       
     const handleDiscountChange = (e) => {
         const value = e.target.value;
-        // Prevent multiple decimal points
         if ((value.match(/\./g) || []).length > 1) return;
-        // Allow empty string or valid numbers
         if (value === '' || !isNaN(value)) {
             setDiscount(value);
         }
@@ -174,23 +168,19 @@ const change = useMemo(() => {
                     quantity: product.quantity,
                     price: product.price
                 })),
-                total_amount: totalAmount,
+                subtotal: subtotal, // Send subtotal instead of total_amount
                 discount: discount,
                 discount_type: discountType,
-                amount_paid: amountPaid,
-                change: change
+                amount_paid: amountPaid
+                // Let backend calculate total_amount and change
             };
 
             const response = await api.post('/sales', transactionData);
 
             setPlaceOrder(true);
-            
-            // Show success message
             setMessage(response.data?.message);
             setResponseStatus(response.data?.status);
             setShowSnackbar(true);
-            
-            // Refresh products to update stock
             fetchProducts();
             
         } catch (error) {
@@ -198,6 +188,14 @@ const change = useMemo(() => {
             setResponseStatus(error.response?.data?.status);
             setShowSnackbar(true);
         }
+    };
+
+    const resetSale = () => {
+        setPlaceOrder(false);
+        setCustName('');
+        setSelectedProduct([]);
+        setDiscount('');
+        setAmountPaid('');
     };
 
     return(
@@ -337,7 +335,7 @@ const change = useMemo(() => {
                         <input 
                             type="number"
                             min={0}
-                            max={discountType === 'percentage' ? 100 : totalAmount}
+                            max={discountType === 'percentage' ? 100 : subtotal}
                             disabled={selectedProduct.length === 0}
                             value={discount}
                             onChange={handleDiscountChange}
@@ -346,13 +344,21 @@ const change = useMemo(() => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-3 h-[60px] w-full mt-2 p-5 mb-15">
+                <div className="flex flex-col gap-3 h-[60px] w-full mt-2 p-5 mb-25">
+                    <div className="flex justify-between w-full">
+                        <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
+                            Subtotal
+                        </p>
+                        <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
+                            ₱{subtotal.toFixed(2)}
+                        </p>
+                    </div>
                     <div className="flex justify-between w-full">
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
                             Discount Applied
                         </p>
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            -₱{(totalAmount - discountedAmount).toFixed(2)}
+                            -₱{(subtotal - discountedAmount).toFixed(2)}
                         </p>
                     </div>
                     <div className="flex justify-between w-full">
@@ -416,7 +422,7 @@ const change = useMemo(() => {
             {/* Place Order Modal */}
             {placeOrder && custName && (
                 <div
-                    className="fixed h-screen inset-0 flex flex-col items-center justify-center z-1000 overflow-y-auto pb-5 scrollbar-thin pt-10"
+                    className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-5 scrollbar-thin pt-10"
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
                     <div className="min-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
@@ -446,8 +452,10 @@ const change = useMemo(() => {
                         </div>
                         <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
                         <div className="grid grid-cols-2 w-full p-5 mb-10">
+                            <p className="font-bold font-mono text-[15px]">Subtotal: </p>
+                            <p className="font-bold font-mono text-[15px] text-right">₱{subtotal.toFixed(2)}</p>
                             <p className="font-bold font-mono text-[15px]">Discount: </p>
-                            <p className="font-bold font-mono text-[15px] text-right">- ₱{(totalAmount - discountedAmount).toFixed(2)}</p>
+                            <p className="font-bold font-mono text-[15px] text-right">- ₱{(subtotal - discountedAmount).toFixed(2)}</p>
                             <p className="font-bold font-mono text-[20px]">Total: </p>
                             <p className="font-bold font-mono text-[20px] text-right mb-5">₱{discountedAmount.toFixed(2)}</p>
                             <p className="font-mono text-[15px]">CASH: </p>
@@ -459,6 +467,7 @@ const change = useMemo(() => {
                     </div>
                     <div className="w-[600px] flex justify-end bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
                         <button
+                            onClick={resetSale}
                             className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
                         >   
                             <Printer size={14} /> Print
