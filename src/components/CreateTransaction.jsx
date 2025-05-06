@@ -12,7 +12,7 @@ const CreateTransaction = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [discountType, setDiscountType] = useState('percentage'); 
     const [placeOrder, setPlaceOrder] = useState(false);
-    const [custName, setCustName] = useState('');
+    const [custName, setCustName] = useState('Walk-in');
     const [message, setMessage] = useState('');
     const [responseStatus, setResponseStatus] = useState('');
     const [showSnackbar, setShowSnackbar] = useState(false);
@@ -199,7 +199,7 @@ const CreateTransaction = () => {
     };
 
     return(
-        <div className="grid grid-cols-6 gap-10 h-fit w-full pb-3">
+        <div className="grid grid-cols-6 gap-10 w-full pb-3">
             {showSnackbar && (
                 <Snackbar 
                     message={message}
@@ -209,8 +209,8 @@ const CreateTransaction = () => {
             )}
 
             {/* Products Section */}
-            <div className="col-span-3 flex flex-col items-center h-full scrollbar-thin">
-                <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-0 mb-10 rounded-lg">
+            <div className="col-span-3 flex flex-col items-center h-full">
+                <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-20 mb-10 rounded-lg">
                     <p className="font-bold text-[15px] text-primary">AVAILABLE PRODUCTS</p>
                     <div className="flex gap-2">
                         <div className="relative">
@@ -245,7 +245,7 @@ const CreateTransaction = () => {
                         <LoadingAnimation />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-3 gap-8 w-full scrollbar-thin overflow-y-auto">
+                    <div className="grid grid-cols-3 gap-8 w-full scrollbar-thin overflow-y-auto sticky top-45">
                         <Card2 
                             products={filteredProducts} 
                             add={handleAddProduct} 

@@ -32,16 +32,16 @@ const AdminDashboard = () => {
                 <div className="flex flex-col justify-between w-full h-fit gap-5">
                     <Breadcrumb />
                     <div className="grid grid-cols-4 w-full px-5 gap-5 mb-3">
-                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-blue-800 py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
+                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
                             <Calendar size={15} /> Last Day
                         </button>
-                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-blue-800 py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
+                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
                             <Calendar size={15} /> Last Week
                         </button>
-                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-blue-800 py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
+                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
                             <Calendar size={15} /> Last Month
                         </button>
-                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-blue-800 py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
+                        <button className="flex items-center justify-center gap-2 bg-gray-400 focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer">
                             <Calendar size={15} /> Last Year
                         </button>
                     </div>
