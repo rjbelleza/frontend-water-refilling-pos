@@ -296,7 +296,9 @@ const InventoryTable = () => {
   }
 
 
-  const updateStock = async () => {
+  const updateStock = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await api.put(`product/${selectRow.id}/update-stock`, {
         stockAction,
@@ -307,6 +309,8 @@ const InventoryTable = () => {
       setShowUpdateStockModal(false);
       setRefreshKey(prev => prev + 1);
       setShowSnackbar(true);
+      setToStock(0);
+      setStockAction('');
     } catch (error) {
       setMessage(error.response?.data?.message);
       console.log(error);
@@ -749,7 +753,7 @@ const InventoryTable = () => {
           className="fixed inset-0 flex items-center justify-center z-1000"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
-          <div className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+          <form onSubmit={updateStock} className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Update Stock
               <span className="text-gray-800 hover:text-gray-600 font-normal">
@@ -786,15 +790,17 @@ const InventoryTable = () => {
                   placeholder={!stockAction ? '' : 'Enter Quantity'}
                 />
               </div> 
-              <div className={`${stockAction ? 'w-full mt-5 text-[14px] space-y-2' : 'hidden'}`}>
-                <p>Unit: <span className='font-medium'>{selectRow.unit}</span></p>
-                <p>Current Stock: <span className='font-medium'>{selectRow.stock_quantity}</span></p>
-                <p>New Stock: <span className={`font-medium ${newStock < toStock ? 'text-red-600' : ''}`}>{newStock}</span></p>
+              <div className={`${stockAction ? 'grid grid-cols-2 w-full mt-5 mb-3 text-[14px] space-y-2' : 'hidden'}`}>
+                <p>Unit:</p>
+                <p className='font-medium text-right'>{selectRow.unit}</p>
+                <p>Current Stock:</p>
+                <p className='font-medium text-right'>{selectRow.stock_quantity}</p>
+                <p className='font-bold text-[20px]'>New Stock:</p>
+                <p className={`font-bold text-[20px] text-right ${newStock < toStock ? 'text-red-600' : ''}`}>{newStock}</p>
               </div>
               <div className='flex justify-end w-full'>
                 <button 
-                  type='button'
-                  onClick={updateStock}
+                  type='submit'
                   disabled={newStock < toStock}
                   className={`${!stockAction && 'hidden'} ${newStock < toStock ? 'bg-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-100 cursor-pointer'} text-white px-3 py-2 rounded-sm text-[14px]`}
                 >
@@ -802,7 +808,7 @@ const InventoryTable = () => {
                 </button>
             </div>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
