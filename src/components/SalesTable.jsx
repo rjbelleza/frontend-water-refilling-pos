@@ -96,19 +96,23 @@ const SalesTable = () => {
       {
         accessorKey: 'subtotal',
         header: 'Subtotal (₱)',
-        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => `${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 190,
       },
       {
         accessorKey: 'discount',
         header: 'Discount (₱)',
-        cell: info => `- ${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => `- ${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 190,
       },
       {
-        accessorFn: row => (Number(row.subtotal) - Number(row.discount)).toFixed(2),
+        accessorFn: row => Number(row.subtotal) - Number(row.discount),
         header: 'Total Amount (₱)',
-        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => 
+          Number(info.getValue()).toLocaleString('en-PH', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }),
         size: 190,
       },
       {
@@ -204,18 +208,18 @@ const SalesTable = () => {
                 </button>
               </span>
             </p>
-            <div className='flex gap-20 w-full px-5 mb-7'>
+            <div className='flex gap-20 w-full px-5 mb-10'>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Customer</p>
-                <p className='text-[17px] font-bold text-blue-900'>{capitalize(selectedRow.customer || '')}</p>
+                <p className='text-[17px] font-bold text-primary'>{capitalize(selectedRow.customer || '')}</p>
               </div>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Date & Time</p>
-                <p className='text-[17px] font-bold text-blue-900'>{format(parseISO(selectedRow.created_at), "yyyy-MM-dd, hh:mm a")}</p>
+                <p className='text-[17px] font-bold text-primary'>{format(parseISO(selectedRow.created_at), "MMM dd ,yyyy 'at' hh:mm a")}</p>
               </div>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Cashier</p>
-                <p className='text-[17px] font-bold text-blue-900'>{`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}</p>
+                <p className='text-[17px] font-bold text-primary'>{`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}</p>
               </div>
             </div>
             <div className='w-full px-5'>
@@ -234,10 +238,10 @@ const SalesTable = () => {
                   {selectedRow.sale_products.map((product) => (
                     <tr className='text-[13px]' key={product.id}>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.name}</td>
-                    <td className='px-3 py-2 border-b border-gray-200'>{product.product.price}</td>
-                    <td className='px-3 py-2 border-b border-gray-200'>{product.quantity}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{Number(product.product.price).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{Number(product.quantity).toLocaleString('en-PH')}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.unit}</td>
-                    <td className='px-3 py-2 border-b border-gray-200'>{product.total_price}</td>
+                    <td className='px-3 py-2 border-b border-gray-200'>{Number(product.total_price).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 </tr>
                   ))}
                 </tbody>
@@ -246,21 +250,21 @@ const SalesTable = () => {
                 <div className='w-1/2 border border-gray-300 text-[14px] rounded-md'>
                   <div className='flex justify-between p-3'>
                     <p>Subtotal</p>
-                    <p>₱{selectedRow.subtotal}</p>
+                    <p>₱{Number(selectedRow.subtotal).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
                   <div className='flex justify-between p-3'>
                     <p>Discount</p>
-                    <p>- ₱{selectedRow.discount}</p>
+                    <p>- ₱{Number(selectedRow.discount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
                   <div className='flex justify-between p-3'>
                     <p>Total Amount</p>
-                    <p>₱{(Number(selectedRow.subtotal) - Number(selectedRow.discount)).toFixed(2)}</p>
+                    <p>₱{(Number(selectedRow.subtotal) - Number(selectedRow.discount)).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
                 </div>
               </div>
             </div>
             <div className='flex justify-end w-full px-5'>
-              <button className='flex items-center gap-1 text-[14px] text-white bg-blue-900 rounded-md px-4 py-2'>
+              <button className='flex items-center gap-1 text-[14px] text-white bg-primary rounded-md px-4 py-2'>
                 <Printer size={14} />
                 Print
               </button>

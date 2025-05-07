@@ -116,7 +116,7 @@ const ExpensesTable = () => {
       {
         accessorKey: 'amount',
         header: 'Amount (₱)',
-        cell: info => info.getValue()?.toLocaleString('en-PH', { 
+        cell: info => Number(info.getValue()).toLocaleString('en-PH', { 
           minimumFractionDigits: 2, 
           maximumFractionDigits: 2 
         }) || '0.00',

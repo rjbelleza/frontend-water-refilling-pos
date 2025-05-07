@@ -87,19 +87,19 @@ const NetProfitTable = () => {
       {
         accessorKey: 'total_sales',
         header: 'Sales (₱)',
-        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => `${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 290,
       },
       {
         accessorKey: 'total_expenses',
         header: 'Expenses (₱)',
-        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => `${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 290,
       },
       {
         accessorKey: 'net_profit',
         header: 'Net Profit (₱)',
-        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => `${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 290,
       },
     ],
