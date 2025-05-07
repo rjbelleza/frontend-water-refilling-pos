@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, Eye, X, CirclePlus, Printer } from 'lucide-react';
 import api from '../api/axios';
 import LoadingAnimation from './LoadingAnimation';
+import Snackbar from './Snackbar';
 
 const SalesTable = () => {
   // Data state
@@ -23,6 +24,8 @@ const SalesTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showDateRange, setShowDateRange] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const pageCount = Math.ceil(totalRecords / pagination.pageSize);
 
   const navigate = useNavigate();
@@ -55,7 +58,9 @@ const SalesTable = () => {
         setData(res.data.data); // paginated sale product rows
         setTotalRecords(res.data.total);
       } catch (err) {
-        console.error('Failed to fetch sale products', err);
+        setMessage(err.response?.data?.message);
+        setResponseStatus(err.response?.data?.status);
+        setShowSnackbar(true);
       } finally {
         setLoading(false);
       }
@@ -91,19 +96,19 @@ const SalesTable = () => {
       {
         accessorKey: 'subtotal',
         header: 'Subtotal (₱)',
-        cell: info => info.getValue(),
+        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 190,
       },
       {
         accessorKey: 'discount',
         header: 'Discount (₱)',
-        cell: info => '- ' + info.getValue(),
+        cell: info => `- ${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 190,
       },
       {
         accessorFn: row => (Number(row.subtotal) - Number(row.discount)).toFixed(2),
         header: 'Total Amount (₱)',
-        cell: info => `${info.getValue()}`,
+        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 190,
       },
       {
@@ -149,11 +154,21 @@ const SalesTable = () => {
 
   return (
     <div className="w-full">
+
+      {showSnackbar && (
+          <Snackbar 
+            message={message && message}
+            type={responseStatus}
+            onClose={() => setShowSnackbar(false)}
+          />
+        )}
+
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">
         <div className='flex justify-between w-full p-3 pl-5 rounded-2xl'>
             <div className='flex justify-end w-full'>
               <button 
+                onClick={() => setShowDateRange(true)}
                 className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                   <Calendar size={13} />
                   Change Date Range
@@ -254,7 +269,55 @@ const SalesTable = () => {
         </div>
       )}
 
-      {/* Tablei */}
+      {/* Date Range Modal */}
+      {showDateRange && (
+        <div 
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
+        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
+            ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <form
+              className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+              ${showDateRange ? 'scale-100' : 'scale-95'}`
+          }>
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
+             Date Range
+             <span className="text-gray-800 hover:text-gray-600 font-normal">
+               <button
+                 type='button'
+                 onClick={() => setShowDateRange(false)}
+                 className="cursor-pointer"
+               >
+                 <X size={20} />
+               </button>
+             </span>
+           </p>
+           <div className='p-5 space-y-5 mb-5'>
+            <label htmlFor='start_date' className='text-[14px] font-medium'>Start Date</label>
+            <input 
+              id='start_date'
+              name='start_date'
+              type='date'
+              className='w-full border border-primary rounded-sm px-3 py-1'
+            />
+            <label htmlFor='end_date' className='text-[14px] font-medium'>End Date</label>
+            <input 
+              id='end_date'
+              name='end_date'
+              type='date'
+              className='w-full border border-primary rounded-sm px-3 py-1'
+            />
+           </div>
+           <button 
+            type='submit'
+            className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
+              CONFIRM
+           </button>
+          </form>
+        </div>
+      )}
+
+      {/* Table */}
       <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 border-collapse">
           <thead className="bg-gray-200 sticky top-0">

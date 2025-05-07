@@ -438,7 +438,7 @@ const InventoryTable = () => {
 
       <div className='flex justify-between'>
         <div></div>
-          <div className='w-fit pb-5'>
+          <div className='w-fit pb-3'>
             <div className='flex gap-1'>
                 <div className='flex items-center h-[35px]'>
                     <div className='relative'>
@@ -521,7 +521,7 @@ const InventoryTable = () => {
       >
          <form
              onSubmit={CreateCategory} 
-             className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+             className={`min-w-[400px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
              ${showCategoryModal ? 'scale-100' : 'scale-95'}`
          }>
            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
@@ -541,7 +541,7 @@ const InventoryTable = () => {
                 {categories.length < 1 ? (
                   <p className='w-full text-center mb-10'>No categories added</p>
                 ) : categories.map((category) => (
-                  <div key={category.id} className='flex justify-between items-center w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-2'>
+                  <div key={category.id} className='flex justify-between items-center w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-2'>
                     {category.name}
                     <Trash2 onClick={() => deleteCategory(category.id)} size={20} className='cursor-pointer hover:text-gray-700' />
                   </div>
@@ -553,18 +553,18 @@ const InventoryTable = () => {
                 value={newCategory.name}
                 onChange={newCategoryChange}
                 placeholder='Add category'
-                className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'
+                className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
                 required
               />
            </div>
-           <div className='flex justify-end w-full px-5 mt-5'>
+           <div className='flex w-full px-5 mt-5'>
               <button
                 type='submit'
-                className={`text-white px-3 py-2 text-[13px] rounded-sm
+                className={`text-white px-3 py-2 text-[15px] rounded-sm w-full font-medium
                             ${newCategory.name == '' ? 'bg-gray-500' : 'bg-blue-900 hover:bg-blue-800 cursor-pointer'}`}
                 disabled={newCategory.name == ''}
               >
-                Submit
+                SUBMIT
               </button>
            </div>
           </form>
@@ -588,13 +588,13 @@ const InventoryTable = () => {
                 </button>
               </span>
             </p>
-            <div className='grid grid-cols-2 gap-8 w-full px-5 mb-10'>
+            <div className='grid grid-cols-2 gap-8 w-full px-5 mb-10 text-white'>
               <div className='flex flex-col w-full space-y-2'>
                 <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name</label>
                 <input 
                   id='productName'
                   value={selectedRow.name || ''}
-                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -603,7 +603,7 @@ const InventoryTable = () => {
                 <input 
                   id='category'
                   value={selectedRow.category.name || ''}
-                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -612,7 +612,7 @@ const InventoryTable = () => {
                 <input 
                   id='price'
                   value={selectedRow.price || ''}
-                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -621,7 +621,7 @@ const InventoryTable = () => {
                 <input 
                   id='added_by'
                   value={`${selectedRow.user.fname} ${selectedRow.user.lname} - ${capitalize(selectedRow.user.role)}`}
-                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -630,7 +630,7 @@ const InventoryTable = () => {
                 <input 
                   id='stock_quantity'
                   value={selectedRow.stock_quantity || 0}
-                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -639,7 +639,7 @@ const InventoryTable = () => {
                 <input 
                   id='added_by'
                   value={selectedRow.unit}
-                  className='w-full text-[18px] bg-blue-200 px-3 py-1 rounded-sm outline-none'
+                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
               </div>
@@ -696,7 +696,7 @@ const InventoryTable = () => {
                   name='name'
                   value={newDetails.name || ''}
                   onChange={handleNewDetailsChange}
-                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
@@ -706,7 +706,7 @@ const InventoryTable = () => {
                   name='category_id'
                   value={newDetails.category_id || ''}
                   onChange={handleNewDetailsChange}
-                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                 >
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>{category.name}</option>
@@ -721,7 +721,7 @@ const InventoryTable = () => {
                   name='price'
                   value={newDetails.price || 0}
                   onChange={handleNewDetailsChange}
-                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
@@ -732,15 +732,15 @@ const InventoryTable = () => {
                   name='unit'
                   value={newDetails.unit || ''}
                   onChange={handleNewDetailsChange}
-                  className='w-full text-[17px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                 />
               </div>
             </div>
-            <div className='flex justify-end w-full space-x-2 px-5'>
+            <div className='flex w-full space-x-2 px-5'>
               <button 
                 type='submit'
-                className='text-[12px] text-white bg-primary rounded-md px-3 py-2 cursor-pointer hover:bg-primary-100'>
-                Save Changes
+                className='text-[15px] w-full font-medium text-white bg-primary rounded-sm px-3 py-2 cursor-pointer hover:bg-primary-100'>
+                SAVE CHANGES
               </button>
             </div>
           </form>
@@ -840,11 +840,11 @@ const InventoryTable = () => {
                 <p className='text-[20px] text-blue-700 font-bold mb-3'>"{selectedRow.name || ''}"</p>
               </div>
             </div>
-            <div className='flex justify-end w-full text-[12px] space-x-2 px-5'>
+            <div className='flex w-full text-[12px] space-x-2 px-5'>
               <button
                 type='submit' 
-                className='text-white bg-blue-950 px-4 py-2 rounded-md cursor-pointer hover:bg-blue-900'>
-                Confirm
+                className='text-white text-[15px] font-medium w-full bg-primary px-4 py-2 rounded-sm cursor-pointer hover:bg-primary-100'>
+                CONFIRM
               </button>
             </div>
           </form>
@@ -986,7 +986,7 @@ const InventoryTable = () => {
       {/* Add product modal */}
       <div 
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
-            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
+            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 pt-20 pb-5 scrollbar-thin overflow-y-auto
                 ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
             <form 
@@ -1008,18 +1008,18 @@ const InventoryTable = () => {
                 </p>
                 <div className='flex flex-col gap-7 p-5 mb-5'>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="product_name" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
+                    <label htmlFor="product_name" className='text-[15px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                     <input
                       id='product_name'
                       name='name'
                       type='text'
                       onChange={handleNewProductChange}
                       value={newProduct.name}
-                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                     />
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price <span className='text-red-700'>*</span></label>
+                    <label htmlFor="price" className='text-[15px] font-medium text-blue-800'>Price <span className='text-red-700'>*</span></label>
                     <input
                       id='price'
                       name='price'
@@ -1028,17 +1028,17 @@ const InventoryTable = () => {
                       onChange={handleNewProductChange}
                       value={newProduct.price}
                       min={1}
-                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                     />
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
+                    <label htmlFor="category" className='text-[15px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
                     <select 
                       onChange={handleNewProductChange}
                       value={newProduct.category_id}
                       id='category' 
                       name='category_id'
-                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                     >
                       <option value=''>-- Select Category --</option> 
                       {categories.map((category) => (
@@ -1052,7 +1052,7 @@ const InventoryTable = () => {
                     </select>
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="stock" className='text-[14px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
+                    <label htmlFor="stock" className='text-[15px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
                     <input
                       id='stock'
                       type='number'
@@ -1060,25 +1060,28 @@ const InventoryTable = () => {
                       onChange={handleNewProductChange}
                       value={newProduct.stock_quantity}
                       min={1}
-                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                     />
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="unit" className='text-[14px] font-medium text-blue-800'>Unit <span className='text-red-700'>*</span></label>
+                    <label htmlFor="unit" className='text-[15px] font-medium text-blue-800'>Unit <span className='text-red-700'>*</span></label>
                     <input
                       id='unit'
                       name='unit'
                       onChange={handleNewProductChange}
                       value={newProduct.unit}
-                      className='w-full text-[13px] border border-gray-400 px-3 py-1 rounded-sm focus:outline-gray-500'
+                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                     />
                   </div>
                 </div>
-                <div className='flex justify-end w-full px-5'>
+                <div className='flex w-full px-5'>
                   <button 
                     type='submit'
-                    className='text-[12px] text-white bg-blue-900 px-4 py-2 rounded-sm hover:bg-blue-800 cursor-pointer'>
-                    Add Product
+                    disabled={((!newProduct.name && !newProduct.price) && (!newProduct.category_id && !newProduct.unit)) && !newProduct.stock_quantity}
+                    className='text-[15px] text-white w-full bg-primary px-4 py-3 rounded-sm hover:bg-primary-100 cursor-pointer font-medium
+                                disabled:bg-gray-500 disabled:cursor-not-allowed
+                    '>
+                    ADD PRODUCT
                   </button>
                 </div>
             </form>

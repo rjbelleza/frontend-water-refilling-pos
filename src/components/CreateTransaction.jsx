@@ -237,6 +237,7 @@ const CreateTransaction = () => {
                                 ))}
                             </select>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -425,7 +426,7 @@ const CreateTransaction = () => {
                     className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-5 scrollbar-thin pt-10"
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
-                    <div className="min-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
+                    <div className="min-w-[600px] max-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
                         <div className="flex flex-col items-center justify-center w-full">
                             <p className="font-bold text-[17px] font-mono">{'receipt of sale'.toUpperCase()}</p>
                             <p className="font-bold text-[20px] font-mono mb-3">{'aqua springs'.toUpperCase()}</p>

@@ -8,21 +8,6 @@ import SalesGraph from '../components/SalesGraph';
 import Footer from "../layouts/Footer";
 
 const AdminDashboard = () => {
-    const sales = [
-        { id: 1, customer: "Tagoloan Community College", total: 27.99, time: "2025-03-22 10:30 AM" },
-        { id: 2, customer: "Walk In", total: 45.50, time: "2025-03-22 11:15 AM" },
-        { id: 3, customer: "St. Paul Hospital", total: 32.75, time: "2025-03-22 12:00 PM" },
-        { id: 4, customer: "Walk In", total: 18.20, time: "2025-03-22 12:45 PM" },
-        { id: 5, customer: "Walk In", total: 18.20, time: "2025-03-22 12:45 PM" },
-        { id: 6, customer: "Mr. DIY", total: 18.20, time: "2025-03-22 12:45 PM" },
-      ];
-
-    
-    {/* Auto refresh every 10 minutes */}  
-    setTimeout(() => {
-        location.reload();
-    }, 600000);
-      
 
     return (
         <div className="flex h-full w-full">
@@ -46,10 +31,10 @@ const AdminDashboard = () => {
                         </button>
                     </div>
                     <div className="grid grid-cols-4 gap-5 w-full h-full px-4">
-                        <Card1 icon={<Coins />} category="Total Sales" value="₱70,000" range="Last Month" />
-                        <Card1 icon={<Calculator />} category="Total Expenses" value="₱20,000" range="Last Month" />
+                        <Card1 icon={<Coins />} category="Total Sales" value="₱00,000" range="Last Month" />
+                        <Card1 icon={<Calculator />} category="Total Expenses" value="₱00,000" range="Last Month" />
                         <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All Products" />
-                        <Card1 icon={<ChartNoAxesCombined />} category="Net Profit" value="₱50,000" range="Last Month" />
+                        <Card1 icon={<ChartNoAxesCombined />} category="Net Profit" value="₱00,000" range="Last Month" />
                     </div>
                     <div className="grid grid-cols-4 w-full py-2 px-4">
                         <div className="col-span-3">

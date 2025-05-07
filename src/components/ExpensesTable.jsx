@@ -8,7 +8,7 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import { CirclePlus, X, Calendar } from 'lucide-react';
-import { format, parseISO, isSameDay } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 import LoadingAnimation from './LoadingAnimation';
@@ -17,71 +17,80 @@ const ExpensesTable = () => {
   // Data state
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [pagination, setPagination] = useState({ 
+    pageIndex: 0, 
+    pageSize: 10 
+  });
   const [showModal, setShowModal] = useState(false);
-  const [newExpense, setNewExpense] =useState({description: '', amount: ''});
+  const [newExpense, setNewExpense] = useState({
+    description: '', 
+    amount: ''
+  });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [responseStatus, setResponseStatus] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
-
+  const [showDateRange, setShowDateRange] = useState(false);
+  const [paginationData, setPaginationData] = useState({
+    total: 0,
+    last_page: 1,
+  });
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setNewExpense(prev => ({
-      ...prev, [name]: name === 'amount' ? (value === '' ? null : Number(value)) : value
+      ...prev, 
+      [name]: name === 'amount' ? (value === '' ? null : Number(value)) : value
     }));
   };
 
-
   const handleAddExpense = async (e) => {
     e.preventDefault();
-
     try {
       const response = await api.post('/expense', newExpense);
       setMessage(response.data?.message);
-      setResponseStatus(response.data?.status);
+      setResponseStatus('success');
       setShowModal(false);
-      setNewExpense({description: '', amount: ''});
-      setRefreshKey(prev => prev + 1);
+      setNewExpense({ description: '', amount: '' });
+      fetchExpenses(); // Refresh data after adding
       setShowSnackbar(true);
     } catch (error) {
-      setMessage(error.response?.data?.message);
-      setResponseStatus(error.response?.data?.status);
-      setShowModal(false);
+      setMessage(error.response?.data?.message || 'Failed to add expense');
+      setResponseStatus('error');
       setShowSnackbar(true);
     }
   };
-
 
   const fetchExpenses = async () => {
     try {
+      setLoading(true);
       const response = await api.get('/expenses', {
         params: {
           page: pagination.pageIndex + 1,
-          pageSize: pagination.pageSize,
+          per_page: pagination.pageSize,
         },
       });
-      setData(response.data?.data);
-      setLoading(false);
+      setData(response.data?.data || []);
+      setPaginationData({
+        total: response.data?.total || 0,
+        last_page: response.data?.last_page || 1,
+      });
     } catch (error) {
-      setMessage(error.response?.data?.data?.message);
-      setResponseStatus(error.response?.data?.data?.status);
+      setMessage(error.response?.data?.message || 'Failed to fetch expenses');
+      setResponseStatus('error');
       setShowSnackbar(true);
+    } finally {
+      setLoading(false);
     }
   };
 
-
   useEffect(() => {
     fetchExpenses();
-  }, [refreshKey]);
-
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   // Define columns
   const columns = useMemo(
@@ -91,31 +100,33 @@ const ExpensesTable = () => {
         header: '#',
         cell: ({ row }) => row.index + 1,
         size: 50,
-        accessorFn: (row, index) => index + 1,
       },
       {
         accessorKey: 'created_at',
         header: 'Date Paid',
-        cell: info => format(parseISO(info.getValue()), "MMM dd, yyyy"),
+        cell: info => info.getValue() ? format(parseISO(info.getValue()), "MMM dd, yyyy") : '-',
         size: 160,
       },
       {
         accessorKey: 'description',
         header: 'Description',
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || '-',
         size: 190,
       },
       {
         accessorKey: 'amount',
         header: 'Amount (₱)',
-        cell: info => `${info.getValue().toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => info.getValue()?.toLocaleString('en-PH', { 
+          minimumFractionDigits: 2, 
+          maximumFractionDigits: 2 
+        }) || '0.00',
         size: 160,
       },
       {
         id: 'name',
-        accessorFn: row => `${row.user.fname} ${row.user.lname} - ${capitalize(row.user.role)}`,
+        accessorFn: row => `${row.user?.fname || ''} ${row.user?.lname || ''} - ${capitalize(row.user?.role || '')}`,
         header: 'Recorded By',
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || '-',
         size: 160,
       },
     ],
@@ -124,12 +135,14 @@ const ExpensesTable = () => {
 
   // Initialize the table
   const table = useReactTable({
-    data: data,
+    data,
     columns,
+    pageCount: paginationData.last_page,
     state: {
       sorting,
       pagination,
     },
+    manualPagination: true,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -140,33 +153,80 @@ const ExpensesTable = () => {
 
   return (
     <div className="w-full">
+      {showSnackbar && (
+        <Snackbar 
+          message={message}
+          type={responseStatus}
+          onClose={() => setShowSnackbar(false)}
+        />
+      )}
 
       <div className='flex justify-between w-full'>
-
-        {showSnackbar && (
-          <Snackbar 
-            message={message && message}
-            type={responseStatus}
-            onClose={() => setShowSnackbar(false)}
-          />
-        )}
-
         <div className='flex justify-end w-full mb-3'>
-            <div className='flex gap-3'>
-              <button 
-                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                  <Calendar size={13} />
-                  Change Date Range
-              </button>
-              <button 
-                  onClick={() => setShowModal(true)}
-                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                  <CirclePlus size={13} />
-                  Add Expense
-              </button>
+          <div className='flex gap-3'>
+            <button 
+              onClick={() => setShowDateRange(true)}
+              className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
+              <Calendar size={13} />
+              Change Date Range
+            </button>
+            <button 
+              onClick={() => setShowModal(true)}
+              className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
+              <CirclePlus size={13} />
+              Add Expense
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Date Range Modal */}
+      {showDateRange && (
+        <div 
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
+        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
+            ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <form
+              className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+              ${showDateRange ? 'scale-100' : 'scale-95'}`
+          }>
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
+              Date Range
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  type='button'
+                  onClick={() => setShowDateRange(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='p-5 space-y-5 mb-5'>
+            <label htmlFor='start_date' className='text-[14px] font-medium'>Start Date</label>
+            <input 
+              id='start_date'
+              name='start_date'
+              type='date'
+              className='w-full border border-primary rounded-sm px-3 py-1'
+            />
+            <label htmlFor='end_date' className='text-[14px] font-medium'>End Date</label>
+            <input 
+              id='end_date'
+              name='end_date'
+              type='date'
+              className='w-full border border-primary rounded-sm px-3 py-1'
+            />
+            </div>
+            <button 
+            type='submit'
+            className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
+              CONFIRM
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* Table */}
       <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
@@ -179,9 +239,7 @@ const ExpensesTable = () => {
                     key={header.id} 
                     scope="col"
                     className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-gray-200"
-                    style={{
-                      width: header.getSize(),
-                    }}
+                    style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder ? null : (
                       <div
@@ -208,7 +266,13 @@ const ExpensesTable = () => {
             ))}
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {table.getRowModel().rows.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
+                  <LoadingAnimation />
+                </td>
+              </tr>
+            ) : table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map(row => (
                 <tr key={row.id} className="hover:bg-gray-50">
                   {row.getVisibleCells().map(cell => (
@@ -224,7 +288,7 @@ const ExpensesTable = () => {
             ) : (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-500">
-                  {loading ? <LoadingAnimation /> : 'No records found'}
+                  No records found
                 </td>
               </tr>
             )}
@@ -253,14 +317,16 @@ const ExpensesTable = () => {
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span> to{' '}
+              Showing <span className="font-medium">
+                {pagination.pageIndex * pagination.pageSize + 1}
+              </span> to{' '}
               <span className="font-medium">
                 {Math.min(
-                  (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                  data.length
+                  (pagination.pageIndex + 1) * pagination.pageSize,
+                  paginationData.total
                 )}
               </span>{' '}
-              of <span className="font-medium">{data.length}</span> results
+              of <span className="font-medium">{paginationData.total}</span> results
             </p>
           </div>
           <div>

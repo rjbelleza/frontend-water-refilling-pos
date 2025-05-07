@@ -375,10 +375,10 @@ const UsersTable = () => {
         </div>
       </div>
 
-      {/* Add product modal */}
+      {/* Add user modal */}
       <div 
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
-            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 pt-30 pb-5 scrollbar-thin overflow-y-auto
+            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
                 ${addUserModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
             <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
@@ -395,58 +395,70 @@ const UsersTable = () => {
                       </button>
                     </span>
                   </p>
-                <form className='flex flex-col gap-2 w-full p-5'>
-                    <label htmlFor='fname' className='text-[14px] font-medium text-blue-800'>First Name <span className='text-red-500'>*</span></label>
-                    <input 
-                        id='fname'
-                        type='text' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'                      
-                    />
-                    <label htmlFor='lname' className='text-[14px] font-medium text-blue-800'>Last Name <span className='text-red-500'>*</span></label>
-                    <input 
-                        id='lname'
-                        type='text' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
-                    />
-                    <label htmlFor='username' className='text-[14px] font-medium text-blue-800'>Username <span className='text-red-500'>*</span></label>
-                    <input 
-                        id='username'
-                        type='text' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
-                    />
-                    <label htmlFor='role' className='text-[14px] font-medium text-blue-800'>Role <span className='text-red-500'>*</span></label>
-                    <select 
-                        id='role'
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
-                    >
-                        <option>-- Select Role --</option>
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
-                    </select>
-                    <label htmlFor='password' className='text-[14px] font-medium text-blue-800'>Password <span className='text-red-500'>*</span></label>
-                    <input 
-                        id='password'
-                        type='text' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
-                    />
-                    <label htmlFor='confirm_password' className='text-[14px] font-medium text-blue-800'>Confirm Password <span className='text-red-500'>*</span></label>
-                    <input 
-                        id='confirm_password'
-                        type='text' 
-                        required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
-                    />
+                <form className='grid grid-cols-2 gap-5 w-full p-5'>
+                    <div>
+                      <label htmlFor='fname' className='text-[15px] font-medium text-blue-800'>First Name <span className='text-red-500'>*</span></label>
+                      <input 
+                          id='fname'
+                          type='text' 
+                          required
+                          className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'                      
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor='lname' className='text-[15px] font-medium text-blue-800'>Last Name <span className='text-red-500'>*</span></label>
+                      <input 
+                          id='lname'
+                          type='text' 
+                          required
+                          className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor='username' className='text-[15px] font-medium text-blue-800'>Username <span className='text-red-500'>*</span></label>
+                      <input 
+                          id='username'
+                          type='text' 
+                          required
+                          className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor='role' className='text-[15px] font-medium text-blue-800'>Role <span className='text-red-500'>*</span></label>
+                      <select 
+                          id='role'
+                          required
+                          className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
+                      >
+                          <option>-- Select Role --</option>
+                          <option value="admin">Admin</option>
+                          <option value="staff">Staff</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor='password' className='text-[15px] font-medium text-blue-800'>Password <span className='text-red-500'>*</span></label>
+                      <input 
+                          id='password'
+                          type='text' 
+                          required
+                          className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor='confirm_password' className='text-[15px] font-medium text-blue-800'>Confirm Password <span className='text-red-500'>*</span></label>
+                      <input 
+                          id='confirm_password'
+                          type='text' 
+                          required
+                          className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
+                      />
+                    </div>
                 </form>
-                <div className='flex justify-end w-full px-5 mt-5'>
+                <div className='flex w-full px-5 mt-5'>
                   <button
-                    className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                    className='bg-blue-900 w-full text-white px-3 py-3 text-[15px] rounded-sm cursor-pointer font-medium hover:bg-blue-800'
                   >
-                    Submit
+                    SUBMIT
                   </button>
                 </div>
             </div>
