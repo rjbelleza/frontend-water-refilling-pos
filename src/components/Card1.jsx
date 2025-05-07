@@ -8,7 +8,7 @@ const Card1 = ({ icon, category, value }) => {
             </div>
             <div className="flex flex-col justify-center text-white space-y-1">
                 <p className="font-light text-[14px]">{category}</p>
-                <p className="font-medium text-[23px]">{value}</p>
+                <div className="font-medium text-[23px]">{value}</div>
             </div>
         </div>
     );

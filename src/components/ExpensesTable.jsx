@@ -395,7 +395,7 @@ const ExpensesTable = () => {
                         value={newExpense.description}
                         onChange={handleChangeInput}
                         required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'                      
+                        className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5'                      
                     />
                     <label htmlFor='amount' className='text-[14px] font-medium text-blue-800'>Amount <span className='text-red-500'>*</span></label>
                     <input 
@@ -405,15 +405,15 @@ const ExpensesTable = () => {
                         value={newExpense.amount}
                         onChange={handleChangeInput}
                         required
-                        className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500'                      
+                        className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'                      
                         min={0}
                     />
-                    <div className='flex justify-end w-full px-5 mt-5'>
+                    <div className='flex justify-end w-full mt-5'>
                       <button
                         type='submit'
-                        className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                        className='bg-primary font-medium w-full text-white py-2 text-[15px] rounded-sm cursor-pointer hover:bg-primary-100'
                       >
-                        Submit
+                        SUBMIT
                       </button>
                     </div>
                   </form>

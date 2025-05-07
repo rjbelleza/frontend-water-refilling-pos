@@ -447,26 +447,32 @@ const CreateTransaction = () => {
                                 <div key={p.id} className="w-full grid grid-cols-3 font-mono">
                                   <p>{p.quantity}</p>
                                   <p>{p.name}</p>
-                                  <p className="ml-7">₱{(parseFloat(p.price) * parseFloat(p.quantity)).toFixed(2)}</p>
+                                  <p className="ml-7">₱{(parseFloat(p.price) * parseFloat(p.quantity)).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                 </div>
                             ))}
                         </div>
                         <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
                         <div className="grid grid-cols-2 w-full p-5 mb-10">
                             <p className="font-bold font-mono text-[15px]">Subtotal: </p>
-                            <p className="font-bold font-mono text-[15px] text-right">₱{subtotal.toFixed(2)}</p>
+                            <p className="font-bold font-mono text-[15px] text-right">₱{subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                             <p className="font-bold font-mono text-[15px]">Discount: </p>
-                            <p className="font-bold font-mono text-[15px] text-right">- ₱{(subtotal - discountedAmount).toFixed(2)}</p>
+                            <p className="font-bold font-mono text-[15px] text-right">- ₱{(subtotal - discountedAmount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                             <p className="font-bold font-mono text-[20px]">Total: </p>
-                            <p className="font-bold font-mono text-[20px] text-right mb-5">₱{discountedAmount.toFixed(2)}</p>
+                            <p className="font-bold font-mono text-[20px] text-right mb-5">₱{discountedAmount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                             <p className="font-mono text-[15px]">CASH: </p>
-                            <p className="font-mono text-[15px] text-right">₱{Number(amountPaid).toFixed(2)}</p>
+                            <p className="font-mono text-[15px] text-right">₱{Number(amountPaid).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                             <p className="font-mono text-[15px]">CHANGE: </p>
-                            <p className="font-mono text-[15px] text-right">₱{Number(change).toFixed(2)}</p>
+                            <p className="font-mono text-[15px] text-right">₱{Number(change).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                         </div>
                         <p className="text-center font-mono text-[20px]">THANK YOU!</p>
                     </div>
-                    <div className="w-[600px] flex justify-end bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
+                    <div className="w-[600px] flex justify-end gap-2 bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
+                        <button
+                            onClick={resetSale}
+                            className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
+                        >   
+                            Continue
+                        </button>
                         <button
                             onClick={resetSale}
                             className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
