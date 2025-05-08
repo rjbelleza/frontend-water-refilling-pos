@@ -3,7 +3,7 @@ import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Card1 from "../components/Card1";
 import PieChart from "../components/PieChart";
-import { Calculator, Package, Coins, ChartNoAxesCombined, Calendar } from 'lucide-react';
+import { Calculator, Store, Coins, ChartNoAxesCombined, Calendar } from 'lucide-react';
 import SalesGraph from '../components/SalesGraph';
 import Footer from "../layouts/Footer";
 import api from "../api/axios";
@@ -12,7 +12,7 @@ import Snackbar from '../components/Snackbar';
 import ComponentLoading from "../components/ComponentLoading";
 
 const AdminDashboard = () => {
-    const [range, setRange] = useState('last_day');
+    const [range, setRange] = useState('last_year');
     const [summary, setSummary] = useState([]);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [message, setMessage] = useState('');
@@ -21,12 +21,14 @@ const AdminDashboard = () => {
     
     const fetchSummaryByRange = async () => {
         try {
-          const response = await api.get('/dashboard-summary', range);
+          const response = await api.get('/dashboard-summary', {
+            params: { range: range }
+          });
           setSummary(response.data?.data);
         } catch (err) {
-          setError(err.response?.data?.message || 'Something went wrong');
-          setMessage(err.reponse?.data?.message);
-          setResponseStatus(err.response?.data?.status);
+          setMessage(err.response?.data?.message || 'Something went wrong');
+          setResponseStatus(err.response?.data?.status || 'error');
+          setShowSnackbar(true);
         } finally {
           setLoading(false);
         }
@@ -35,7 +37,6 @@ const AdminDashboard = () => {
     useEffect(() => {
         setLoading(true);
         fetchSummaryByRange();
-        console.log(range)
     }, [range]);
 
     const formatCurrency = (value) => {
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
             <AdminSidemenu />
             <div className="h-full w-full overflow-y-auto scrollbar-thin">
                 <Header />
-                <div className="flex flex-col justify-between w-full h-fit gap-5">
+                <div className="flex flex-col justify-between w-full h-fit gap-5 overflow-x-hidden">
                     <Breadcrumb />
                     <div className="grid grid-cols-4 w-full px-5 gap-5 mb-3">
                         <button 
@@ -87,17 +88,14 @@ const AdminDashboard = () => {
                         </button>
                     </div>
                     <div className="grid grid-cols-4 gap-5 w-full h-full px-4">
+                        <Card1 icon={<Store />} category="Total Order" value={loading ? <ComponentLoading /> : summary.sales_count} range="Last Month" />
                         <Card1 icon={<Coins />} category="Total Sales" value={formatCurrency(summary.total_sales)} range="Last Month" />
                         <Card1 icon={<Calculator />} category="Total Expenses" value={formatCurrency(summary.total_expenses)} range="Last Month" />
-                        <Card1 icon={<Package />} category="Inventory Level" value="In Stock" range="All Products" />
                         <Card1 icon={<ChartNoAxesCombined />} category="Net Profit" value={formatCurrency(summary.net_profit)} range="Last Month" />
                     </div>
                     <div className="grid grid-cols-4 w-full py-2 px-4">
-                        <div className="col-span-3">
-                            <SalesGraph />
-                        </div>
-                        <div className="flex flex-col col-span-1 border border-gray-400 ml-4 rounded-lg">
-                            <PieChart />
+                        <div className="col-span-4">
+                            <SalesGraph range={range} />
                         </div>
                     </div>
                     <Footer />

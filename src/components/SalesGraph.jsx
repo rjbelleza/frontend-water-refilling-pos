@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import { Calendar } from 'lucide-react';
+import api from "../api/axios";
+import ComponentLoading from "../components/ComponentLoading";
+import LoadingAnimation from './LoadingAnimation';
 
-const SalesGraph = () => {
+const SalesGraph = ({ range = 'last_month' }) => {
   const [chartData, setChartData] = useState({
     sales: [],
     expenses: [],
-    months: [],
+    categories: [],
     lastUpdated: ''
   });
   const [loading, setLoading] = useState(true);
@@ -16,33 +19,37 @@ const SalesGraph = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/data/sales.json'); // Changed path to be served from public folder
         
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Use the dynamic endpoint with range parameter
+        const response = await api.get('/dashboard-graph', {
+          params: { range: range }
+        });
+        
+        if (!response.data) {
+          throw new Error('No data received from API');
         }
         
-        const data = await response.json();
+        const data = response.data;
         
         // Transform the data for the chart
         const transformedData = {
           sales: data.monthlyData.map(item => item.sales),
           expenses: data.monthlyData.map(item => item.expenses),
-          months: data.monthlyData.map(item => item.month),
+          categories: data.monthlyData.map(item => item.label),
           lastUpdated: new Date(data.updatedAt).toLocaleString()
         };
         
         setChartData(transformedData);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || 'An error occurred while fetching graph data');
         setLoading(false);
         console.error('Error fetching data:', err);
       }
     };
 
     fetchData();
-  }, []);
+  }, [range]); // Re-fetch when range changes
 
   const options = {
     series: [{
@@ -95,7 +102,7 @@ const SalesGraph = () => {
       colors: ['transparent']
     },
     xaxis: {
-      categories: chartData.months,
+      categories: chartData.categories,
       labels: {
         style: {
           colors: '#333',
@@ -116,7 +123,7 @@ const SalesGraph = () => {
         text: 'Amount (₱)',
         style: {
           color: '#333',
-          fontSize: '12px'
+          fontSize: '15px'
         }
       },
       labels: {
@@ -192,20 +199,44 @@ const SalesGraph = () => {
     }]
   };
 
+  // Generate a title based on the selected range
+  const getTitle = () => {
+    switch(range) {
+      case 'last_day':
+        return 'Hourly Sales vs Expenses (Last 24 Hours)';
+      case 'last_week':
+        return 'Daily Sales vs Expenses (Last 7 Days)';
+      case 'last_month':
+        return 'Daily Sales vs Expenses (Last 30 Days)';
+      case 'last_year':
+        return 'Monthly Sales vs Expenses (Last 12 Months)';
+      default:
+        return 'Sales vs Expenses';
+    }
+  };
+
   if (loading) {
     return (
-      <div className="chart-container">
-        <h2>Monthly Sales & Expenses</h2>
-        <div className="loading-message">Loading data...</div>
+      <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
+        <div className='flex border-b-1 border-gray-300 p-5'>
+          <p className='text-blue-950 font-medium rounded-sm'>{getTitle()}</p>
+        </div>
+        <div className="w-full h-full flex justify-center items-center p-10">
+          <LoadingAnimation />
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="chart-container">
-        <h2>Monthly Sales & Expenses</h2>
-        <div className="error-message">Error: {error}</div>
+      <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
+        <div className='flex border-b-1 border-gray-300 p-5'>
+          <p className='text-blue-950 font-medium rounded-sm'>{getTitle()}</p>
+        </div>
+        <div className="w-full h-full flex justify-center items-center p-10 text-red-500">
+          Error: {error}
+        </div>
       </div>
     );
   }
@@ -213,7 +244,7 @@ const SalesGraph = () => {
   return (
     <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
       <div className='flex border-b-1 border-gray-300 p-5'>
-        <p className='text-blue-950 font-medium rounded-sm'>Sales vs Expenses</p>
+        <p className='text-blue-950 font-medium rounded-sm'>{getTitle()}</p>
       </div>
       <div className="w-full chart-wrapper p-3">
         <Chart 
@@ -223,6 +254,9 @@ const SalesGraph = () => {
           height={400}
           width="100%"
         />
+      </div>
+      <div className="text-right text-xs text-gray-500 p-2">
+        Last updated: {chartData.lastUpdated}
       </div>
     </div>
   );
