@@ -305,8 +305,8 @@ const CreateTransaction = () => {
                                 required
                                 disabled={selectedProduct.length === 0}
                                 onChange={(e) => setCustName(e.target.value)}
-                                value={custName}
-                                className={`min-h-[40px] text-[14px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-37 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-primary'}`}
+                                value={selectedProduct.length === 0 ? '' : custName}
+                                className={`min-h-[40px] text-[15px] w-full border-1 border-gray-400 rounded-sm px-5 border-r-37 ${selectedProduct.length == 0 ? 'border-r-gray-500' : 'border-r-primary'}`}
                             />
                         </div>
                     </div>
@@ -320,21 +320,23 @@ const CreateTransaction = () => {
                         <div className="flex gap-3">
                             <button 
                                 type="button"
-                                className={`${discountType === 'percentage' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer`}
+                                disabled={selectedProduct.length === 0}
+                                className={`${discountType === 'percentage' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed`}
                                 onClick={() => setDiscountType('percentage')}
                             >
                                 Percent
                             </button>
                             <button
                                 type="button" 
-                                className={`${discountType === 'fixed' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer`}
+                                disabled={selectedProduct.length === 0}
+                                className={`${discountType === 'fixed' ? 'bg-primary' : 'bg-gray-400'} text-white text-[13px] font-medium px-3 py-1 rounded-sm cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed`}
                                 onClick={() => setDiscountType('fixed')}
                             >
                                 Fixed
                             </button>
                         </div>
                         <input 
-                            type="number"
+                            type="text"
                             min={0}
                             max={discountType === 'percentage' ? 100 : subtotal}
                             disabled={selectedProduct.length === 0}
@@ -376,7 +378,6 @@ const CreateTransaction = () => {
                     <div className="flex flex-col gap-2">
                         <label htmlFor="amount_paid" className={`text-[20px] font-bold ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-white'}`}>Amount Paid</label>
                         <input 
-                            type="number" 
                             id="amount-paid"
                             min={0}
                             step="0.01"
@@ -569,7 +570,6 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
                 </button> 
                 <input 
                     id="quantity"
-                    type="number" 
                     className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm text-center" 
                     min="1"
                     max={product.stock_quantity}

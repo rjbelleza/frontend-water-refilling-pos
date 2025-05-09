@@ -45,7 +45,7 @@ const InventoryTable = () => {
   const [newProduct, setNewProduct] = useState({
     name: '',
     price: '',
-    stock_quantity: 0,
+    stock_quantity: '',
     category_id: '',
     unit: '',
   });
@@ -121,12 +121,23 @@ const InventoryTable = () => {
 
 
   // New product input onChange handler
-  const handleNewProductChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct(prev => ({
-      ...prev, [name]: name === 'category_id' ? (value === '' ? null : Number(value)) : value
-    }));
-  };
+const handleNewProductChange = (e) => {
+  const { name, value } = e.target;
+  
+  let processedValue = value;
+  
+  // Process value based on field type
+  if (name === 'category_id') {
+    processedValue = value === '' ? null : Number(value);
+  } else if (name === 'price' || name === 'stock_quantity') {
+    processedValue = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+  }
+  
+  setNewProduct(prev => ({
+    ...prev, 
+    [name]: processedValue
+  }));
+};
 
 
   const handleNewDetailsChange = (e) => {
@@ -178,7 +189,6 @@ const InventoryTable = () => {
       setToStock(value);
     }
   };
-  
 
   const handleUpdateClick = (row) => {
     setSelectedRow(row.original);
@@ -561,7 +571,7 @@ const InventoryTable = () => {
               <button
                 type='submit'
                 className={`text-white px-3 py-2 text-[15px] rounded-sm w-full font-medium
-                            ${newCategory.name == '' ? 'bg-gray-500' : 'bg-blue-900 hover:bg-blue-800 cursor-pointer'}`}
+                            ${newCategory.name == '' ? 'bg-gray-500' : 'bg-primary hover:bg-primary-100 cursor-pointer'}`}
                 disabled={newCategory.name == ''}
               >
                 SUBMIT
@@ -986,12 +996,12 @@ const InventoryTable = () => {
       {/* Add product modal */}
       <div 
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
-            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 pt-20 pb-5 scrollbar-thin overflow-y-auto
+            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
                 ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
             <form 
                 onSubmit={AddProduct}
-                className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+                className={`min-w-[700px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
                 <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
@@ -1006,7 +1016,7 @@ const InventoryTable = () => {
                     </button>
                   </span>
                 </p>
-                <div className='flex flex-col gap-7 p-5 mb-5'>
+                <div className='grid grid-cols-2 gap-7 p-5 mb-5'>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
                     <label htmlFor="product_name" className='text-[15px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                     <input
@@ -1023,7 +1033,7 @@ const InventoryTable = () => {
                     <input
                       id='price'
                       name='price'
-                      type='number'
+                      type='text'
                       step="any"
                       onChange={handleNewProductChange}
                       value={newProduct.price}
@@ -1055,7 +1065,7 @@ const InventoryTable = () => {
                     <label htmlFor="stock" className='text-[15px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
                     <input
                       id='stock'
-                      type='number'
+                      type='text'
                       name='stock_quantity'
                       onChange={handleNewProductChange}
                       value={newProduct.stock_quantity}

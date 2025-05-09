@@ -193,7 +193,7 @@ const SalesTable = () => {
       {/* View Modal */}
       {viewModal && selectedRow && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-1000"
+          className="fixed inset-0 flex items-center justify-center z-1000 scrollbar-thin overflow-y-auto pt-10 pb-5"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
           <div className="min-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
@@ -215,7 +215,7 @@ const SalesTable = () => {
               </div>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Date & Time</p>
-                <p className='text-[17px] font-bold text-primary'>{format(parseISO(selectedRow.created_at), "MMM dd ,yyyy 'at' hh:mm a")}</p>
+                <p className='text-[17px] font-bold text-primary'>{format(parseISO(selectedRow.created_at), "MMM dd, yyyy 'at' hh:mm a")}</p>
               </div>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Cashier</p>
@@ -259,6 +259,14 @@ const SalesTable = () => {
                   <div className='flex justify-between p-3'>
                     <p>Total Amount</p>
                     <p>₱{(Number(selectedRow.subtotal) - Number(selectedRow.discount)).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                  </div>
+                  <div className='flex justify-between p-3'>
+                    <p>Amount Paid</p>
+                    <p>₱{Number(selectedRow.amount_paid).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                  </div>
+                  <div className='flex justify-between p-3'>
+                    <p>Change</p>
+                    <p>₱{(Number(selectedRow.amount_paid) - (Number(selectedRow.subtotal) - Number(selectedRow.discount))).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
                 </div>
               </div>
