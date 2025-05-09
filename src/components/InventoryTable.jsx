@@ -766,18 +766,18 @@ const InventoryTable = () => {
               </span>
             </p>
             <div className='flex flex-col gap-3 w-full px-5'>
-              <p className='text-[15px]'>Select action</p>
+              <p className='text-[15px] font-medium'>Select action</p>
               <div className='flex gap-2 w-full'>
                 <button
                   type='button'
                   onClick={() => setStockAction('stock-in')} 
-                  className={`${stockAction == 'stock-in' ? 'bg-primary-100' : stockAction == 'stock-out' ? 'bg-gray-500' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
+                  className={`${stockAction == 'stock-in' ? 'bg-primary-100' : stockAction == 'stock-out' ? 'bg-gray-500' : 'bg-primary'} hover:bg-primary-100 w-full text-white rounded-sm cursor-pointer px-3 py-2`}>
                   Restock
                 </button>
                 <button
                   type='button' 
                   onClick={() => setStockAction('stock-out')} 
-                  className={`${stockAction == 'stock-out' ? 'bg-primary-100' : stockAction == 'stock-in' ? 'bg-gray-500' : 'bg-primary'} hover:bg-primary-100 text-white rounded-sm cursor-pointer px-3 py-1`}>
+                  className={`${stockAction == 'stock-out' ? 'bg-primary-100' : stockAction == 'stock-in' ? 'bg-gray-500' : 'bg-primary'} hover:bg-primary-100 w-full text-white rounded-sm cursor-pointer px-3 py-2`}>
                   Deduct
                 </button>
               </div>
@@ -794,17 +794,17 @@ const InventoryTable = () => {
                 <p>Unit:</p>
                 <p className='font-medium text-right'>{selectRow.unit}</p>
                 <p>Current Stock:</p>
-                <p className='font-medium text-right'>{selectRow.stock_quantity}</p>
+                <p className='font-medium text-right'>{selectRow.stock_quantity.toLocaleString()}</p>
                 <p className='font-bold text-[20px]'>New Stock:</p>
-                <p className={`font-bold text-[20px] text-right ${newStock < toStock ? 'text-red-600' : ''}`}>{newStock}</p>
+                <p className={`font-bold text-[20px] text-right ${newStock < toStock ? 'text-red-600' : ''}`}>{newStock.toLocaleString()}</p>
               </div>
-              <div className='flex justify-end w-full'>
+              <div className='flex w-full'>
                 <button 
                   type='submit'
                   disabled={newStock < toStock}
-                  className={`${!stockAction && 'hidden'} ${newStock < toStock ? 'bg-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-100 cursor-pointer'} text-white px-3 py-2 rounded-sm text-[14px]`}
+                  className={`${!stockAction && 'hidden'} ${newStock < toStock ? 'bg-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-100 cursor-pointer'} text-white w-full font-medium px-3 py-2 rounded-sm text-[15px]`}
                 >
-                  Confirm
+                  CONFIRM
                 </button>
             </div>
             </div>
