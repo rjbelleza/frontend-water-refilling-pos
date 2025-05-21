@@ -140,9 +140,9 @@ const SideMenuBtn = () => {
                              rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Dashboard</p>
-                    <CircleGauge className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>DASHBOARD</p>
+                    <CircleGauge className='mr-3' size={20} />
                 </div>
             </Link>
 
@@ -151,9 +151,9 @@ const SideMenuBtn = () => {
                                rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Products</p>
-                    <Package className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>PRODUCTS</p>
+                    <Package className='mr-3' size={20} />
                 </div>
             </Link>
 
@@ -162,9 +162,9 @@ const SideMenuBtn = () => {
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>New Sale</p>
-                    <Wallet className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>NEW SALE</p>
+                    <Wallet className='mr-3' size={20} />
                 </div>
             </Link>
 
@@ -173,9 +173,9 @@ const SideMenuBtn = () => {
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Sales</p>
-                    <Coins className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>SALES</p>
+                    <Coins className='mr-3' size={20} />
                 </div>
             </Link>
 
@@ -184,9 +184,9 @@ const SideMenuBtn = () => {
                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Expenses</p>
-                    <Calculator className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>EXPENSES</p>
+                    <Calculator className='mr-3' size={20} />
                 </div>
             </Link>
 
@@ -195,9 +195,9 @@ const SideMenuBtn = () => {
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Profit</p>
-                    <ChartNoAxesCombined className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>REPORTS</p>
+                    <ChartNoAxesCombined className='mr-3' size={20} />
                 </div>
             </Link>
 
@@ -206,9 +206,9 @@ const SideMenuBtn = () => {
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p>Users</p>
-                    <Users className='mr-3' />
+                <div className="flex justify-between items-center w-full">
+                    <p className='text-[12px]'>USERS</p>
+                    <Users className='mr-3' size={20} />
                 </div>
             </Link>
         </div>

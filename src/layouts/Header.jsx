@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from "react";
-import { LogOut } from 'lucide-react';
+import { LogOut, Bell } from 'lucide-react';
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
@@ -26,12 +26,19 @@ const Header = () => {
             <Link to="/admin-dashboard">
                 <img src="/images/Aqua2.png" alt="Logo" className="h-8 cursor-pointer" />
             </Link>
+            <div>
+                <button 
+                    className="text-white cursor-pointer px-4 py-2"
+                    aria-label="Logout">
+                    <Bell size={20} />
+                </button>
             <button 
                 onClick={() => setShowModal(true)}
                 className="text-white cursor-pointer px-4 py-2"
                 aria-label="Logout">
                 <LogOut size={20} />
             </button>
+            </div>
 
             {/* Logout Confirmation Modal */}
             <div
@@ -56,7 +63,7 @@ const Header = () => {
                     </button>
                     <button
                         onClick={handleLogout} // Confirm logout
-                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+                        className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-100 cursor-pointer"
                     >
                         Logout
                     </button>
