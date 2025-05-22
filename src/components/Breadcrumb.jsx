@@ -8,7 +8,7 @@ const Breadcrumb = () => {
             return 'DASHBOARD'
         }
         else if (location.pathname === '/sales') {
-            return 'SALES LIST'
+            return 'SALES HISTORY'
         }
         else if (location.pathname === '/new-sales') {
             return 'NEW SALE'
@@ -17,10 +17,10 @@ const Breadcrumb = () => {
             return 'PRODUCT MANAGEMENT'
         }
         else if (location.pathname === '/expenses') {   
-            return 'EXPENSES LIST'
+            return 'EXPENSES HISTORY'
         }
         else if (location.pathname === '/netProfit') {
-            return 'PROFIT'
+            return '   PROFIT REPORTS'
         }
         else if (location.pathname === '/users') {
             return 'USER MANAGEMENT'

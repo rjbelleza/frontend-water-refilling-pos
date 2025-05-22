@@ -88,7 +88,7 @@ const SalesTable = () => {
         size: 290,
       },
       {
-        accessorKey: 'customer',
+        accessorKey: 'customer.name',
         header: 'Customer',
         cell: info => capitalize(info.getValue()),
         size: 290,
@@ -102,7 +102,7 @@ const SalesTable = () => {
       {
         accessorKey: 'discount',
         header: 'Discount (₱)',
-        cell: info => `- ${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cell: info => ` ${Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         size: 190,
       },
       {
@@ -211,7 +211,7 @@ const SalesTable = () => {
             <div className='flex gap-20 w-full px-5 mb-10'>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Customer</p>
-                <p className='text-[17px] font-bold text-primary'>{capitalize(selectedRow.customer || '')}</p>
+                <p className='text-[17px] font-bold text-primary'>{capitalize(selectedRow.customer.name || '')}</p>
               </div>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Date & Time</p>

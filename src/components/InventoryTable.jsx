@@ -364,7 +364,8 @@ const handleNewProductChange = (e) => {
       {
         accessorKey: 'stock_quantity',
         header: 'Stock',
-        cell: info => info.getValue(),
+        cell: ({ row, getValue }) =>
+          row.original.track_stock ? getValue() : '∞',
         size: 260,
       },
       {
@@ -572,15 +573,6 @@ const handleNewProductChange = (e) => {
                 <input 
                   id='stock_quantity'
                   value={selectedRow.stock_quantity || 0}
-                  className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
-                  readOnly 
-                />
-              </div>
-              <div className='flex flex-col w-full space-y-2'>
-                <label htmlFor="added_by" className='text-[14px] font-medium text-blue-800'>Unit</label>
-                <input 
-                  id='added_by'
-                  value={selectedRow.unit}
                   className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />

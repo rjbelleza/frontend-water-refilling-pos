@@ -88,7 +88,7 @@ const AdminDashboard = () => {
                         </button>
                     </div>
                     <div className="grid grid-cols-4 gap-5 w-full h-full px-4">
-                        <Card1 icon={<Store />} category="Total Order" value={loading ? <ComponentLoading /> : summary.sales_count} range="Last Month" />
+                        <Card1 icon={<Store />} category="Total Transactions" value={loading ? <ComponentLoading /> : summary.sales_count} range="Last Month" />
                         <Card1 icon={<Coins />} category="Total Sales" value={formatCurrency(summary.total_sales)} range="Last Month" />
                         <Card1 icon={<Calculator />} category="Total Expenses" value={formatCurrency(summary.total_expenses)} range="Last Month" />
                         <Card1 icon={<ChartNoAxesCombined />} category="Net Profit" value={formatCurrency(summary.net_profit)} range="Last Month" />

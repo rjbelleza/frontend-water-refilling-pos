@@ -56,12 +56,12 @@ const CreateTransaction = () => {
     }, []);
 
     const handleAddProduct = (product) => {
-        if (product.stock_quantity <= 0) return;
+        if (product.track_stock === 1 && product.stock_quantity <= 0) return;
         
         setSelectedProduct(prev => {
             const existing = prev.find(p => p.id === product.id);
             if (existing) {
-                if (existing.quantity >= product.stock_quantity) return prev;
+                if (product.track_stock === 1 && existing.quantity >= product.stock_quantity) return prev;
                 return prev.map(p => 
                     p.id === product.id 
                         ? {...p, quantity: (p.quantity || 1) + 1} 
@@ -91,11 +91,13 @@ const CreateTransaction = () => {
     };
 
     const handleQuantityChange = (productId, newQuantity) => {
+        const product = products.find(p => p.id === productId);
         const numQuantity = Math.max(1, parseInt(newQuantity) || 1);
+        const maxQuantity = product.track_stock === 0 ? numQuantity : product.stock_quantity;
         setSelectedProduct(prev =>
             prev.map(product =>
                 product.id === productId 
-                    ? { ...product, quantity: Math.min(numQuantity, product.stock_quantity) }
+                    ? { ...product, quantity: Math.min(numQuantity, maxQuantity) }
                     : product
             )
         );
@@ -104,14 +106,12 @@ const CreateTransaction = () => {
     const numericDiscount = discount === '' ? 0 : parseFloat(discount);
     const numericAmountPaid = amountPaid === '' ? 0 : parseFloat(amountPaid);
 
-    // Calculate subtotal (sum of all products without discount)
     const subtotal = useMemo(() => 
         selectedProduct.reduce((sum, product) => 
             sum + (parseFloat(product.price) * (product.quantity || 1)), 
         0
     ), [selectedProduct]);
 
-    // Calculate discounted amount (for display only)
     const discountedAmount = useMemo(() => {
         if (discountType === 'percentage') {
             return subtotal - (subtotal * (numericDiscount / 100));
@@ -168,11 +168,10 @@ const CreateTransaction = () => {
                     quantity: product.quantity,
                     price: product.price
                 })),
-                subtotal: subtotal, // Send subtotal instead of total_amount
+                subtotal: subtotal,
                 discount: discount,
                 discount_type: discountType,
                 amount_paid: amountPaid
-                // Let backend calculate total_amount and change
             };
 
             const response = await api.post('/sales', transactionData);
@@ -208,7 +207,6 @@ const CreateTransaction = () => {
                 />
             )}
 
-            {/* Products Section */}
             <div className="col-span-3 flex flex-col items-center h-full">
                 <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-20 mb-10 rounded-lg">
                     <p className="font-bold text-[15px] text-primary">AVAILABLE PRODUCTS</p>
@@ -256,7 +254,6 @@ const CreateTransaction = () => {
                 )}
             </div>
 
-            {/* New Transaction Section */}
             <form 
                 onSubmit={handlePlaceOrder}
                 className="col-span-3 w-full h-fit bg-white rounded-md p-4"
@@ -421,7 +418,6 @@ const CreateTransaction = () => {
                 </div>
             </form>
 
-            {/* Place Order Modal */}
             {placeOrder && custName && (
                 <div
                     className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-5 scrollbar-thin pt-10"
@@ -492,14 +488,14 @@ const Card2 = ({ products, add, selectedProducts }) => {
         <>
             {products.map(product => {
                 const selected = selectedProducts.find(p => p.id === product.id);
-                const availableStock = product.stock_quantity - (selected ? selected.quantity : 0);
+                const availableStock = product.track_stock === 0 ? Infinity : (product.stock_quantity - (selected ? selected.quantity : 0));
                 
                 return (
                     <div 
                         key={product.id}
                         className={`flex flex-col gap-2 h-fit bg-white rounded-lg shadow-sm shadow-gray-400 
                                    border-2 border-primary-100 border-t-5 ${
-                                    availableStock <= 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                                    product.track_stock === 1 && availableStock <= 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
                                    }`}
                     >
                         <p className="flex font-bold xl:text-[15px] 2xl:text-[20px] py-3 px-4 rounded-sm border-b-1 border-dashed border-gray-500">
@@ -511,8 +507,12 @@ const Card2 = ({ products, add, selectedProducts }) => {
                         <div className='w-full h-full p-4'>
                             <p className='xl:text-[15px] 2xl:text-[18px]'>
                                 Stock: <span className={`${
-                                    availableStock <= 0 ? 'text-red-500' : ''
-                                }`}><strong>{availableStock} </strong><span className="text-gray-700">{product.unit}</span></span>
+                                    product.track_stock === 1 && availableStock <= 0 ? 'text-red-500' : ''
+                                }`}>
+                                <strong>
+                                    {product.track_stock === 0 ? '∞' : availableStock} 
+                                </strong>
+                                <span className="text-gray-700"> {product.unit}</span></span>
                             </p>
                             <div className='flex justify-between items-center w-full mt-3'>
                                 <p className="font-medium xl:text-[17px] 2xl:text-[19px]">
@@ -520,12 +520,12 @@ const Card2 = ({ products, add, selectedProducts }) => {
                                 </p>
                                 <button 
                                     className={`px-1 py-1 rounded-full ${
-                                        availableStock <= 0 
+                                        product.track_stock === 1 && availableStock <= 0 
                                             ? 'bg-gray-400 cursor-not-allowed' 
                                             : 'bg-primary text-gray-200 hover:bg-primary-100 cursor-pointer'
                                     }`}
-                                    onClick={() => availableStock > 0 && add(product)}
-                                    disabled={availableStock <= 0}
+                                    onClick={() => (product.track_stock === 0 || availableStock > 0) && add(product)}
+                                    disabled={product.track_stock === 1 && availableStock <= 0}
                                 >
                                     <Plus className='xl:w-[25px] xl:h-[25px] 2xl:w-[30px] 2xl:h-[30px]' />
                                 </button>
@@ -543,7 +543,7 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
 
     const handleQuantityChange = (e) => {
         const newQty = Math.max(1, parseInt(e.target.value) || 1);
-        const finalQty = Math.min(newQty, product.stock_quantity);
+        const finalQty = product.track_stock === 0 ? newQty : Math.min(newQty, product.stock_quantity);
         setQuantity(finalQty);
         onQuantityChange(product.id, finalQty);
     };
@@ -563,8 +563,8 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
                 <button 
                     type="button" 
                     onClick={() => add(product)}
-                    disabled={quantity >= product.stock_quantity}
-                    className={quantity >= product.stock_quantity ? 'opacity-50 cursor-not-allowed' : ''}
+                    disabled={product.track_stock === 1 && quantity >= product.stock_quantity}
+                    className={product.track_stock === 1 && quantity >= product.stock_quantity ? 'opacity-50 cursor-not-allowed' : ''}
                 >
                     <Plus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
                 </button> 
@@ -572,7 +572,7 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
                     id="quantity"
                     className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm text-center" 
                     min="1"
-                    max={product.stock_quantity}
+                    max={product.track_stock === 0 ? '' : product.stock_quantity}
                     value={quantity}
                     onChange={handleQuantityChange}
                 />
