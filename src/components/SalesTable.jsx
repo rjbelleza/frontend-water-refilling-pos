@@ -230,7 +230,6 @@ const SalesTable = () => {
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Product</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Price (₱)</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Quantity</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Unit</th>
                     <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Total Price (₱)</th>
                   </tr>
                 </thead>
@@ -240,7 +239,6 @@ const SalesTable = () => {
                     <td className='px-3 py-2 border-b border-gray-200'>{product.product.name}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{Number(product.product.price).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{Number(product.quantity).toLocaleString('en-PH')}</td>
-                    <td className='px-3 py-2 border-b border-gray-200'>{product.product.unit}</td>
                     <td className='px-3 py-2 border-b border-gray-200'>{Number(product.total_price).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 </tr>
                   ))}
@@ -254,7 +252,7 @@ const SalesTable = () => {
                   </div>
                   <div className='flex justify-between p-3'>
                     <p>Discount</p>
-                    <p>- ₱{Number(selectedRow.discount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    <p>₱{Number(selectedRow.discount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
                   <div className='flex justify-between p-3'>
                     <p>Total Amount</p>

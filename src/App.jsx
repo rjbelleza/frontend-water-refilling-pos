@@ -35,7 +35,7 @@ const App = () => {
           { /* Accessible for Admins and Staffs */ }
           <Route path="/sales" element={<ProtectedRoute element={<SalesPage />} role={["admin", "staff"]}  />} />
           <Route path="/new-sales" element={<ProtectedRoute element={<NewSalesPage />} role={["admin", "staff"]} />} />
-          <Route path="/inventory" element={<ProtectedRoute element={<InventoryPage />} role={["admin", "staff"]} />} />
+          <Route path="/inventory" element={<ProtectedRoute element={<InventoryPage />} role={["admin"]} />} />
 
           {/* Protected Admin Routes */}
           <Route path="/admin-dashboard" element={<ProtectedRoute element={<AdminDashboard />} role="admin" />} />

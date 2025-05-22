@@ -81,14 +81,7 @@ const StaffSidemenu = () => {
                                     rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all`}
                         >
                             <HandCoins />
-                        </Link>
-        
-                        <Link to="/inventory"
-                            className={`flex justify-center items-center gap-3 h-11 w-3/4 ${handleFocus("/inventory")} rounded-full
-                                    rounded-br-full cursor-pointer hover:bg-sky-950 hover:scale-103 transition-all`}
-                        >
-                            <Package />
-                        </Link>    
+                        </Link>   
                     </div>
             )}
         </div>
@@ -128,17 +121,6 @@ const SideMenuBtn = () => {
                 <div className="flex justify-between w-full">
                     <p className='text-[12px]'>SALES</p>
                     <HandCoins className='mr-3' size={20} />
-                </div>
-            </Link>
-
-            <Link to="/inventory" 
-                  className={`flex items-center ${handleFocus("/inventory")} gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full rounded-tr-full
-                                rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
-            >
-                <div className="h-full w-2 bg-primary-500"></div>
-                <div className="flex justify-between w-full">
-                    <p className='text-[12px]'>PRODUCTS</p>
-                    <Package className='mr-3' size={20} />
                 </div>
             </Link>
         </div>

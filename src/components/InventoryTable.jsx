@@ -504,7 +504,8 @@ const handleNewProductChange = (e) => {
             <button
               onClick={() => handleUpdateStockClick(selectRow)}
               type='button' 
-              className='flex flex-col gap-3 justify-center items-center bg-primary hover:bg-primary-100 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-black'>
+              disabled={selectRow.original.track_stock == 0}
+              className='flex flex-col gap-3 justify-center items-center disabled:bg-gray-500 disabled:cursor-not-allowed bg-primary hover:bg-primary-100 h-full w-full col-span-1 rounded-sm cursor-pointer shadow-md shadow-black'>
               <p className='font-medium text-white'>Update Stock</p>
               <Package size={30} className='text-white' />
             </button>
@@ -572,7 +573,7 @@ const handleNewProductChange = (e) => {
                 <label htmlFor="stock_quantity" className='text-[14px] font-medium text-blue-800'>Current Stock</label>
                 <input 
                   id='stock_quantity'
-                  value={selectedRow.stock_quantity || 0}
+                  value={selectedRow.track_stock == 0 ? '∞' : selectedRow.stock_quantity}
                   className='w-full text-[15px] bg-primary-100 px-3 py-2 rounded-sm outline-none'
                   readOnly 
                 />
@@ -617,37 +618,12 @@ const handleNewProductChange = (e) => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label htmlFor="category" className='text-[14px] font-medium text-blue-800'>Category <span className='text-red-700'>*</span></label>
-                <select
-                  id="category"
-                  name='category_id'
-                  value={newDetails.category_id || ''}
-                  onChange={handleNewDetailsChange}
-                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
-                >
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>{category.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className='flex flex-col w-full space-y-2 mx-auto'>
                 <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱) <span className='text-red-700'>*</span></label>
                 <input
                   id='price'
                   type='number'
                   name='price'
                   value={newDetails.price || 0}
-                  onChange={handleNewDetailsChange}
-                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
-                />
-              </div>
-              <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label htmlFor="unit" className='text-[14px] font-medium text-blue-800'>Unit <span className='text-red-700'>*</span></label>
-                <input
-                  id='unit'
-                  type='text'
-                  name='unit'
-                  value={newDetails.unit || ''}
                   onChange={handleNewDetailsChange}
                   className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                 />
@@ -675,6 +651,7 @@ const handleNewProductChange = (e) => {
               Update Stock
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
+                  type='button'
                   onClick={() => {setShowUpdateStockModal(false); setStockAction('')}}
                   className="cursor-pointer"
                 >
@@ -708,8 +685,6 @@ const handleNewProductChange = (e) => {
                 />
               </div> 
               <div className={`${stockAction ? 'grid grid-cols-2 w-full mt-5 mb-3 text-[14px] space-y-2' : 'hidden'}`}>
-                <p>Unit:</p>
-                <p className='font-medium text-right'>{selectRow.unit}</p>
                 <p>Current Stock:</p>
                 <p className='font-medium text-right'>{selectRow.stock_quantity.toLocaleString()}</p>
                 <p className='font-bold text-[20px]'>New Stock:</p>
@@ -969,15 +944,16 @@ const handleNewProductChange = (e) => {
                     </select>
                   </div>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="stock" className='text-[15px] font-medium text-blue-800'>Stock <span className='text-red-700'>*</span></label>
+                    <label htmlFor="stock" className={`text-[15px] font-medium ${newProduct.category_id == 1 ? 'text-gray-200' : 'text-blue-800'}`}>Stock <span className={`${newProduct.category_id == 1 ? 'text-gray-200' : 'text-red-700'}`}>*</span></label>
                     <input
                       id='stock'
                       type='text'
-                      name='stock_quantity'
                       onChange={handleNewProductChange}
+                      name='stock_quantity'
                       value={newProduct.stock_quantity}
                       min={1}
-                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
+                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500 disabled:border-gray-200'
+                      disabled={newProduct.category_id == 1}
                     />
                   </div>
                 </div>
