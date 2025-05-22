@@ -90,7 +90,7 @@ const SalesTable = () => {
       {
         accessorKey: 'customer.name',
         header: 'Customer',
-        cell: info => capitalize(info.getValue()),
+        cell: info => info.getValue(),
         size: 290,
       },
       {

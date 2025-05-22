@@ -381,6 +381,7 @@ const CreateTransaction = () => {
                             disabled={selectedProduct.length === 0}
                             onChange={handleAmountPaid}
                             value={amountPaid}  
+                            autoComplete="off"
                             className={`min-h-[45px] text-[20px] font-medium bg-white w-full border-1 border-gray-700 rounded-sm px-5 ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-black'}`}
                         />
                     </div>

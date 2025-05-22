@@ -11,6 +11,7 @@ import { X, Pencil, CirclePlus, Search, Trash } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import api from '../api/axios';
 import LoadingAnimation from './LoadingAnimation';
+import Snackbar from './Snackbar';
 
 const UsersTable = () => {
   // Data state
@@ -22,7 +23,54 @@ const UsersTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [addUserModal, setAddUserModal] = useState(false);
   const [editUserModal, setEditUserModal] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [message, setMessage ] = useState('');
+  const [responseStatus, setResponseStatus ] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0); 
 
+
+  const [newUser, setNewUser] = useState({
+    fname: '',
+    lname: '', 
+    username: '',
+    password: '',
+    password_confirmation: '',
+    role: ''
+  });
+
+  const handleNewUserChange = (e) => {
+    const { name, value } = e.target;
+    
+    setNewUser(prev => ({
+      ...prev, 
+      [name]: value
+    }));
+  };
+
+  const addUser = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await api.post('/user/add', newUser);
+      setMessage('Added user successfully');
+      setResponseStatus('success');
+      setNewUser({
+        fname: '',
+        lname: '', 
+        username: '',
+        password: '',
+        password_confirmation: '',
+        role: ''
+      });
+      setRefreshKey(prev => prev + 1);
+    } catch (err) {
+      setResponseStatus('error');
+      setMessage(err.response?.data?.message);
+    } finally {
+      setShowSnackbar(true);
+      setAddUserModal(false);
+    }
+  }
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -134,6 +182,14 @@ const UsersTable = () => {
   return (
     <div className="w-full">
 
+      {showSnackbar && (
+        <Snackbar 
+          message={message && message}
+          type={responseStatus}
+          onClose={() => setShowSnackbar(false)}
+        />
+      )}
+
       <div className='flex justify-between w-full'>
         <div className='flex justify-end w-full mb-3'>
             <div className='flex gap-3'>
@@ -234,9 +290,10 @@ const UsersTable = () => {
                     Cancel
                 </button>
                 <button
-                className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
-                >
-                Submit
+                  type='submit'
+                  className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                  >
+                    Submit
                 </button>
             </div>
         </div>
@@ -381,13 +438,14 @@ const UsersTable = () => {
             className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
                 ${addUserModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-            <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            <form onSubmit={addUser} className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${addUserModal ? 'scale-100' : 'scale-95'}`
             }>
                  <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
                     Add User
                     <span className="text-gray-800 hover:text-gray-600 font-normal">
                       <button
+                        type='button'
                         onClick={() => setAddUserModal(false)}
                         className="cursor-pointer"
                       >
@@ -395,12 +453,15 @@ const UsersTable = () => {
                       </button>
                     </span>
                   </p>
-                <form className='grid grid-cols-2 gap-5 w-full p-5'>
+                <div className='grid grid-cols-2 gap-5 w-full p-5'>
                     <div>
                       <label htmlFor='fname' className='text-[15px] font-medium text-blue-800'>First Name <span className='text-red-500'>*</span></label>
                       <input 
                           id='fname'
                           type='text' 
+                          name="fname"
+                          value={newUser.fname}
+                          onChange={handleNewUserChange}
                           required
                           className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'                      
                       />
@@ -410,6 +471,9 @@ const UsersTable = () => {
                       <input 
                           id='lname'
                           type='text' 
+                          name="lname"
+                          value={newUser.lname}
+                          onChange={handleNewUserChange}
                           required
                           className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
                       />
@@ -419,6 +483,9 @@ const UsersTable = () => {
                       <input 
                           id='username'
                           type='text' 
+                          name="username"
+                          value={newUser.username}
+                          onChange={handleNewUserChange}
                           required
                           className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
                       />
@@ -427,6 +494,9 @@ const UsersTable = () => {
                       <label htmlFor='role' className='text-[15px] font-medium text-blue-800'>Role <span className='text-red-500'>*</span></label>
                       <select 
                           id='role'
+                          name="role"
+                          value={newUser.role}
+                          onChange={handleNewUserChange}
                           required
                           className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
                       >
@@ -440,6 +510,9 @@ const UsersTable = () => {
                       <input 
                           id='password'
                           type='text' 
+                          name="password"
+                          value={newUser.password}
+                          onChange={handleNewUserChange}
                           required
                           className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
                       />
@@ -449,19 +522,23 @@ const UsersTable = () => {
                       <input 
                           id='confirm_password'
                           type='text' 
+                          name="password_confirmation"
+                          value={newUser.password_confirmation}
+                          onChange={handleNewUserChange}
                           required
                           className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
                       />
                     </div>
-                </form>
+                </div>
                 <div className='flex w-full px-5 mt-5'>
                   <button
-                    className='bg-blue-900 w-full text-white px-3 py-3 text-[15px] rounded-sm cursor-pointer font-medium hover:bg-blue-800'
+                    type='submit'
+                    className='bg-primary w-full text-white px-3 py-3 text-[15px] rounded-sm cursor-pointer font-medium hover:bg-primary-100'
                   >
-                    SUBMIT
+                    CONFIRM
                   </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
   );
