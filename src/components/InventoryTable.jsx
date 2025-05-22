@@ -368,12 +368,6 @@ const handleNewProductChange = (e) => {
         size: 260,
       },
       {
-        accessorKey: 'unit',
-        header: 'Unit',
-        cell: info => info.getValue(),
-        size: 260,
-      },
-      {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
@@ -472,12 +466,6 @@ const handleNewProductChange = (e) => {
                     ))}
                 </select>
                 <button 
-                  onClick={() => {setShowCategoryModal(true); fetchCategories();}}
-                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                  <Tags size={15} />
-                  Categories
-                </button>
-                <button 
                     onClick={() => setShowModal(true)}
                     className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                     <CirclePlus size={13} />
@@ -523,62 +511,6 @@ const handleNewProductChange = (e) => {
         </div>
       )}
 
-      {/* Add Category Modal */}
-      <div 
-         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
-         className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
-             ${showCategoryModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-      >
-         <form
-             onSubmit={CreateCategory} 
-             className={`min-w-[400px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
-             ${showCategoryModal ? 'scale-100' : 'scale-95'}`
-         }>
-           <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
-             Categories
-             <span className="text-gray-800 hover:text-gray-600 font-normal">
-               <button
-                 type='button'
-                 onClick={() => setShowCategoryModal(false)}
-                 className="cursor-pointer"
-               >
-                 <X size={20} />
-               </button>
-             </span>
-           </p>
-           <div className='flex flex-col w-full p-5'>
-              <div className='w-full'>
-                {categories.length < 1 ? (
-                  <p className='w-full text-center mb-10'>No categories added</p>
-                ) : categories.map((category) => (
-                  <div key={category.id} className='flex justify-between items-center w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-2'>
-                    {category.name}
-                    <Trash2 onClick={() => deleteCategory(category.id)} size={20} className='cursor-pointer hover:text-gray-700' />
-                  </div>
-                ))}
-              </div>
-              <input
-                type='text'
-                name='name'
-                value={newCategory.name}
-                onChange={newCategoryChange}
-                placeholder='Add category'
-                className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500'
-                required
-              />
-           </div>
-           <div className='flex w-full px-5 mt-5'>
-              <button
-                type='submit'
-                className={`text-white px-3 py-2 text-[15px] rounded-sm w-full font-medium
-                            ${newCategory.name == '' ? 'bg-gray-500' : 'bg-primary hover:bg-primary-100 cursor-pointer'}`}
-                disabled={newCategory.name == ''}
-              >
-                SUBMIT
-              </button>
-           </div>
-          </form>
-        </div>
 
       {/* View Modal */}
       {showViewModal && selectedRow && (
@@ -653,23 +585,6 @@ const handleNewProductChange = (e) => {
                   readOnly 
                 />
               </div>
-            </div>
-            <div className='w-full px-5 py-5 border-t-1 border-dashed border-gray-400'>
-              <p className='text-[14px] font-medium text-blue-900'>Update History</p>
-              <table className='w-full mt-5 border-collapse'>
-                <thead>
-                  <tr className='text-left text-[13px] rounded-md'>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Updated By</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Field Changed</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Old Value</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>New Value</th>
-                    <th className='bg-gray-200 font-medium py-2 px-3 border border-gray-200'>Date & Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
@@ -1070,16 +985,6 @@ const handleNewProductChange = (e) => {
                       onChange={handleNewProductChange}
                       value={newProduct.stock_quantity}
                       min={1}
-                      className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
-                    />
-                  </div>
-                  <div className='flex flex-col w-full space-y-2 mx-auto'>
-                    <label htmlFor="unit" className='text-[15px] font-medium text-blue-800'>Unit <span className='text-red-700'>*</span></label>
-                    <input
-                      id='unit'
-                      name='unit'
-                      onChange={handleNewProductChange}
-                      value={newProduct.unit}
                       className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
                     />
                   </div>
