@@ -52,8 +52,8 @@ const UsersTable = () => {
 
     try {
       const res = await api.post('/user/add', newUser);
-      setMessage('Added user successfully');
-      setResponseStatus('success');
+      setMessage(res.data?.message);
+      setResponseStatus(res.data?.status);
       setNewUser({
         fname: '',
         lname: '', 
@@ -62,13 +62,13 @@ const UsersTable = () => {
         password_confirmation: '',
         role: ''
       });
+      setAddUserModal(false);
       setRefreshKey(prev => prev + 1);
     } catch (err) {
       setResponseStatus('error');
       setMessage(err.response?.data?.message);
     } finally {
       setShowSnackbar(true);
-      setAddUserModal(false);
     }
   }
 
@@ -96,7 +96,7 @@ const UsersTable = () => {
       }
     }
     fetchUsers();
-  }, []);
+  }, [refreshKey]);
 
   // Define columns
   const columns = useMemo(
@@ -435,7 +435,7 @@ const UsersTable = () => {
       {/* Add user modal */}
       <div 
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
-            className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
+            className={`fixed inset-0 flex items-center justify-center z-999 transition-opacity duration-300 scrollbar-thin overflow-y-auto
                 ${addUserModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
             <form onSubmit={addUser} className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
@@ -509,7 +509,7 @@ const UsersTable = () => {
                       <label htmlFor='password' className='text-[15px] font-medium text-blue-800'>Password <span className='text-red-500'>*</span></label>
                       <input 
                           id='password'
-                          type='text' 
+                          type='password' 
                           name="password"
                           value={newUser.password}
                           onChange={handleNewUserChange}
@@ -521,7 +521,7 @@ const UsersTable = () => {
                       <label htmlFor='confirm_password' className='text-[15px] font-medium text-blue-800'>Confirm Password <span className='text-red-500'>*</span></label>
                       <input 
                           id='confirm_password'
-                          type='text' 
+                          type='password' 
                           name="password_confirmation"
                           value={newUser.password_confirmation}
                           onChange={handleNewUserChange}
