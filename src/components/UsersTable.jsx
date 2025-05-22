@@ -22,7 +22,7 @@ const UsersTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [selectedRow, setSelectedRow] = useState(null);
   const [addUserModal, setAddUserModal] = useState(false);
-  const [editUserModal, setEditUserModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [message, setMessage ] = useState('');
   const [responseStatus, setResponseStatus ] = useState('');
@@ -38,10 +38,62 @@ const UsersTable = () => {
     role: ''
   });
 
+  const [newDetails, setNewDetails] = useState({
+    fname: '',
+    lname: '', 
+    username: '',
+    password: '',
+    password_confirmation: '',
+    role: ''
+  });
+
+  const handleUpdateClick = (row) => {
+    setSelectedRow(row.original);
+    setNewDetails({
+      fname: row.original.fname,
+      lname: row.original.lname,
+      username: row.original.username,
+      role: row.original.role,
+      password: row.original.passsword,
+      password_confirmation: ''
+    });
+    setShowUpdateModal(true);
+  };
+
+   const handleSaveChanges = async (e) => {
+      e.preventDefault();    
+      try {
+          if (!selectedRow || !selectedRow.id) {
+              return;
+          }
+  
+          const response = await api.put(`/user/update/${selectedRow.id}`, newDetails);
+          setMessage(response.data?.message);
+          setResponseStatus(response.data?.status);
+          setShowUpdateModal(false);
+          setShowSnackbar(true);
+          setRefreshKey(prev => prev + 1);
+      } catch (error) {
+          setMessage(error.response?.data?.message);
+          setResponseStatus(error.response?.data?.status);
+          setShowUpdateModal(false);
+          setShowSnackbar(true);
+      }
+    };
+
   const handleNewUserChange = (e) => {
     const { name, value } = e.target;
     
     setNewUser(prev => ({
+      ...prev, 
+      [name]: value
+    }));
+  };
+
+  const handleNewDetailsChange = (e) => {
+    const { name, value } = e.target;
+    
+    setNewDetails(prev => ({
       ...prev, 
       [name]: value
     }));
@@ -75,13 +127,6 @@ const UsersTable = () => {
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
-  
-  const handleEditClick = (row) => {
-    setSelectedRow(row.original);
-    setEditUserModal(true);
-  }
-
 
   useEffect(() => {
     // Fetch Users data from server
@@ -144,7 +189,7 @@ const UsersTable = () => {
         cell: ({ row }) => (
              <div className='flex space-x-1'>
                  <button 
-                     onClick={() => handleEditClick(row)}
+                     onClick={() => handleUpdateClick(row)}
                      className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"
                  >
                      <Pencil size={15} />
@@ -212,91 +257,109 @@ const UsersTable = () => {
       </div>
 
       {/* Edit User Modal */}
-      {editUserModal && selectedRow && (
+      {showUpdateModal && selectedRow && (
       <div 
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
-        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 pt-30 pb-5 scrollbar-thin overflow-y-auto
-            ${editUserModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
+            ${showUpdateModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
-        <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
-            ${editUserModal ? 'scale-100' : 'scale-95'}`
+        <form onSubmit={handleSaveChanges} className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            ${showUpdateModal ? 'scale-100' : 'scale-95'}`
         }>
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
                 Edit User
                 <span className="text-gray-800 hover:text-gray-600 font-normal">
                     <button
-                    onClick={() => setEditUserModal(false)}
-                    className="cursor-pointer"
+                      type='button'
+                      onClick={() =>setShowUpdateModal(false)}
+                      className="cursor-pointer"
                     >
-                    <X size={20} />
+                      <X size={20} />
                     </button>
                 </span>
             </p>
-            <form className='flex flex-col gap-2 w-full p-5'>
+            <div className='grid grid-cols-2 gap-2 w-full p-5'>
+              <div>
                 <label htmlFor='fname' className='text-[14px] font-medium text-blue-800'>First Name <span className='text-red-500'>*</span></label>
                 <input 
                     id='fname'
                     type='text' 
                     required
-                    value={selectedRow.fname || ''}
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'                      
+                    name='fname'
+                    value={newDetails.fname || ''}
+                    onChange={handleNewDetailsChange}
+                    className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5 mt-2'                      
                 />
+              </div>      
+              <div>          
                 <label htmlFor='lname' className='text-[14px] font-medium text-blue-800'>Last Name <span className='text-red-500'>*</span></label>
                 <input 
                     id='lname'
                     type='text' 
-                    required
-                    value={selectedRow.lname || ''}
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
+                    name='lname'
+                    value={newDetails.lname || ''}
+                    onChange={handleNewDetailsChange}
+                    className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5 mt-2'
                 />
+              </div>
+              <div>
                 <label htmlFor='username' className='text-[14px] font-medium text-blue-800'>Username <span className='text-red-500'>*</span></label>
                 <input 
                     id='username'
                     type='text' 
                     required
-                    value={selectedRow.username}
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
+                    name='username'
+                    value={newDetails.username}
+                    onChange={handleNewDetailsChange}
+                    className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5 mt-2'
                 />
+              </div>
+              <div>
                 <label htmlFor='role' className='text-[14px] font-medium text-blue-800'>Role <span className='text-red-500'>*</span></label>
                 <select 
                     id='role'
                     required
-                    value={selectedRow.role || ''}
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
+                    name='role'
+                    value={newDetails.role || ''}
+                    onChange={handleNewDetailsChange}
+                    className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5 mt-2'
                 >
                     <option value="admin">Admin</option>
                     <option value="staff">Staff</option>
                 </select>
+              </div>
+              <div>
                 <label htmlFor='password' className='text-[14px] font-medium text-blue-800'>New Password <span className='text-red-500'>*</span></label>
                 <input 
                     id='password'
-                    type='text' 
-                    required
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
+                    type='password' 
+                    name='password'
+                    value={newDetails.password || ''}
+                    onChange={handleNewDetailsChange}
+                    className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5 mt-2'
                 />
+              </div> 
+              <div>
                 <label htmlFor='confirm_password' className='text-[14px] font-medium text-blue-800'>Confirm Password <span className='text-red-500'>*</span></label>
                 <input 
                     id='confirm_password'
-                    type='text' 
-                    required
-                    className='w-full text-[14px] border border-gray-400 px-3 py-1 rounded-sm outline-gray-500 mb-5'
+                    type='password' 
+                    name='password_confirmation'
+                    value={newDetails.password_confirmation || ''}
+                    onChange={handleNewDetailsChange}
+                    className='w-full text-[15px] border border-gray-400 px-3 py-2 rounded-sm outline-gray-500 mb-5 mt-2'
                 />
-            </form>
-            <div className='flex justify-end w-full px-5 mt-5 space-x-2'>
-                <button
-                    onClick={() => setEditUserModal(false)}
-                    className='bg-blue-500 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
-                >
-                    Cancel
-                </button>
+              </div>
+            </div>
+            <div className='flex justify-center w-full px-5 mt-5 space-x-2'>
                 <button
                   type='submit'
-                  className='bg-blue-900 text-white px-3 py-2 text-[13px] rounded-sm cursor-pointer hover:bg-blue-800'
+                  className='bg-primary text-white font-medium w-3/4 px-3 py-3 text-[15px] rounded-sm cursor-pointer hover:bg-primary-100'
                   >
-                    Submit
+                    SUBMIT
                 </button>
             </div>
-        </div>
+        </form>
       </div>
       )}
 
@@ -530,10 +593,10 @@ const UsersTable = () => {
                       />
                     </div>
                 </div>
-                <div className='flex w-full px-5 mt-5'>
+                <div className='flex justify-center w-full px-5 mt-5'>
                   <button
                     type='submit'
-                    className='bg-primary w-full text-white px-3 py-3 text-[15px] rounded-sm cursor-pointer font-medium hover:bg-primary-100'
+                    className='bg-primary w-3/4 text-white px-3 py-3 text-[15px] rounded-sm cursor-pointer font-medium hover:bg-primary-100'
                   >
                     CONFIRM
                   </button>

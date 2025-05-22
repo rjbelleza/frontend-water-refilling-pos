@@ -11,7 +11,7 @@ const Breadcrumb = () => {
             return 'SALES HISTORY'
         }
         else if (location.pathname === '/new-sales') {
-            return 'NEW SALE'
+            return 'NEW TRANSACTION'
         }
         else if (location.pathname === '/inventory') {
             return 'PRODUCT MANAGEMENT'

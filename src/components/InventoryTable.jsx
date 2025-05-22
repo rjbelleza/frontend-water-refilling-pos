@@ -199,7 +199,7 @@ const handleNewProductChange = (e) => {
       unit: row.original.unit
     });
     setShowUpdateModal(true);
-    setSelectionModal(false);
+    setSelectionModal(false); //
   };
 
 
@@ -247,57 +247,11 @@ const handleNewProductChange = (e) => {
     fetchProducts();
   }, [refreshKey]);
 
-
-  const newCategoryChange = (e) => {
-    const { name, value } = e.target;
-    setNewCategory(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-
-  const CreateCategory = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await api.post('/category', newCategory);
-      setMessage(response.data?.message);
-      setResponseStatus(response.data?.status);
-      setNewCategory({ name: '' });
-      setShowCategoryModal(false);
-      setShowSnackbar(true);
-      setRefreshKey(prev => prev + 1);
-    } catch (error) {
-      setMessage(error.response?.data?.message);
-      setResponseStatus(error.response?.data?.status);
-      setNewCategory({ name: '' });
-      setShowCategoryModal(false);
-      setShowSnackbar(true);
-    }
-  };
-
   
   const fetchCategories = async () => {
     try {
       const response = await api.get('/categories');
       setCategories(response.data?.data);
-    } catch (error) {
-      setMessage(error.response?.data?.message);
-      setResponseStatus(error.response?.data?.status);
-      setShowSnackbar(true);
-    }
-  }
-
-
-  const deleteCategory = async (id) => {
-    try {
-      const response = await api.patch(`/category/disable/${id}`);
-      setMessage(response.data?.message);
-      setResponseStatus(response.data?.status);
-      setShowCategoryModal(false);
-      setRefreshKey(prev => prev + 1);
-      setShowSnackbar(true);
     } catch (error) {
       setMessage(error.response?.data?.message);
       setResponseStatus(error.response?.data?.status);

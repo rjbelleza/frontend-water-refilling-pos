@@ -358,7 +358,7 @@ const CreateTransaction = () => {
                             Discount Applied
                         </p>
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            -₱{(subtotal - discountedAmount).toFixed(2)}
+                            ₱{(subtotal - discountedAmount).toFixed(2)}
                         </p>
                     </div>
                     <div className="flex justify-between w-full">
