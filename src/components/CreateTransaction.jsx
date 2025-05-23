@@ -197,6 +197,10 @@ const CreateTransaction = () => {
         setAmountPaid('');
     };
 
+    const handlePrint = () => {
+        window.print();
+    };
+
     return(
         <div className="grid grid-cols-6 gap-10 w-full pb-3">
             {showSnackbar && (
@@ -419,52 +423,173 @@ const CreateTransaction = () => {
                 </div>
             </form>
 
+            {/* Print styles - only applied when printing */}
+            <style jsx>{`
+                @media print {
+                    body * {
+                        visibility: hidden;
+                    }
+                    .receipt-container, .receipt-container * {
+                        visibility: visible;
+                    }
+                    .receipt-container {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        margin: 0;
+                        padding: 20px;
+                        background: white !important;
+                        color: black !important;
+                    }
+                    .no-print {
+                        display: none !important;
+                    }
+                    .receipt-content {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        font-family: 'Courier New', monospace;
+                        line-height: 1.2;
+                        color: black !important;
+                    }
+                    .receipt-header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .receipt-title {
+                        font-size: 18px;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        margin-bottom: 5px;
+                    }
+                    .receipt-business {
+                        font-size: 22px;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        margin-bottom: 15px;
+                    }
+                    .receipt-divider {
+                        border-bottom: 2px dashed #666;
+                        margin: 10px 0;
+                    }
+                    .receipt-date-time {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 0 60px;
+                        margin: 20px 0;
+                    }
+                    .receipt-items-header {
+                        display: grid;
+                        grid-template-columns: 1fr 2fr 1fr;
+                        padding: 0 20px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                    }
+                    .receipt-items {
+                        padding: 0 20px;
+                        margin: 20px 0;
+                    }
+                    .receipt-item {
+                        display: grid;
+                        grid-template-columns: 1fr 2fr 1fr;
+                        margin-bottom: 5px;
+                    }
+                    .receipt-totals {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        padding: 0 20px;
+                        gap: 10px;
+                        margin: 20px 0;
+                    }
+                    .receipt-total-label {
+                        font-weight: bold;
+                        font-size: 15px;
+                    }
+                    .receipt-total-value {
+                        text-align: right;
+                        font-weight: bold;
+                        font-size: 15px;
+                    }
+                    .receipt-grand-total .receipt-total-label,
+                    .receipt-grand-total .receipt-total-value {
+                        font-size: 20px;
+                        margin-bottom: 20px;
+                    }
+                    .receipt-footer {
+                        text-align: center;
+                        font-size: 20px;
+                        font-weight: bold;
+                        margin-top: 30px;
+                    }
+                    @page {
+                        margin: 0.5in;
+                        size: auto;
+                    }
+                }
+            `}</style>
+
             {placeOrder && custName && (
                 <div
-                    className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-5 scrollbar-thin pt-10"
+                    className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-10 scrollbar-thin pt-30"
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
-                    <div className="min-w-[600px] max-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
-                        <div className="flex flex-col items-center justify-center w-full">
-                            <p className="font-bold text-[17px] font-mono">{'receipt of sale'.toUpperCase()}</p>
-                            <p className="font-bold text-[20px] font-mono mb-3">{'aqua springs'.toUpperCase()}</p>
-                            <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
-                        </div>
-                        <div className="w-full flex justify-between px-20 py-5 mb-7">
-                            <p className="font-mono">{formattedDate}</p>
-                            <p className="font-mono">{time}</p>
-                        </div>
-                        <div className="w-full grid grid-cols-3 px-5">
-                            <p className="font-mono">QTY</p>
-                            <p className="font-mono">Name</p>
-                            <p className="font-mono ml-7">AMT</p>
-                        </div>
-                        <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
-                        <div className="w-full px-5 py-5">
-                            {selectedProduct.map((p) => (
-                                <div key={p.id} className="w-full grid grid-cols-3 font-mono">
-                                  <p>{p.quantity}</p>
-                                  <p>{p.name}</p>
-                                  <p className="ml-7">₱{(parseFloat(p.price) * parseFloat(p.quantity)).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    <div className="receipt-container min-w-[600px] max-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
+                        <div className="receipt-content font-mono">
+                            <div className="receipt-header text-center mb-5">
+                                <div className="receipt-title text-sm font-bold uppercase tracking-wider mb-1">receipt of sale</div>
+                                <div className="receipt-business text-xl font-bold uppercase mb-3">aqua springs</div>
+                                <div className="receipt-divider border-b-2 border-dashed border-gray-600 my-2"></div>
+                            </div>
+                            
+                            <div className="receipt-date-time flex justify-between px-10 my-4">
+                                <span>{formattedDate}</span>
+                                <span>{time}</span>
+                            </div>
+                            
+                            <div className="receipt-items-header grid grid-cols-3 px-5 font-bold mb-2">
+                                <span>QTY</span>
+                                <span>Name</span>
+                                <span className="ml-7">AMT</span>
+                            </div>
+                            <div className="receipt-divider border-b-2 border-dashed border-gray-600 my-2"></div>
+                            
+                            <div className="receipt-items px-5 my-4">
+                                {selectedProduct.map((p) => (
+                                    <div key={p.id} className="receipt-item grid grid-cols-3 mb-2">
+                                        <span>{p.quantity}</span>
+                                        <span>{p.name}</span>
+                                        <span className="ml-7">₱{(parseFloat(p.price) * parseFloat(p.quantity)).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="receipt-divider border-b-2 border-dashed border-gray-600 my-2"></div>
+                            
+                            <div className="receipt-totals grid grid-cols-2 gap-2 px-5 my-4">
+                                <span className="receipt-total-label font-bold">Customer:</span>
+                                <span className="receipt-total-value text-right">{custName}</span>
+                                
+                                <span className="receipt-total-label font-bold">Subtotal:</span>
+                                <span className="receipt-total-value text-right">₱{subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                
+                                <span className="receipt-total-label font-bold">Discount:</span>
+                                <span className="receipt-total-value text-right">₱{(subtotal - discountedAmount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                
+                                <div className="receipt-grand-total col-span-2 grid grid-cols-2 mb-4">
+                                    <span className="receipt-total-label font-bold">Total:</span>
+                                    <span className="receipt-total-value text-right">₱{discountedAmount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
-                            ))}
+                                
+                                <span className="receipt-total-label font-bold">CASH:</span>
+                                <span className="receipt-total-value text-right">₱{Number(amountPaid).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                
+                                <span className="receipt-total-label font-bold">CHANGE:</span>
+                                <span className="receipt-total-value text-right">₱{Number(change).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                            </div>
+                            
+                            <div className="receipt-footer text-center text-xl font-bold mt-6">THANK YOU!</div>
                         </div>
-                        <div className="border-b-2 border-gray-500 border-dashed w-full"></div>
-                        <div className="grid grid-cols-2 w-full p-5 mb-10">
-                            <p className="font-bold font-mono text-[15px]">Subtotal: </p>
-                            <p className="font-bold font-mono text-[15px] text-right">₱{subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="font-bold font-mono text-[15px]">Discount: </p>
-                            <p className="font-bold font-mono text-[15px] text-right">- ₱{(subtotal - discountedAmount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="font-bold font-mono text-[20px]">Total: </p>
-                            <p className="font-bold font-mono text-[20px] text-right mb-5">₱{discountedAmount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="font-mono text-[15px]">CASH: </p>
-                            <p className="font-mono text-[15px] text-right">₱{Number(amountPaid).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="font-mono text-[15px]">CHANGE: </p>
-                            <p className="font-mono text-[15px] text-right">₱{Number(change).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        </div>
-                        <p className="text-center font-mono text-[20px]">THANK YOU!</p>
                     </div>
-                    <div className="w-[600px] flex justify-end gap-2 bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
+                    <div className="no-print w-[600px] flex justify-end gap-2 bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
                         <button
                             onClick={resetSale}
                             className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
@@ -472,7 +597,7 @@ const CreateTransaction = () => {
                             Continue
                         </button>
                         <button
-                            onClick={resetSale}
+                            onClick={handlePrint}
                             className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
                         >   
                             <Printer size={14} /> Print
