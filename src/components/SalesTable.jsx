@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { format, parseISO, isSameDay } from 'date-fns';
+import { format, parseISO, isSameDay, isWithinInterval } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Eye, X, CirclePlus, Printer } from 'lucide-react';
 import api from '../api/axios';
@@ -20,12 +20,16 @@ const SalesTable = () => {
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [searchDate, setSearchDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [viewModal, setViewModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showDateRange, setShowDateRange] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [message, setMessage] = useState('');
+  const [responseStatus, setResponseStatus] = useState('');
   const pageCount = Math.ceil(totalRecords / pagination.pageSize);
 
   const navigate = useNavigate();
@@ -44,30 +48,54 @@ const SalesTable = () => {
     setViewModal(false);
   }
 
-  useEffect(() => {
-    const fetchSaleProducts = async () => {
-      setLoading(true);
-      try {
-        const res = await api.get('/sales', {
-          params: {
-            page: pagination.pageIndex + 1,
-            pageSize: pagination.pageSize,
-          },
-        });
-  
-        setData(res.data.data); // paginated sale product rows
-        setTotalRecords(res.data.total);
-      } catch (err) {
-        setMessage(err.response?.data?.message);
-        setResponseStatus(err.response?.data?.status);
-        setShowSnackbar(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchSaleProducts();
-  }, [pagination.pageIndex, pagination.pageSize]);
+  const handleDateRangeSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const startDateValue = formData.get('start_date');
+    const endDateValue = formData.get('end_date');
+    
+    setStartDate(startDateValue);
+    setEndDate(endDateValue);
+    setShowDateRange(false);
+    
+    // Reset pagination to first page when applying date filter
+    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+  }
+
+  const clearDateFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+  }
+
+ useEffect(() => {
+  const fetchSaleProducts = async () => {
+    setLoading(true);
+    try {
+      const params = {
+        page: pagination.pageIndex + 1,
+        pageSize: pagination.pageSize,
+      };
+      
+      // Add date parameters if they exist
+      if (startDate) params.start_date = startDate;
+      if (endDate) params.end_date = endDate;
+
+      const res = await api.get('/sales', { params });
+
+      setData(res.data.data);
+      setTotalRecords(res.data.total);
+    } catch (err) {
+      setMessage(err.response?.data?.message);
+      setResponseStatus(err.response?.data?.status);
+      setShowSnackbar(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSaleProducts();
+}, [pagination.pageIndex, pagination.pageSize, startDate, endDate]); // Add date dependencies
   
   
 
@@ -133,20 +161,50 @@ const SalesTable = () => {
 
   const filteredData = useMemo(() => {
     return data.filter(item => {
-      return searchDate ? isSameDay(parseISO(item.dateTime), new Date(searchDate)) : true;
+      const itemDate = parseISO(item.created_at);
+      
+      // If both start and end dates are provided, filter by date range
+      if (startDate && endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        // Set end date to end of day to include the entire end date
+        end.setHours(23, 59, 59, 999);
+        return isWithinInterval(itemDate, { start, end });
+      }
+      
+      // If only start date is provided, show records from that date onwards
+      if (startDate && !endDate) {
+        const start = new Date(startDate);
+        return itemDate >= start;
+      }
+      
+      // If only end date is provided, show records up to that date
+      if (!startDate && endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        return itemDate <= end;
+      }
+      
+      // If single search date is provided (legacy support)
+      if (searchDate) {
+        return isSameDay(itemDate, new Date(searchDate));
+      }
+      
+      // If no date filters, show all
+      return true;
     });
-  }, [data, searchDate]);  
+  }, [data, searchDate, startDate, endDate]);  
 
   // Initialize the table
   const table = useReactTable({
     data: filteredData,
     columns,
-    pageCount: pageCount,
+    pageCount: Math.ceil(filteredData.length / pagination.pageSize),
     state: {
       sorting,
       pagination,
     },
-    manualPagination: true,
+    manualPagination: false, // Changed to false since we're filtering client-side
     manualSorting: true,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
@@ -169,7 +227,18 @@ const SalesTable = () => {
 
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">
-        <div className='flex justify-between w-full p-3 pl-5 rounded-2xl'>
+        <div className='flex justify-between w-full py-3 rounded-2xl'>
+          {/* Date Filter Display */}
+          {(startDate || endDate) && (
+            <div className="flex items-center w-full gap-2 px-5 py-2 rounded-md">
+              <Calendar size={16} className="text-primary" />
+              <span className="text-sm text-primary text-[15px]">
+                Filtered by: {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
+                {startDate && endDate && ' - '} 
+                {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+              </span>
+            </div>
+          )}
             <div className='flex justify-end w-full'>
               <button 
                 onClick={() => setShowDateRange(true)}
@@ -177,6 +246,14 @@ const SalesTable = () => {
                   <Calendar size={13} />
                   Change Date Range
               </button>
+              {(startDate || endDate) && (
+                <button 
+                  onClick={clearDateFilter}
+                  className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
+                    <X size={13} />
+                    Clear Filter
+                </button>
+              )}
               <div className='flex justify-end ml-2'>
                 <button 
                     onClick={() => navigate('/new-sales')}
@@ -193,7 +270,7 @@ const SalesTable = () => {
       {/* View Modal */}
       {viewModal && selectedRow && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-1000 scrollbar-thin overflow-y-auto pt-10 pb-5"
+          className="fixed inset-0 flex items-center justify-center z-1000 scrollbar-thin overflow-y-auto pt-40 pb-10"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
           <div className="min-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
@@ -287,6 +364,7 @@ const SalesTable = () => {
             ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           <form
+              onSubmit={handleDateRangeSubmit}
               className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
               ${showDateRange ? 'scale-100' : 'scale-95'}`
           }>
@@ -302,21 +380,27 @@ const SalesTable = () => {
                </button>
              </span>
            </p>
-           <div className='p-5 space-y-5 mb-5'>
-            <label htmlFor='start_date' className='text-[14px] font-medium'>Start Date</label>
-            <input 
-              id='start_date'
-              name='start_date'
-              type='date'
-              className='w-full border border-primary rounded-sm px-3 py-1'
-            />
-            <label htmlFor='end_date' className='text-[14px] font-medium'>End Date</label>
-            <input 
-              id='end_date'
-              name='end_date'
-              type='date'
-              className='w-full border border-primary rounded-sm px-3 py-1'
-            />
+           <div className='p-5 space-y-5 mb-5 w-full'>
+            <div className='space-y-2'>
+              <label htmlFor='start_date' className='text-[14px] font-medium block'>Start Date</label>
+              <input 
+                id='start_date'
+                name='start_date'
+                type='date'
+                defaultValue={startDate}
+                className='w-full border border-primary rounded-sm px-3 py-1'
+              />
+            </div>
+            <div className='space-y-2'>
+              <label htmlFor='end_date' className='text-[14px] font-medium block'>End Date</label>
+              <input 
+                id='end_date'
+                name='end_date'
+                type='date'
+                defaultValue={endDate}
+                className='w-full border border-primary rounded-sm px-3 py-1'
+              />
+            </div>
            </div>
            <button 
             type='submit'
@@ -414,9 +498,9 @@ const SalesTable = () => {
             <p className="text-sm text-gray-700">
               Showing <span className="font-medium">{pagination.pageIndex * pagination.pageSize + 1}</span> to{' '}
               <span className="font-medium">
-                {(pagination.pageIndex * pagination.pageSize + 1) + (table.getFilteredRowModel().rows.length - 1)}
+                {Math.min((pagination.pageIndex + 1) * pagination.pageSize, filteredData.length)}
               </span>{' '}
-              of <span className="font-medium">{table.getFilteredRowModel().rows.length}</span> results
+              of <span className="font-medium">{filteredData.length}</span> results
             </p>
           </div>
           <div>
