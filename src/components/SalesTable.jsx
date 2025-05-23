@@ -34,6 +34,10 @@ const SalesTable = () => {
 
   const navigate = useNavigate();
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   const handleViewModal = (row) => {
     setSelectedRow(row.original);
     setViewModal(true);
@@ -345,12 +349,6 @@ const SalesTable = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className='flex justify-end w-full px-5'>
-              <button className='flex items-center gap-1 text-[14px] text-white bg-primary rounded-md px-4 py-2'>
-                <Printer size={14} />
-                Print
-              </button>
             </div>
           </div>
         </div>
