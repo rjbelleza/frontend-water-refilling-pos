@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isWithinInterval } from 'date-fns';
 import { Calendar, X } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
@@ -21,7 +21,8 @@ const NetProfitTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [searchDate, setSearchDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [showDateRange, setShowDateRange] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -32,15 +33,39 @@ const NetProfitTable = () => {
     last_page: 1,
   });
 
+  const handleDateRangeSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const startDateValue = formData.get('start_date');
+    const endDateValue = formData.get('end_date');
+    
+    setStartDate(startDateValue);
+    setEndDate(endDateValue);
+    setShowDateRange(false);
+    
+    // Reset pagination to first page when applying date filter
+    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+  }
+
+  const clearDateFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+  }
+
   const fetchMonthlyReport = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/profit', {
-        params: {
-          page: pagination.pageIndex + 1,
-          per_page: pagination.pageSize,
-        }
-      });
+      const params = {
+        page: pagination.pageIndex + 1,
+        per_page: pagination.pageSize,
+      };
+      
+      // Add date parameters if they exist
+      if (startDate) params.start_date = startDate;
+      if (endDate) params.end_date = endDate;
+
+      const response = await api.get('/profit', { params });
       
       setData(response.data.data || []);
       setPaginationData({
@@ -58,7 +83,7 @@ const NetProfitTable = () => {
 
   useEffect(() => {
     fetchMonthlyReport();
-  }, [pagination.pageIndex, pagination.pageSize]);
+  }, [pagination.pageIndex, pagination.pageSize, startDate, endDate]);
 
   // Define columns
   const columns = useMemo(
@@ -66,7 +91,7 @@ const NetProfitTable = () => {
       {
         id: 'rowNumber',
         header: '#',
-        cell: ({ row }) => row.index + 1,
+        cell: ({ row }) => pagination.pageIndex * pagination.pageSize + row.index + 1,
         size: 50,
       },
       {
@@ -103,7 +128,7 @@ const NetProfitTable = () => {
         size: 290,
       },
     ],
-    []
+    [pagination.pageIndex, pagination.pageSize]
   );
 
   // Initialize the table
@@ -135,15 +160,34 @@ const NetProfitTable = () => {
       )}
 
       {/* Search Controls */}
-      <div className="flex flex-col w-full sm:flex-row gap-2">
-        <div className='flex justify-between w-full gap-20 mb-3'>
-          <div className='flex justify-end gap-3 w-full'>
+      <div className="flex flex-col w-full sm:flex-row">
+        <div className='flex justify-between w-full py-3 rounded-2xl'>
+          {/* Date Filter Display */}
+          {(startDate || endDate) && (
+            <div className="flex items-center w-full gap-2 px-5 py-2 rounded-md">
+              <Calendar size={16} className="text-primary" />
+              <span className="text-sm text-primary text-[15px]">
+                Filtered by: {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
+                {startDate && endDate && ' - '} 
+                {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+              </span>
+            </div>
+          )}
+          <div className='flex justify-end w-full'>
             <button 
               onClick={() => setShowDateRange(true)}
               className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                 <Calendar size={13} />
                 Change Date Range
             </button>
+            {(startDate || endDate) && (
+              <button 
+                onClick={clearDateFilter}
+                className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
+                  <X size={13} />
+                  Clear Filter
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -151,11 +195,12 @@ const NetProfitTable = () => {
       {/* Date Range Modal */}
       {showDateRange && (
         <div 
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
-        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
-            ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
+          className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
+              ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           <form
+              onSubmit={handleDateRangeSubmit}
               className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
               ${showDateRange ? 'scale-100' : 'scale-95'}`
           }>
@@ -171,26 +216,32 @@ const NetProfitTable = () => {
                 </button>
               </span>
             </p>
-            <div className='p-5 space-y-5 mb-5'>
-            <label htmlFor='start_date' className='text-[14px] font-medium'>Start Date</label>
-            <input 
-              id='start_date'
-              name='start_date'
-              type='date'
-              className='w-full border border-primary rounded-sm px-3 py-1'
-            />
-            <label htmlFor='end_date' className='text-[14px] font-medium'>End Date</label>
-            <input 
-              id='end_date'
-              name='end_date'
-              type='date'
-              className='w-full border border-primary rounded-sm px-3 py-1'
-            />
+            <div className='p-5 space-y-5 mb-5 w-full'>
+              <div className='space-y-2'>
+                <label htmlFor='start_date' className='text-[14px] font-medium block'>Start Date</label>
+                <input 
+                  id='start_date'
+                  name='start_date'
+                  type='date'
+                  defaultValue={startDate}
+                  className='w-full border border-primary rounded-sm px-3 py-1'
+                />
+              </div>
+              <div className='space-y-2'>
+                <label htmlFor='end_date' className='text-[14px] font-medium block'>End Date</label>
+                <input 
+                  id='end_date'
+                  name='end_date'
+                  type='date'
+                  defaultValue={endDate}
+                  className='w-full border border-primary rounded-sm px-3 py-1'
+                />
+              </div>
             </div>
             <button 
-            type='submit'
-            className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
-              CONFIRM
+              type='submit'
+              className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
+                CONFIRM
             </button>
           </form>
         </div>
