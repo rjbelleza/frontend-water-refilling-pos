@@ -426,9 +426,6 @@ const handleNewProductChange = (e) => {
                     <CirclePlus size={13} />
                     Add Product
                 </button>
-                <button className='bg-primary px-2 rounded-md'>
-                  <Settings size={20} className='text-white' />
-                </button>
             </div>
         </div>
       </div>
