@@ -3,8 +3,11 @@ import Snackbar from "./Snackbar";
 import { Search, Funnel, Store, X, Plus, Minus, Printer } from "lucide-react";
 import api from "../api/axios";
 import LoadingAnimation from "./LoadingAnimation";
+import { useAuth } from "../contexts/AuthContext";
 
 const CreateTransaction = () => {
+    const { user } = useAuth();
+
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState([]);
@@ -567,6 +570,9 @@ const CreateTransaction = () => {
                             <div className="receipt-totals grid grid-cols-2 gap-2 px-5 my-4">
                                 <span className="receipt-total-label font-bold">Customer:</span>
                                 <span className="receipt-total-value text-right">{custName}</span>
+
+                                <span className="receipt-total-label font-bold">Cashier:</span>
+                                <span className="receipt-total-value text-right">{`${user.fname} ${user.lname}`}</span>
                                 
                                 <span className="receipt-total-label font-bold">Subtotal:</span>
                                 <span className="receipt-total-value text-right">₱{subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -592,7 +598,7 @@ const CreateTransaction = () => {
                     <div className="no-print w-[600px] flex justify-end gap-2 bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
                         <button
                             onClick={resetSale}
-                            className="flex items-center text-[14px] text-white gap-2 bg-primary px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
+                            className="flex items-center text-[14px] text-white gap-2 bg-primary-500 px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
                         >   
                             Continue
                         </button>
