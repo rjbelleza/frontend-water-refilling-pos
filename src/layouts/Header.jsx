@@ -27,11 +27,6 @@ const Header = () => {
                 <img src="/images/Aqua2.png" alt="Logo" className="h-8 cursor-pointer" />
             </Link>
             <div>
-                <button 
-                    className="text-white cursor-pointer px-4 py-2"
-                    aria-label="Logout">
-                    <Bell size={20} />
-                </button>
             <button 
                 onClick={() => setShowModal(true)}
                 className="text-white cursor-pointer px-4 py-2"

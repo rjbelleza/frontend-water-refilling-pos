@@ -149,7 +149,7 @@ const LoginPage = () => {
                         className={`w-full py-3 px-4 rounded-lg font-bold text-white transition-colors hover:bg-blue-800 cursor-pointer ${
                             isSubmitting 
                                 ? "bg-gray-400 cursor-not-allowed" 
-                                : "bg-primary hover:bg-primary-600"
+                                : "bg-primary hover:bg-primary-100"
                         } flex items-center justify-center`}
                     >
                         {isSubmitting ? (
