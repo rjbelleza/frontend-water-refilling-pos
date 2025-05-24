@@ -128,6 +128,16 @@ const UsersTable = () => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  const deleteUser = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await api.get(`/user/${selectedRow.id}`);
+    } catch (err) {
+
+    }
+  };
+
   useEffect(() => {
     // Fetch Users data from server
     const fetchUsers = async () => {
@@ -194,12 +204,6 @@ const UsersTable = () => {
                  >
                      <Pencil size={15} />
                  </button>
-                 <button 
-                    onClick={() => handleDeleteClick(row)}
-                    className="text-white bg-red-400 hover:bg-red-300 cursor-pointer rounded-sm px-2 py-2"
-                  >
-                    <Trash size={15} />
-                  </button>
              </div>
         ),
         size: 20,
