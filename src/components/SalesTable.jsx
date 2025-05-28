@@ -30,7 +30,7 @@ const SalesTable = () => {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [message, setMessage] = useState('');
   const [responseStatus, setResponseStatus] = useState('');
-  const pageCount = Math.ceil(totalRecords / pagination.pageSize);
+  const [dateRangeError, setDateRangeError] = useState('');
 
   const navigate = useNavigate();
 
@@ -57,6 +57,15 @@ const SalesTable = () => {
     const formData = new FormData(e.target);
     const startDateValue = formData.get('start_date');
     const endDateValue = formData.get('end_date');
+    
+    // Validate date range
+    if (startDateValue && endDateValue && new Date(endDateValue) < new Date(startDateValue)) {
+      setDateRangeError('End date cannot be earlier than start date');
+      return;
+    }
+    
+    // Clear any previous errors
+    setDateRangeError('');
     
     setStartDate(startDateValue);
     setEndDate(endDateValue);
@@ -356,58 +365,67 @@ const SalesTable = () => {
 
       {/* Date Range Modal */}
       {showDateRange && (
-        <div 
+      <div 
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
         className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
             ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
+        <form
+            onSubmit={handleDateRangeSubmit}
+            className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            ${showDateRange ? 'scale-100' : 'scale-95'}`}
         >
-          <form
-              onSubmit={handleDateRangeSubmit}
-              className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
-              ${showDateRange ? 'scale-100' : 'scale-95'}`
-          }>
-            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
-             Date Range
-             <span className="text-gray-800 hover:text-gray-600 font-normal">
-               <button
-                 type='button'
-                 onClick={() => setShowDateRange(false)}
-                 className="cursor-pointer"
-               >
-                 <X size={20} />
-               </button>
-             </span>
-           </p>
-           <div className='p-5 space-y-5 mb-5 w-full'>
-            <div className='space-y-2'>
-              <label htmlFor='start_date' className='text-[14px] font-medium block'>Start Date</label>
-              <input 
-                id='start_date'
-                name='start_date'
-                type='date'
-                defaultValue={startDate}
-                className='w-full border border-primary rounded-sm px-3 py-1'
-              />
+          <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
+          Date Range
+          <span className="text-gray-800 hover:text-gray-600 font-normal">
+            <button
+              type='button'
+              onClick={() => {
+                setShowDateRange(false);
+                setDateRangeError(''); // Clear error when closing
+              }}
+              className="cursor-pointer"
+            >
+              <X size={20} />
+            </button>
+          </span>
+        </p>
+        <div className='p-5 space-y-5 mb-5 w-full'>
+          <div className='space-y-2'>
+            <label htmlFor='start_date' className='text-[14px] font-medium block'>Start Date</label>
+            <input 
+              id='start_date'
+              name='start_date'
+              type='date'
+              defaultValue={startDate}
+              className='w-full border border-primary rounded-sm px-3 py-1'
+            />
+          </div>
+          <div className='space-y-2'>
+            <label htmlFor='end_date' className='text-[14px] font-medium block'>End Date</label>
+            <input 
+              id='end_date'
+              name='end_date'
+              type='date'
+              defaultValue={endDate}
+              className='w-full border border-primary rounded-sm px-3 py-1'
+            />
+          </div>
+          {/* Error message */}
+          {dateRangeError && (
+            <div className="text-red-500 text-sm mt-2">
+              {dateRangeError}
             </div>
-            <div className='space-y-2'>
-              <label htmlFor='end_date' className='text-[14px] font-medium block'>End Date</label>
-              <input 
-                id='end_date'
-                name='end_date'
-                type='date'
-                defaultValue={endDate}
-                className='w-full border border-primary rounded-sm px-3 py-1'
-              />
-            </div>
-           </div>
-           <button 
-            type='submit'
-            className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
-              CONFIRM
-           </button>
-          </form>
+          )}
         </div>
-      )}
+        <button 
+          type='submit'
+          className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
+            CONFIRM
+        </button>
+        </form>
+      </div>
+    )}
 
       {/* Table */}
       <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">

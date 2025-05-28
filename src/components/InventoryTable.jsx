@@ -323,16 +323,17 @@ const handleNewProductChange = (e) => {
         size: 260,
       },
       {
+        id: 'user',
+        accessorFn: row => `${row.user?.fname || ''} ${row.user?.lname || ''} - ${capitalize(row.user?.role || '')}`,
+        header: 'Created by',
+        cell: info => info.getValue(),
+        size: 260,
+      },
+      {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
           <div className='flex space-x-1'>
-            <button 
-              onClick={() => handleViewClick(row)}
-              className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"
-            >
-              <Eye size={15} />
-            </button>
             <button 
               onClick={() => {setSelectionModal(true); setSelectRow(row)}}
               className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"

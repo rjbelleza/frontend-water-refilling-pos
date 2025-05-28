@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
-import { Calendar } from 'lucide-react';
 import api from "../api/axios";
-import ComponentLoading from "../components/ComponentLoading";
 import LoadingAnimation from './LoadingAnimation';
 
 const SalesGraph = ({ range = 'last_month' }) => {
@@ -244,7 +242,7 @@ const SalesGraph = ({ range = 'last_month' }) => {
   return (
     <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
       <div className='flex border-b-1 border-gray-300 p-5'>
-        <p className='text-blue-950 font-medium rounded-sm'>{getTitle()}</p>
+        <p className='text-blue-950 font-medium rounded-sm'>Sales vs Expenses</p>
       </div>
       <div className="w-full chart-wrapper p-3">
         <Chart 
