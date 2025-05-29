@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
 import { format, parseISO } from 'date-fns';
@@ -12,61 +11,44 @@ import { Calendar, X } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 import LoadingAnimation from './LoadingAnimation';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const NetProfitTable = () => {
   // Data state
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [showMonthPicker, setShowMonthPicker] = useState(false);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [showYearPicker, setShowYearPicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [responseStatus, setResponseStatus] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [paginationData, setPaginationData] = useState({
-    total: 0,
-    last_page: 1,
-  });
+  const [totalProfit, setTotalProfit] = useState('');
+  const [yearDate, setYearDate] = useState(null);
 
-  const handleMonthSubmit = (e) => {
+  const handleYearSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const monthValue = formData.get('month');
-    
-    setSelectedMonth(monthValue);
-    setShowMonthPicker(false);
-    
-    // Reset pagination to first page when applying month filter
-    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+    setSelectedYear(yearDate ? format(yearDate, 'yyyy') : '');
+    setShowYearPicker(false);
   }
 
-  const clearMonthFilter = () => {
-    setSelectedMonth('');
-    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+  const clearYearFilter = () => {
+    setSelectedYear('');
+    setYearDate(null);
   }
 
-  const fetchMonthlyReport = async () => {
+  const fetchYearlyReport = async () => {
     try {
       setLoading(true);
-      const params = {
-        page: pagination.pageIndex + 1,
-        per_page: pagination.pageSize,
-      };
+      const params = {};
       
-      // Add month parameter if it exists
-      if (selectedMonth) params.month = selectedMonth;
+      if (selectedYear) params.year = selectedYear;
 
       const response = await api.get('/profit', { params });
       
+      setTotalProfit(Number(response.data?.net_profit));
       setData(response.data.data || []);
-      setPaginationData({
-        total: response.data.total,
-        last_page: response.data.last_page,
-      });
     } catch (error) {
       setMessage(error.response?.data?.message || 'Failed to fetch data');
       setResponseStatus('error');
@@ -77,8 +59,8 @@ const NetProfitTable = () => {
   };
 
   useEffect(() => {
-    fetchMonthlyReport();
-  }, [pagination.pageIndex, pagination.pageSize, selectedMonth]);
+    fetchYearlyReport();
+  }, [selectedYear]);
 
   // Define columns
   const columns = useMemo(
@@ -86,7 +68,7 @@ const NetProfitTable = () => {
       {
         id: 'rowNumber',
         header: '#',
-        cell: ({ row }) => pagination.pageIndex * pagination.pageSize + row.index + 1,
+        cell: ({ row }) => row.index + 1,
         size: 50,
       },
       {
@@ -94,7 +76,6 @@ const NetProfitTable = () => {
         header: 'Date',
         cell: info => {
           try {
-            // Format as "May 2025" if month is in "YYYY-MM" format
             const [year, month] = info.getValue().split('-');
             const date = new Date(year, month - 1);
             return format(date, "MMM yyyy");
@@ -123,25 +104,20 @@ const NetProfitTable = () => {
         size: 290,
       },
     ],
-    [pagination.pageIndex, pagination.pageSize]
+    []
   );
 
   // Initialize the table
   const table = useReactTable({
     data,
     columns,
-    pageCount: paginationData.last_page,
     state: {
       sorting,
-      pagination,
     },
-    manualPagination: true,
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -157,25 +133,25 @@ const NetProfitTable = () => {
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">
         <div className='flex justify-between w-full py-3 rounded-2xl'>
-          {/* Month Filter Display */}
-          {selectedMonth && (
+          {/* Year Filter Display */}
+          {selectedYear && (
             <div className="flex items-center w-full gap-2 px-5 py-2 rounded-md">
               <Calendar size={16} className="text-primary" />
               <span className="text-sm text-primary text-[15px]">
-                Filtered by: {format(new Date(`${selectedMonth}-01`), 'MMM yyyy')}
+                Filtered by: {selectedYear}
               </span>
             </div>
           )}
           <div className='flex justify-end w-full'>
             <button 
-              onClick={() => setShowMonthPicker(true)}
+              onClick={() => setShowYearPicker(true)}
               className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                 <Calendar size={13} />
-                Select Month
+                Select Year
             </button>
-            {selectedMonth && (
+            {selectedYear && (
               <button 
-                onClick={clearMonthFilter}
+                onClick={clearYearFilter}
                 className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
                   <X size={13} />
                   Clear Filter
@@ -185,39 +161,38 @@ const NetProfitTable = () => {
         </div>
       </div>
 
-      {/* Month Picker Modal */}
-      {showMonthPicker && (
+      {/* Year Picker Modal */}
+      {showYearPicker && (
         <div 
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
-          className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
-              ${showMonthPicker ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className="fixed inset-0 flex items-center justify-center z-1000"
         >
           <form
-              onSubmit={handleMonthSubmit}
-              className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
-              ${showMonthPicker ? 'scale-100' : 'scale-95'}`}
+              onSubmit={handleYearSubmit}
+              className="w-fit flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg"
           >
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
-              Select Month
+              Select Year
               <span className="text-gray-800 hover:text-gray-600 font-normal">
                 <button
                   type='button'
-                  onClick={() => setShowMonthPicker(false)}
+                  onClick={() => setShowYearPicker(false)}
                   className="cursor-pointer"
                 >
                   <X size={20} />
                 </button>
               </span>
             </p>
-            <div className='p-5 space-y-5 mb-5 w-full'>
+            <div className='px-5 py-3 mb-5 w-full'>
               <div className='space-y-2'>
-                <label htmlFor='month' className='text-[14px] font-medium block'>Month</label>
-                <input 
-                  id='month'
-                  name='month'
-                  type='month'
-                  defaultValue={selectedMonth}
-                  className='w-full border border-primary rounded-sm px-3 py-1'
+                <DatePicker
+                  selected={yearDate}
+                  onChange={(date) => setYearDate(date)}
+                  showYearPicker
+                  dateFormat="yyyy"
+                  yearItemNumber={12}
+                  className='w-full border border-primary rounded-sm px-3 py-2'
+                  placeholderText="Select a year"
                   required
                 />
               </div>
@@ -298,75 +273,13 @@ const NetProfitTable = () => {
           </tbody>
         </table>
       </div>
-
-      {/* Pagination Controls */}
-      <div className="flex items-center justify-between mt-4 px-1">
-        <div className="flex-1 flex justify-between sm:hidden">
-          <button
-            onClick={() => table.previousPage()} 
-            disabled={!table.getCanPreviousPage()}
-            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <button
-            onClick={() => table.nextPage()} 
-            disabled={!table.getCanNextPage()}
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">
-                {pagination.pageIndex * pagination.pageSize + 1}
-              </span> to{' '}
-              <span className="font-medium">
-                {Math.min(
-                  (pagination.pageIndex + 1) * pagination.pageSize,
-                  paginationData.total
-                )}
-              </span>{' '}
-              of <span className="font-medium">{paginationData.total}</span> results
-            </p>
-          </div>
-          <div>
-            <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-              <button
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                <span className="sr-only">First</span>
-                &laquo;
-              </button>
-              <button
-                onClick={() => table.previousPage()} 
-                disabled={!table.getCanPreviousPage()}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                Previous
-              </button>
-              <button
-                onClick={() => table.nextPage()} 
-                disabled={!table.getCanNextPage()}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                Next
-              </button>
-              <button
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-              >
-                <span className="sr-only">Last</span>
-                &raquo;
-              </button>
-            </nav>
-          </div>
-        </div>
+      <div className='flex justify-between px-5 items-center font-medium text-gray-700 text-[14px] h-[50px] w-full bg-gray-200 rounded-bl-sm rounded-br-sm'>
+        <p>
+          Total Profit: 
+        </p>
+        <p>
+          ₱ {totalProfit.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
       </div>
     </div>
   );
