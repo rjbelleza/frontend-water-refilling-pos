@@ -34,6 +34,7 @@ const ExpensesTable = () => {
   const [showDateRange, setShowDateRange] = useState(false);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [totalExpenses, setTotalExpenses] = useState('');
   const [paginationData, setPaginationData] = useState({
     total: 0,
     last_page: 1,
@@ -111,7 +112,8 @@ const ExpensesTable = () => {
 
       const response = await api.get('/expenses', { params });
       
-      setData(response.data?.data || []);
+      setData(response.data?.data?.data || []);
+      setTotalExpenses(response.data?.total_expenses);
       setPaginationData({
         total: response.data?.total || 0,
         last_page: response.data?.last_page || 1,
@@ -370,6 +372,14 @@ const ExpensesTable = () => {
           </tbody>
         </table>
       </div>
+      <div className='flex justify-between px-5 items-center font-medium text-gray-700 text-[14px] h-[50px] w-full bg-gray-200 rounded-bl-sm rounded-br-sm'>
+        <p>
+          Total Expenses: 
+        </p>
+        <p>
+          ₱ {totalExpenses.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
+      </div>
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-4 px-1">
@@ -392,16 +402,11 @@ const ExpensesTable = () => {
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">
-                {pagination.pageIndex * pagination.pageSize + 1}
-              </span> to{' '}
+              Showing <span className="font-medium">{pagination.pageIndex * pagination.pageSize + 1}</span> to{' '}
               <span className="font-medium">
-                {Math.min(
-                  (pagination.pageIndex + 1) * pagination.pageSize,
-                  paginationData.total
-                )}
+                {Math.min((pagination.pageIndex + 1) * pagination.pageSize, data.length)}
               </span>{' '}
-              of <span className="font-medium">{paginationData.total}</span> results
+              of <span className="font-medium">{data.length}</span> results
             </p>
           </div>
           <div>
@@ -475,7 +480,7 @@ const ExpensesTable = () => {
                     <label htmlFor='amount' className='text-[14px] font-medium text-blue-800'>Amount <span className='text-red-500'>*</span></label>
                     <input 
                         id='amount'
-                        type='number' 
+                        type='text' 
                         name='amount'
                         value={newExpense.amount}
                         onChange={handleChangeInput}
@@ -486,7 +491,7 @@ const ExpensesTable = () => {
                     <div className='flex justify-end w-full mt-5'>
                       <button
                         type='submit'
-                        className='bg-primary font-medium w-full text-white py-2 text-[15px] rounded-sm cursor-pointer hover:bg-primary-100'
+                        className='bg-primary font-medium w-full text-white py-3 text-[15px] rounded-sm cursor-pointer hover:bg-primary-100'
                       >
                         SUBMIT
                       </button>

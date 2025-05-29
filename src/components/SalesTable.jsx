@@ -31,12 +31,9 @@ const SalesTable = () => {
   const [message, setMessage] = useState('');
   const [responseStatus, setResponseStatus] = useState('');
   const [dateRangeError, setDateRangeError] = useState('');
+  const [totalSales, setTotalSales] = useState('');
 
   const navigate = useNavigate();
-
-  const handlePrint = () => {
-    window.print();
-  };
 
   const handleViewModal = (row) => {
     setSelectedRow(row.original);
@@ -45,11 +42,6 @@ const SalesTable = () => {
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  const handleModalClose = (e) => {
-    e.preventDefault();
-    setViewModal(false);
   }
 
   const handleDateRangeSubmit = (e) => {
@@ -96,8 +88,9 @@ const SalesTable = () => {
 
       const res = await api.get('/sales', { params });
 
-      setData(res.data.data);
-      setTotalRecords(res.data.total);
+      setData(res.data?.data?.data);
+      setTotalSales(Number(res.data?.total_sales_amount));
+      setTotalRecords(res.data?.total);
     } catch (err) {
       setMessage(err.response?.data?.message);
       setResponseStatus(err.response?.data?.status);
@@ -489,6 +482,14 @@ const SalesTable = () => {
             )}
           </tbody>
         </table>
+      </div>
+      <div className='flex justify-between px-5 items-center font-medium text-gray-700 text-[14px] h-[50px] w-full bg-gray-200 rounded-bl-sm rounded-br-sm'>
+        <p>
+          Total Sales: 
+        </p>
+        <p>
+          ₱ {totalSales.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
       </div>
 
       {/* Pagination Controls */}

@@ -240,7 +240,7 @@ const UsersTable = () => {
       )}
 
       <div className='flex justify-between w-full'>
-        <div className='flex justify-end w-full mb-3'>
+        <div className='flex justify-end w-full py-3'>
             <div className='flex gap-3'>
               <div className='flex items-center h-[35px]'>
                   <Search className='mr-[-30px] text-gray-600' />

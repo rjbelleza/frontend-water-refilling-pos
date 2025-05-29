@@ -142,9 +142,30 @@ const handleNewProductChange = (e) => {
 
   const handleNewDetailsChange = (e) => {
     const { name, value } = e.target;
-    setNewDetails(prev => ({
-      ...prev, [name]: name === 'category_id' ? (value === '' ? null : Number(value)) : value
-    }));
+
+    let processedValue = value;
+    
+    // Process value based on field type
+    if (name === 'category_id') {
+      processedValue = value === '' ? null : Number(value);
+      // Find the selected category to get its name
+      const selectedCategory = categories.find(cat => cat.id === processedValue);
+      
+      setNewDetails(prev => ({
+        ...prev, 
+        [name]: processedValue,
+        category_name: selectedCategory ? selectedCategory.name : prev.category_name
+      }));
+    } else if (name === 'price') {
+      processedValue = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+      setNewDetails(prev => ({
+        ...prev, [name]: processedValue
+      }));
+    } else {
+      setNewDetails(prev => ({
+        ...prev, [name]: value
+      }));
+    }
   };
 
 
@@ -196,6 +217,7 @@ const handleNewProductChange = (e) => {
       name: row.original.name,
       price: row.original.price,
       category_id: row.original.category_id,
+      category_name: row.original.category.name,
       unit: row.original.unit
     });
     setShowUpdateModal(true);
@@ -559,7 +581,7 @@ const handleNewProductChange = (e) => {
             </p>
             <div className='grid grid-cols-1 gap-7 w-full px-5 mb-12 flex-wrap'>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
+                <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name</label>
                 <input
                   id='productName'
                   type='text'
@@ -570,10 +592,28 @@ const handleNewProductChange = (e) => {
                 />
               </div>
               <div className='flex flex-col w-full space-y-2 mx-auto'>
-                <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱) <span className='text-red-700'>*</span></label>
+                <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Category</label>
+                <select
+                  value={newDetails.category_id}
+                  onChange={handleNewDetailsChange}
+                  name="category_id"
+                  className='w-full text-[17px] border border-gray-400 px-3 py-2 rounded-sm focus:outline-gray-500'
+                >
+                   <option value={newDetails.category_id}>{newDetails.category_name}</option>
+                    {categories.map((cat) => (
+                      cat.id !== newDetails.category_id && (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      )
+                    ))}
+                </select>
+              </div>
+              <div className='flex flex-col w-full space-y-2 mx-auto'>
+                <label htmlFor="price" className='text-[14px] font-medium text-blue-800'>Price (₱)</label>
                 <input
                   id='price'
-                  type='number'
+                  type='text'
                   name='price'
                   value={newDetails.price || 0}
                   onChange={handleNewDetailsChange}
@@ -584,7 +624,7 @@ const handleNewProductChange = (e) => {
             <div className='flex w-full space-x-2 px-5'>
               <button 
                 type='submit'
-                className='text-[15px] w-full font-medium text-white bg-primary rounded-sm px-3 py-2 cursor-pointer hover:bg-primary-100'>
+                className='text-[15px] w-full font-medium text-white bg-primary rounded-sm px-3 py-3 cursor-pointer hover:bg-primary-100'>
                 SAVE CHANGES
               </button>
             </div>

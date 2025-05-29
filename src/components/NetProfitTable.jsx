@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { format, parseISO, isWithinInterval } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Calendar, X } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
@@ -21,45 +21,31 @@ const NetProfitTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [showDateRange, setShowDateRange] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [responseStatus, setResponseStatus] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [dateRangeError, setDateRangeError] = useState('');
   const [paginationData, setPaginationData] = useState({
     total: 0,
     last_page: 1,
   });
 
-  const handleDateRangeSubmit = (e) => {
+  const handleMonthSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const startDateValue = formData.get('start_date');
-    const endDateValue = formData.get('end_date');
+    const monthValue = formData.get('month');
     
-    // Validate date range
-    if (startDateValue && endDateValue && new Date(endDateValue) < new Date(startDateValue)) {
-      setDateRangeError('End date cannot be earlier than start date');
-      return;
-    }
+    setSelectedMonth(monthValue);
+    setShowMonthPicker(false);
     
-    // Clear any previous errors
-    setDateRangeError('');
-    
-    setStartDate(startDateValue);
-    setEndDate(endDateValue);
-    setShowDateRange(false);
-    
-    // Reset pagination to first page when applying date filter
+    // Reset pagination to first page when applying month filter
     setPagination(prev => ({ ...prev, pageIndex: 0 }));
   }
 
-  const clearDateFilter = () => {
-    setStartDate('');
-    setEndDate('');
+  const clearMonthFilter = () => {
+    setSelectedMonth('');
     setPagination(prev => ({ ...prev, pageIndex: 0 }));
   }
 
@@ -71,9 +57,8 @@ const NetProfitTable = () => {
         per_page: pagination.pageSize,
       };
       
-      // Add date parameters if they exist
-      if (startDate) params.start_date = startDate;
-      if (endDate) params.end_date = endDate;
+      // Add month parameter if it exists
+      if (selectedMonth) params.month = selectedMonth;
 
       const response = await api.get('/profit', { params });
       
@@ -93,7 +78,7 @@ const NetProfitTable = () => {
 
   useEffect(() => {
     fetchMonthlyReport();
-  }, [pagination.pageIndex, pagination.pageSize, startDate, endDate]);
+  }, [pagination.pageIndex, pagination.pageSize, selectedMonth]);
 
   // Define columns
   const columns = useMemo(
@@ -172,27 +157,25 @@ const NetProfitTable = () => {
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">
         <div className='flex justify-between w-full py-3 rounded-2xl'>
-          {/* Date Filter Display */}
-          {(startDate || endDate) && (
+          {/* Month Filter Display */}
+          {selectedMonth && (
             <div className="flex items-center w-full gap-2 px-5 py-2 rounded-md">
               <Calendar size={16} className="text-primary" />
               <span className="text-sm text-primary text-[15px]">
-                Filtered by: {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
-                {startDate && endDate && ' - '} 
-                {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+                Filtered by: {format(new Date(`${selectedMonth}-01`), 'MMM yyyy')}
               </span>
             </div>
           )}
           <div className='flex justify-end w-full'>
             <button 
-              onClick={() => setShowDateRange(true)}
+              onClick={() => setShowMonthPicker(true)}
               className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
                 <Calendar size={13} />
-                Change Date Range
+                Select Month
             </button>
-            {(startDate || endDate) && (
+            {selectedMonth && (
               <button 
-                onClick={clearDateFilter}
+                onClick={clearMonthFilter}
                 className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
                   <X size={13} />
                   Clear Filter
@@ -202,69 +185,51 @@ const NetProfitTable = () => {
         </div>
       </div>
 
-      {/* Date Range Modal */}
-      {showDateRange && (
-      <div 
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
-        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
-            ${showDateRange ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-      >
-        <form
-            onSubmit={handleDateRangeSubmit}
-            className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
-            ${showDateRange ? 'scale-100' : 'scale-95'}`}
+      {/* Month Picker Modal */}
+      {showMonthPicker && (
+        <div 
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} 
+          className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
+              ${showMonthPicker ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-          <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
-          Date Range
-          <span className="text-gray-800 hover:text-gray-600 font-normal">
-            <button
-              type='button'
-              onClick={() => {
-                setShowDateRange(false);
-                setDateRangeError(''); // Clear error when closing
-              }}
-              className="cursor-pointer"
-            >
-              <X size={20} />
-            </button>
-          </span>
-        </p>
-        <div className='p-5 space-y-5 mb-5 w-full'>
-          <div className='space-y-2'>
-            <label htmlFor='start_date' className='text-[14px] font-medium block'>Start Date</label>
-            <input 
-              id='start_date'
-              name='start_date'
-              type='date'
-              defaultValue={startDate}
-              className='w-full border border-primary rounded-sm px-3 py-1'
-            />
-          </div>
-          <div className='space-y-2'>
-            <label htmlFor='end_date' className='text-[14px] font-medium block'>End Date</label>
-            <input 
-              id='end_date'
-              name='end_date'
-              type='date'
-              defaultValue={endDate}
-              className='w-full border border-primary rounded-sm px-3 py-1'
-            />
-          </div>
-          {/* Error message */}
-          {dateRangeError && (
-            <div className="text-red-500 text-sm mt-2">
-              {dateRangeError}
+          <form
+              onSubmit={handleMonthSubmit}
+              className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+              ${showMonthPicker ? 'scale-100' : 'scale-95'}`}
+          >
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
+              Select Month
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  type='button'
+                  onClick={() => setShowMonthPicker(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='p-5 space-y-5 mb-5 w-full'>
+              <div className='space-y-2'>
+                <label htmlFor='month' className='text-[14px] font-medium block'>Month</label>
+                <input 
+                  id='month'
+                  name='month'
+                  type='month'
+                  defaultValue={selectedMonth}
+                  className='w-full border border-primary rounded-sm px-3 py-1'
+                  required
+                />
+              </div>
             </div>
-          )}
+            <button 
+              type='submit'
+              className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
+                CONFIRM
+            </button>
+          </form>
         </div>
-        <button 
-          type='submit'
-          className='w-[90%] font-medium bg-primary py-2 text-white rounded-sm cursor-pointer hover:bg-primary-100'>
-            CONFIRM
-        </button>
-        </form>
-      </div>
-    )}
+      )}
 
       {/* Table */}
       <div className="min-h-[500px] max-h-full overflow-x-auto rounded-lg border border-gray-200">
