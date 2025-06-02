@@ -1,12 +1,50 @@
-# React + Vite
+    # React Project Installation Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🛠️ Complete Setup Instructions
 
-Currently, two official plugins are available:
+### 1. Clone the Repository
+```bash
+# Clone using HTTPS
+git clone https://github.com/rjbelleza/frontend-water-refilling-pos.git
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# OR clone using SSH (if you have SSH keys set up)
+git clone git@github.com:rjbelleza/frontend-water-refilling-pos.git
 
-## Expanding the ESLint configuration
+# Navigate into the project directory
+cd [fe-restobar-pos-v2]
+```
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 2. Install Dependencies
+```bash
+# Using npm (recommended)
+npm install
+
+# OR using yarn (if you prefer)
+yarn install
+```
+
+### 3. Environment Configuration
+```bash
+# Copy the example environment file
+cp .env.example .env
+```
+
+### 4. Start the Development Server
+```bash
+# Using npm
+npm run dev
+
+# OR using yarn
+yarn run dev
+```
+
+### 5. (Optional) Production Build
+```bash
+# Create production-ready build
+npm run build
+
+# The build files will be in the /build directory
+```
+
+### 🌐 Accessing the Application
+- Development: `http://localhost:5173`
