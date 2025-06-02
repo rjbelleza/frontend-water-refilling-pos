@@ -23,12 +23,6 @@ npm install
 yarn install
 ```
 
-### 3. Environment Configuration
-```bash
-# Copy the example environment file
-cp .env.example .env
-```
-
 ### 4. Start the Development Server
 ```bash
 # Using npm
