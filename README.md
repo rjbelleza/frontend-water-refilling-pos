@@ -11,7 +11,7 @@ git clone https://github.com/rjbelleza/frontend-water-refilling-pos.git
 git clone git@github.com:rjbelleza/frontend-water-refilling-pos.git
 
 # Navigate into the project directory
-cd [fe-restobar-pos-v2]
+cd [frontend-water-refilling-pos]
 ```
 
 ### 2. Install Dependencies
