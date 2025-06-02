@@ -23,7 +23,7 @@ npm install
 yarn install
 ```
 
-### 4. Start the Development Server
+### 3. Start the Development Server
 ```bash
 # Using npm
 npm run dev
@@ -32,7 +32,7 @@ npm run dev
 yarn run dev
 ```
 
-### 5. (Optional) Production Build
+### 4. (Optional) Production Build
 ```bash
 # Create production-ready build
 npm run build
