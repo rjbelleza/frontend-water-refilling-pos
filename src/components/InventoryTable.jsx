@@ -232,30 +232,10 @@ const handleNewProductChange = (e) => {
     setCurrentStock(row.original.stock_quantity);
   };
 
-
-  const handleViewClick = (row) => {
-    setSelectedRow(row.original);
-    setShowViewModal(true);
-  }
-
-
   const handleDeleteClick = (row) => {
     setSelectedRow(row.original);
     setShowDeleteModal(true);
   }
-
-
-  const stockColorCode = (stock_quantity) => {
-    if(stock_quantity <= 25) {
-        return 'bg-red-500'
-    } 
-    else if(stock_quantity > 25 && stock_quantity <= 50) {
-        return 'bg-yellow-500'
-    }
-    else {
-        return 'bg-green-500'
-    }
-  } 
 
 
   const capitalize = (string) => {

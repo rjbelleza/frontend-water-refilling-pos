@@ -27,7 +27,8 @@ const UsersTable = () => {
   const [message, setMessage ] = useState('');
   const [responseStatus, setResponseStatus ] = useState('');
   const [refreshKey, setRefreshKey] = useState(0); 
-
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [newUser, setNewUser] = useState({
     fname: '',
@@ -128,13 +129,25 @@ const UsersTable = () => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const deleteUser = async (e) => {
+  const handleDeleteClick = (row) => {
+    setSelectedRow(row.original);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteUser = async (e) => {
     e.preventDefault();
-
     try {
-      const res = await api.get(`/user/${selectedRow.id}`);
+      await api.put(`/user/${selectedRow.id}/disable`);
+      setRefreshKey(prev => prev + 1);
+      setMessage('User deleted successfully');
+      setResponseStatus('success');
+      setShowSnackbar(true);
     } catch (err) {
-
+      setMessage(err.response?.data?.message || 'Error deleting user');
+      setResponseStatus('error');
+    } finally {
+      setShowDeleteModal(false);
+      setShowSnackbar(true);
     }
   };
 
@@ -203,6 +216,12 @@ const UsersTable = () => {
                      className="text-white bg-primary hover:bg-primary-100 cursor-pointer rounded-sm px-2 py-2"
                  >
                      <Pencil size={15} />
+                 </button>
+                  <button 
+                     onClick={() => handleDeleteClick(row)}
+                     className="text-white bg-red-400 hover:bg-red-300 cursor-pointer rounded-sm px-2 py-2"
+                 >
+                     <Trash size={15} />
                  </button>
              </div>
         ),
@@ -365,6 +384,44 @@ const UsersTable = () => {
             </div>
         </form>
       </div>
+      )}
+
+      {/* Delete Modal */}
+      {showDeleteModal && selectedRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-1000"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+        >
+          <form
+            onSubmit={handleDeleteUser} 
+            className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+            <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
+              Delete User
+              <span className="text-gray-800 hover:text-gray-600 font-normal">
+                <button
+                  type='button'
+                  onClick={() => setShowDeleteModal(false)}
+                  className="cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </span>
+            </p>
+            <div className='w-full px-5 space-y-7 mb-15'>
+              <p className='text-center'>Are you sure you want to delete this user?</p>
+              <div className='w-full text-center'>
+                <p className='text-[20px] text-blue-700 font-bold mb-3'>"{`${selectedRow.fname} ${selectedRow.lname} - ${capitalize(selectedRow.role)}`}"</p>
+              </div>
+            </div>
+            <div className='flex w-full text-[12px] space-x-2 px-5'>
+              <button
+                type='submit' 
+                className='text-white text-[15px] font-medium w-full bg-primary px-4 py-2 rounded-sm cursor-pointer hover:bg-primary-100'>
+                CONFIRM
+              </button>
+            </div>
+          </form>
+        </div>
       )}
 
       {/* Table */}
