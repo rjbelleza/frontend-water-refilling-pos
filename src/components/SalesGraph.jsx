@@ -197,27 +197,11 @@ const SalesGraph = ({ range = 'last_month' }) => {
     }]
   };
 
-  // Generate a title based on the selected range
-  const getTitle = () => {
-    switch(range) {
-      case 'last_day':
-        return 'Hourly Sales vs Expenses (Last 24 Hours)';
-      case 'last_week':
-        return 'Daily Sales vs Expenses (Last 7 Days)';
-      case 'last_month':
-        return 'Daily Sales vs Expenses (Last 30 Days)';
-      case 'last_year':
-        return 'Monthly Sales vs Expenses (Last 12 Months)';
-      default:
-        return 'Sales vs Expenses';
-    }
-  };
-
   if (loading) {
     return (
       <div className="w-full h-full chart-container border border-gray-400 rounded-lg">
         <div className='flex border-b-1 border-gray-300 p-5'>
-          <p className='text-blue-950 font-medium rounded-sm'>{getTitle()}</p>
+          <p className='text-blue-950 font-medium rounded-sm'>Sales vs Expenses</p>
         </div>
         <div className="w-full h-full flex justify-center items-center p-10">
           <LoadingAnimation />

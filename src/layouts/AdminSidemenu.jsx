@@ -102,7 +102,7 @@ const AdminSidemenu = () => {
                         </Link>
         
                         <Link to="/netProfit" 
-                            className={`flex justify-center items-center gap-3 h-11 w-3/4 ${handleFocus("netProfit")} rounded-full
+                            className={`flex justify-center items-center gap-3 h-11 w-3/4 ${handleFocus("/netProfit")} rounded-full
                                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-5`}
                         >
                             <ChartNoAxesCombined />
