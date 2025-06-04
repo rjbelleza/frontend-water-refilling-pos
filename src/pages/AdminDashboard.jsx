@@ -10,6 +10,7 @@ import api from "../api/axios";
 import { useEffect, useState } from "react";
 import Snackbar from '../components/Snackbar';
 import ComponentLoading from "../components/ComponentLoading";
+import AlertPopUp from "../components/AlertPopUp";
 
 const AdminDashboard = () => {
     const [range, setRange] = useState('last_year');
@@ -66,6 +67,7 @@ const AdminDashboard = () => {
                 <div className="flex flex-col justify-between w-full h-fit gap-5 overflow-x-hidden">
                     <Breadcrumb />
                     <div className="grid grid-cols-4 w-full px-5 gap-5 mb-3">
+                        <AlertPopUp />
                         <button 
                             onClick={() => setRange('last_day')}
                             className={`flex items-center justify-center gap-2 ${range === 'last_day' ? 'bg-primary' : 'bg-gray-500'}  focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer`}>

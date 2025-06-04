@@ -11,6 +11,8 @@ import { X, SquarePen, Search, CirclePlus, Eye, Tags, Trash2, Settings, Notebook
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 import LoadingAnimation from './LoadingAnimation';
+import AlertPopUp from './AlertPopUp';
+
 
 const InventoryTable = () => {
   // Data state
@@ -18,7 +20,6 @@ const InventoryTable = () => {
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [showModal, setShowModal] = useState(false);
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showUpdateModal,setShowUpdateModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -28,7 +29,6 @@ const InventoryTable = () => {
   const [newStock, setNewStock] = useState(currentStock);
   const [stockAction, setStockAction] = useState('');
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState({ name: ''});
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [message, setMessage ] = useState('');
   const [refreshKey, setRefreshKey] = useState(0); // Refresh trigger
@@ -397,6 +397,8 @@ const handleNewProductChange = (e) => {
           onClose={() => setShowSnackbar(false)}
         />
       )}
+
+      <AlertPopUp refresh={refreshKey} />
 
       <div className='flex justify-between'>
         <div></div>

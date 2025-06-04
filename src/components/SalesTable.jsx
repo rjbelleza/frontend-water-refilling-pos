@@ -13,6 +13,7 @@ import { Calendar, Eye, X, CirclePlus, Printer } from 'lucide-react';
 import api from '../api/axios';
 import LoadingAnimation from './LoadingAnimation';
 import Snackbar from './Snackbar';
+import AlertPopUp from './AlertPopUp';
 
 const SalesTable = () => {
   // Data state
@@ -230,6 +231,8 @@ const SalesTable = () => {
             onClose={() => setShowSnackbar(false)}
           />
         )}
+
+      <AlertPopUp />
 
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">

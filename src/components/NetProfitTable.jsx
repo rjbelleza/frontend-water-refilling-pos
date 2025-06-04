@@ -13,6 +13,8 @@ import Snackbar from './Snackbar';
 import LoadingAnimation from './LoadingAnimation';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import AlertPopUp from './AlertPopUp';
+
 
 const NetProfitTable = () => {
   // Data state
@@ -129,6 +131,8 @@ const NetProfitTable = () => {
           onClose={() => setShowSnackbar(false)}
         />
       )}
+
+      <AlertPopUp />
 
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">

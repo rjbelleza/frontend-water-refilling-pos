@@ -12,6 +12,7 @@ import { format, parseISO, isWithinInterval } from 'date-fns';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 import LoadingAnimation from './LoadingAnimation';
+import AlertPopUp from './AlertPopUp';
 
 const ExpensesTable = () => {
   // Data state
@@ -199,6 +200,8 @@ const ExpensesTable = () => {
           onClose={() => setShowSnackbar(false)}
         />
       )}
+
+      <AlertPopUp />
 
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">

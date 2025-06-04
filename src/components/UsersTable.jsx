@@ -12,6 +12,8 @@ import { format, parseISO } from 'date-fns';
 import api from '../api/axios';
 import LoadingAnimation from './LoadingAnimation';
 import Snackbar from './Snackbar';
+import AlertPopUp from './AlertPopUp';
+
 
 const UsersTable = () => {
   // Data state
@@ -257,6 +259,8 @@ const UsersTable = () => {
           onClose={() => setShowSnackbar(false)}
         />
       )}
+
+      <AlertPopUp />
 
       <div className='flex justify-between w-full'>
         <div className='flex justify-end w-full py-3'>

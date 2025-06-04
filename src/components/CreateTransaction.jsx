@@ -4,6 +4,7 @@ import { Search, Funnel, Store, X, Plus, Minus, Printer } from "lucide-react";
 import api from "../api/axios";
 import LoadingAnimation from "./LoadingAnimation";
 import { useAuth } from "../contexts/AuthContext";
+import AlertPopUp from "./AlertPopUp";
 
 const CreateTransaction = () => {
     const { user } = useAuth();
@@ -213,6 +214,8 @@ const CreateTransaction = () => {
                     onClose={() => setShowSnackbar(false)}
                 />
             )}
+
+            <AlertPopUp />
 
             <div className="col-span-3 flex flex-col items-center h-full">
                 <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-20 mb-10 rounded-lg">
