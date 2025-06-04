@@ -7,11 +7,12 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { X, SquarePen, Search, CirclePlus, Eye, Tags, Trash2, Settings, Notebook, Package, Trash } from 'lucide-react';
+import { X, SquarePen, Search, CirclePlus, Settings, Notebook, Package, Trash, AlertCircle } from 'lucide-react';
 import api from '../api/axios';
 import Snackbar from './Snackbar';
 import LoadingAnimation from './LoadingAnimation';
 import AlertPopUp from './AlertPopUp';
+import StockSettings from './StockSettings';
 
 
 const InventoryTable = () => {
@@ -39,6 +40,10 @@ const InventoryTable = () => {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [nameFilter, setNameFilter] = useState('');
   const [responseStatus, setResponseStatus] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
+  const [lowStock, setLowStock] = useState({ low_stock_threshold: '' });
+  const [lowStockThreshold, setLowStockThreshold] = useState(0);
+
 
 
   // New Product States
@@ -247,6 +252,7 @@ const handleNewProductChange = (e) => {
   useEffect(() => {
     fetchCategories();
     fetchProducts();
+    fetchLowStocks();
   }, [refreshKey]);
 
   
@@ -287,6 +293,59 @@ const handleNewProductChange = (e) => {
   };
 
 
+  const fetchLowStocks = async () => {
+      try {
+          const res = await api.get('/alert/low_stock_products');
+          setLowStockThreshold(res.data?.threshold);
+      } catch (err) {
+          setMessage('Error fetching low stock threshold.');
+          setShowAlert(true);
+      }
+  };
+
+
+  const updateLowStockThreshold = async (e) => {
+      e.preventDefault();
+
+      try {
+        const res = await api.put('/low_stock/update', lowStock);
+        setResponseStatus('success');        
+        setMessage('Low Stock Alert Updated.');  
+        setRefreshKey(prev => prev + 1);
+      } catch (err) {
+        setResponseStatus('error');
+        setMessage(err.response?.data?.message);
+      } finally {
+        setShowSnackbar(true);
+        setShowSettings(false);
+        setLowStock({ low_stock_threshold: '' });
+      }
+  };
+
+
+  const handleSetLowStockChange = (e) => {
+    const { name, value } = e.target;
+
+    setLowStock((prev) => ({
+            ...prev, 
+            [name]: Number(value.replace(/[^0-9]/g, ''))
+        })
+    );
+  };
+
+
+  const showLowStockProducts = (stock) => {
+    if(Number(stock) <= Number(lowStockThreshold)) {
+      return <div className='flex items-center gap-3'>
+                <p className='text-red-600'>{stock}</p> 
+                <AlertCircle size={17} className='text-red-500' />
+              </div>
+    } else {
+      return stock
+    }
+  };
+
+
   // Define columns
   const columns = useMemo(
     () => [
@@ -321,7 +380,7 @@ const handleNewProductChange = (e) => {
         accessorKey: 'stock_quantity',
         header: 'Stock',
         cell: ({ row, getValue }) =>
-          row.original.track_stock ? getValue() : '∞',
+          row.original.track_stock ? showLowStockProducts(getValue()) : '∞',
         size: 260,
       },
       {
@@ -353,7 +412,7 @@ const handleNewProductChange = (e) => {
         size: 20,
       },
     ],
-    []
+    [lowStockThreshold]
   );
 
   const columnFilters = useMemo(() => {
@@ -431,9 +490,24 @@ const handleNewProductChange = (e) => {
                     <CirclePlus size={13} />
                     Add Product
                 </button>
+                <button
+                  type="button" 
+                  onClick={() => setShowSettings(true)}
+                  className='bg-primary py-1 px-2 rounded cursor-pointer hover:bg-primary-100'>
+                  <Settings size={20} className='text-white' />
+                </button>
             </div>
         </div>
       </div>
+
+      {showSettings && (
+        <StockSettings 
+          handleInputChange={handleSetLowStockChange} 
+          setShow={setShowSettings} 
+          lowStock={lowStock} 
+          handleSubmit={updateLowStockThreshold}
+        />
+      )}
 
       {/* Update Selection Modal */}
       {selectionModal && (
