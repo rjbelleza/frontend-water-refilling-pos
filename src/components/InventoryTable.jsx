@@ -320,7 +320,7 @@ const handleNewProductChange = (e) => {
         setShowSettings(false);
         setLowStock({ low_stock_threshold: '' });
       }
-  };
+  }; 
 
 
   const handleSetLowStockChange = (e) => {
@@ -335,11 +335,16 @@ const handleNewProductChange = (e) => {
 
 
   const showLowStockProducts = (stock) => {
-    if(Number(stock) <= Number(lowStockThreshold)) {
+    if (Number(stock) <= 0) {
       return <div className='flex items-center gap-3'>
                 <p className='text-red-600'>{stock}</p> 
-                <AlertCircle size={17} className='text-red-500' />
+                <AlertCircle size={17} className='text-red-600' />
               </div>
+    } if(Number(stock) <= Number(lowStockThreshold)) {
+      return <div className='flex items-center gap-3'>
+                <p className='text-yellow-600'>{stock}</p> 
+                <AlertCircle size={17} className='text-yellow-600' />
+              </div> 
     } else {
       return stock
     }
@@ -373,7 +378,7 @@ const handleNewProductChange = (e) => {
       {
         accessorKey: 'price',
         header: 'Price (₱)',
-        cell: info => info.getValue(),
+        cell: info => Number(info.getValue()).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
         size: 260,
       },
       {
@@ -506,6 +511,7 @@ const handleNewProductChange = (e) => {
           setShow={setShowSettings} 
           lowStock={lowStock} 
           handleSubmit={updateLowStockThreshold}
+          currentThrshld={lowStockThreshold}
         />
       )}
 
@@ -736,13 +742,12 @@ const handleNewProductChange = (e) => {
                 <p>Current Stock:</p>
                 <p className='font-medium text-right'>{selectRow.stock_quantity.toLocaleString()}</p>
                 <p className='font-bold text-[20px]'>New Stock:</p>
-                <p className={`font-bold text-[20px] text-right ${newStock < toStock ? 'text-red-600' : ''}`}>{newStock.toLocaleString()}</p>
+                <p className={`font-bold text-[20px] text-right ${newStock < 0 ? 'text-red-600' : ''}`}>{newStock.toLocaleString()}</p>
               </div>
               <div className='flex w-full'>
                 <button 
                   type='submit'
-                  disabled={newStock < toStock}
-                  className={`${!stockAction && 'hidden'} ${newStock < toStock ? 'bg-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-100 cursor-pointer'} text-white w-full font-medium px-3 py-2 rounded-sm text-[15px]`}
+                  className={`${!stockAction && 'hidden'} ${newStock < 0 ? 'bg-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-100 cursor-pointer'} text-white w-full font-medium px-3 py-2 rounded-sm text-[15px]`}
                 >
                   CONFIRM
                 </button>

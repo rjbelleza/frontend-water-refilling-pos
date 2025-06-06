@@ -1,7 +1,6 @@
 import { X } from "lucide-react";
-import { useState } from "react";
 
-const StockSettings = ({handleInputChange, setShow, lowStock, handleSubmit}) => {
+const StockSettings = ({handleInputChange, setShow, lowStock, handleSubmit, currentThrshld}) => {
 
     return (
         <div
@@ -22,7 +21,8 @@ const StockSettings = ({handleInputChange, setShow, lowStock, handleSubmit}) => 
                 </span>
                 </p>
                 <form onSubmit={handleSubmit} className="w-full px-5">
-                    <p className="text-[13px] mb-5">The alert will be applied to all <span className="text-primary font-medium">item</span> type products.</p>
+                    <p className="mb-5">Current Threshold: <span className="font-medium">{currentThrshld}</span></p>
+                    <p className="text-[13px] mb-5 text-gray-600">The alert will be applied to all <span className="text-primary font-medium">item</span> type products.</p>
                     <input 
                         type="text"
                         name="low_stock_threshold"
