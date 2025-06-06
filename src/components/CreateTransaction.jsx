@@ -218,7 +218,7 @@ const CreateTransaction = () => {
             <AlertPopUp />
 
             <div className="col-span-3 flex flex-col items-center h-full">
-                <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 sticky top-20 mb-10 rounded-lg">
+                <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 mb-10 rounded-lg">
                     <p className="font-bold text-[15px] text-primary">AVAILABLE PRODUCTS</p>
                     <div className="flex gap-2">
                         <div className="relative">
@@ -360,7 +360,7 @@ const CreateTransaction = () => {
                             Subtotal
                         </p>
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            ₱{subtotal.toFixed(2)}
+                            ₱{subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                     </div>
                     <div className="flex justify-between w-full">
@@ -368,7 +368,7 @@ const CreateTransaction = () => {
                             Discount Applied
                         </p>
                         <p className={`text-[18px] font-medium ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            ₱{(subtotal - discountedAmount).toFixed(2)}
+                            ₱{(subtotal - discountedAmount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                     </div>
                     <div className="flex justify-between w-full">
@@ -376,7 +376,7 @@ const CreateTransaction = () => {
                             To Pay
                         </p>
                         <p className={`text-[25px] font-bold ${selectedProduct.length == 0 ? 'text-gray-500' : 'text-primary'}`}>
-                            ₱{discountedAmount.toFixed(2)}
+                            ₱{discountedAmount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                     </div>
                 </div>
