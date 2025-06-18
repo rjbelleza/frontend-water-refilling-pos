@@ -9,14 +9,17 @@ import {
 } from '@tanstack/react-table';
 import { format, parseISO, isSameDay, isWithinInterval } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Eye, X, CirclePlus, Printer } from 'lucide-react';
+import { Calendar, Eye, X, CirclePlus } from 'lucide-react';
 import api from '../api/axios';
 import LoadingAnimation from './LoadingAnimation';
 import Snackbar from './Snackbar';
 import AlertPopUp from './AlertPopUp';
+import { useAuth } from "../contexts/AuthContext";
 
 const SalesTable = () => {
   // Data state
+  const { user } = useAuth();
+
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -232,7 +235,9 @@ const SalesTable = () => {
           />
         )}
 
-      <AlertPopUp />
+      {user.role == 'admin' && (
+          <AlertPopUp />
+      )}
 
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">
