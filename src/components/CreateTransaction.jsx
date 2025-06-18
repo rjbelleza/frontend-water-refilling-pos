@@ -215,7 +215,9 @@ const CreateTransaction = () => {
                 />
             )}
 
-            <AlertPopUp />
+            {user.role == 'admin' && (
+                <AlertPopUp />
+            )}
 
             <div className="col-span-3 flex flex-col items-center h-full">
                 <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 mb-10 rounded-lg">
