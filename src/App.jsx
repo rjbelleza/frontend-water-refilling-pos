@@ -10,6 +10,7 @@ import ExpensesPage from "./pages/ExpensesPage";
 import ReportsPage from "./pages/ReportsPage";
 import UsersPage from "./pages/UsersPage";
 import NetProfit from "./pages/NetProfit";
+import { Analytics } from '@vercel/analytics/next'
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ element, role }) => {
@@ -27,6 +28,7 @@ const ProtectedRoute = ({ element, role }) => {
 const App = () => {
   return (
     <Router>
+      <Analytics />
       <AuthProvider>
         <Routes>
           {/* Public Route */}
