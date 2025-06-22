@@ -147,7 +147,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/inventory" 
-                className={`flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/inventory")} rounded-tr-full
+                className={`flex items-center gap-3 sm:h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/inventory")} rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
