@@ -136,7 +136,7 @@ const SideMenuBtn = () => {
     return (
         <div className="flex flex-col h-full w-full text-white font-medium">
             <Link to="/admin-dashboard" 
-                  className={`flex items-center ${handleFocus("/admin-dashboard")} gap-3 sm:h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full rounded-tr-full
+                  className={`flex items-center ${handleFocus("/admin-dashboard")} gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full rounded-tr-full
                              rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
@@ -147,7 +147,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/inventory" 
-                className={`flex items-center gap-3 sm:h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/inventory")} rounded-tr-full
+                className={`flex items-center gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/inventory")} rounded-tr-full
                                rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
@@ -158,7 +158,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/new-sales"
-                  className={`flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/new-sales")} rounded-tr-full
+                  className={`flex items-center gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/new-sales")} rounded-tr-full
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
@@ -169,7 +169,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/sales"
-                  className={`flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/sales")} rounded-tr-full
+                  className={`flex items-center gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/sales")} rounded-tr-full
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
@@ -180,7 +180,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/expenses" 
-                className={`flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/expenses")} rounded-tr-full
+                className={`flex items-center gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/expenses")} rounded-tr-full
                             rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
@@ -191,7 +191,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/netProfit"
-                className={`flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/netProfit")} rounded-tr-full
+                className={`flex items-center gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/netProfit")} rounded-tr-full
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
@@ -202,7 +202,7 @@ const SideMenuBtn = () => {
             </Link>
 
             <Link to="/users" 
-                className={`flex items-center gap-3 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/users")} rounded-tr-full
+                className={`flex items-center gap-3 min-h-10 xl:h-10 2xl:h-11 lg:text-[14px] w-full ${handleFocus("/users")} rounded-tr-full
                                 rounded-br-full cursor-pointer hover:bg-primary-100 hover:scale-103 transition-all mb-3`}
             >
                 <div className="h-full w-2 bg-primary-500"></div>
