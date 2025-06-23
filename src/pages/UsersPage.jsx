@@ -13,7 +13,7 @@ const UsersPage = () => {
             <Header />
             <div className="flex flex-col w-full h-fit">
                 <Breadcrumb />
-                <div className="h-full w-full px-5 mb-5">
+                <div className="h-full w-full px-5 mb-35 md:mb-5">
                     <UsersTable />
                 </div>
                 <Footer />

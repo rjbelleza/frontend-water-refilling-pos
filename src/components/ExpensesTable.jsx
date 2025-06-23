@@ -209,35 +209,46 @@ const ExpensesTable = () => {
           {/* Date Filter Display */}
           {(startDate || endDate) && (
             <div className="flex items-center w-full gap-2 px-5 py-2 rounded-md">
-              <Calendar size={16} className="text-primary" />
-              <span className="text-sm text-primary text-[15px]">
-                Filtered by: {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
-                {startDate && endDate && ' - '} 
-                {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+              <Calendar size={16} className="hidden md:block text-primary" />
+              <span className="flex flex-col md:flex-row md:gap-2 text-sm text-primary text-[15px]">
+                <span>
+                  Filtered by:
+                </span> 
+                <span className='font-bold md:font-normal'>
+                  {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
+                  {startDate && endDate && ' - '} 
+                  {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+                </span>
               </span>
             </div>
           )}
           <div className='flex justify-end w-full'>
             <button 
               onClick={() => setShowDateRange(true)}
-              className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                <Calendar size={13} />
-                Change Date Range
+              className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium  px-3 py-5 md:px-5 rounded-md cursor-pointer hover:bg-primary-100'>
+                <Calendar className='h-[30px] md:h-[13px]' />
+                <p className='hidden md:block'>
+                  Change Date Range
+                </p>
             </button>
             {(startDate || endDate) && (
               <button 
                 onClick={clearDateFilter}
-                className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
-                  <X size={13} />
-                  Clear Filter
+                className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-3 py-5 md:px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
+                  <X className='h-[25px] md:h-[13px]' />
+                  <p className='hidden md:block'>
+                    Clear Filter
+                  </p>
               </button>
             )}
             <div className='flex justify-end ml-2'>
               <button 
                 onClick={() => setShowModal(true)}
-                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                <CirclePlus size={13} />
-                Add Expense
+                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-3 py-5 md:px-5 rounded-md cursor-pointer hover:bg-primary-100'>
+                <CirclePlus className='h-[30px] md:h-[13px]' />
+                <p className='hidden md:block'>
+                  Add Expense
+                </p>
               </button>
             </div>
           </div>
@@ -253,7 +264,7 @@ const ExpensesTable = () => {
       >
         <form
             onSubmit={handleDateRangeSubmit}
-            className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            className={`w-[90%] md:w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
             ${showDateRange ? 'scale-100' : 'scale-95'}`}
         >
           <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
@@ -386,7 +397,7 @@ const ExpensesTable = () => {
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-4 px-1">
-        <div className="flex-1 flex justify-between sm:hidden">
+        <div className="flex-1 flex justify-center sm:hidden">
           <button
             onClick={() => table.previousPage()} 
             disabled={!table.getCanPreviousPage()}
@@ -455,7 +466,7 @@ const ExpensesTable = () => {
             className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300
                 ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-            <div className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            <div className={`w-[90%] md:w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
                  <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">

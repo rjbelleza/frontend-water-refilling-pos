@@ -275,9 +275,11 @@ const UsersTable = () => {
               </div>
               <button 
                   onClick={() => setAddUserModal(true)}
-                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                  <CirclePlus size={13} />
-                  Add User
+                  className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-2 md:px-5 rounded cursor-pointer hover:bg-primary-100'>
+                  <CirclePlus className='h-[25px] md:h-[13px]' />
+                  <p className='hidden md:block'>
+                    Add User
+                  </p>
               </button>
           </div>
         </div>
@@ -494,7 +496,7 @@ const UsersTable = () => {
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-4 px-1">
-        <div className="flex-1 flex justify-between sm:hidden">
+        <div className="flex-1 flex justify-center sm:hidden">
           <button
             onClick={() => table.previousPage()} 
             disabled={!table.getCanPreviousPage()}
@@ -566,7 +568,7 @@ const UsersTable = () => {
             className={`fixed inset-0 flex items-center justify-center z-999 transition-opacity duration-300 scrollbar-thin overflow-y-auto
                 ${addUserModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-            <form onSubmit={addUser} className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            <form onSubmit={addUser} className={`w-[90%] md:w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${addUserModal ? 'scale-100' : 'scale-95'}`
             }>
                  <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
@@ -581,7 +583,7 @@ const UsersTable = () => {
                       </button>
                     </span>
                   </p>
-                <div className='grid grid-cols-2 gap-5 w-full p-5'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-5 w-full p-5'>
                     <div>
                       <label htmlFor='fname' className='text-[15px] font-medium text-blue-800'>First Name <span className='text-red-500'>*</span></label>
                       <input 

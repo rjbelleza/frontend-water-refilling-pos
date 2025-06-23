@@ -245,25 +245,32 @@ const SalesTable = () => {
           {/* Date Filter Display */}
           {(startDate || endDate) && (
             <div className="flex items-center w-full gap-2 px-5 py-2 rounded-md">
-              <Calendar size={16} className="text-primary" />
-              <span className="text-sm text-primary text-[15px]">
-                Filtered by: {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
-                {startDate && endDate && ' - '} 
-                {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+              <Calendar size={16} className="hidden md:block text-primary" />
+              <span className="flex flex-col md:flex-row md:gap-2 text-sm text-primary text-[15px]">
+                <span>
+                  Filtered by:
+                </span> 
+                <span className='font-bold md:font-normal'>
+                  {startDate && format(new Date(startDate), 'MMM dd, yyyy')} 
+                  {startDate && endDate && ' - '} 
+                  {endDate && format(new Date(endDate), 'MMM dd, yyyy')}
+                </span>
               </span>
             </div>
           )}
             <div className='flex justify-end w-full'>
-              <button 
+             <button 
                 onClick={() => setShowDateRange(true)}
-                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                  <Calendar size={13} />
-                  Change Date Range
+                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium  px-3 py-5 md:px-5 rounded-md cursor-pointer hover:bg-primary-100'>
+                  <Calendar className='h-[30px] md:h-[13px]' />
+                  <p className='hidden md:block'>
+                    Change Date Range
+                  </p>
               </button>
               {(startDate || endDate) && (
                 <button 
                   onClick={clearDateFilter}
-                  className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
+                  className='hidden md:flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
                     <X size={13} />
                     Clear Filter
                 </button>
@@ -271,10 +278,12 @@ const SalesTable = () => {
               <div className='flex justify-end ml-2'>
                 <button 
                     onClick={() => navigate('/new-sales')}
-                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'
+                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-3 py-5 md:px-5  rounded-md cursor-pointer hover:bg-primary-100'
                 >
-                  <CirclePlus size={15} />
-                  New Sale Entry
+                  <CirclePlus className='h-[30px] md:h-[13px]' />
+                  <p className='hidden md:block'>
+                    New Sale Entry
+                  </p>
                 </button>
               </div>
             </div>

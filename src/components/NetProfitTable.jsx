@@ -147,18 +147,22 @@ const NetProfitTable = () => {
             </div>
           )}
           <div className='flex justify-end w-full'>
-            <button 
-              onClick={() => setShowYearPicker(true)}
-              className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                <Calendar size={13} />
-                Select Year
-            </button>
+             <button 
+                onClick={() => setShowYearPicker(true)}
+                className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium  px-3 py-5 md:px-5 rounded-md cursor-pointer hover:bg-primary-100'>
+                  <Calendar className='h-[30px] md:h-[13px]' />
+                  <p className='hidden md:block'>
+                    Change Date Range
+                  </p>
+              </button>
             {selectedYear && (
               <button 
                 onClick={clearYearFilter}
-                className='flex items-center gap-2 h-[35px] bg-gray-500 text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
-                  <X size={13} />
-                  Clear Filter
+                className='flex items-center gap-2 h-full bg-gray-500 text-white text-[13px] font-medium px-3 md:px-5 rounded-md cursor-pointer hover:bg-gray-600 ml-2'>
+                  <X className='h-[25px] md:h-[13px]' />
+                  <p className='hidden md:block'>
+                    Clear Filter
+                  </p>
               </button>
             )}
           </div>
