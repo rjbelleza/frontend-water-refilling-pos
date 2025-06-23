@@ -39,18 +39,10 @@ const StaffSidemenu = () => {
 
 
     return (
-         <div className={`${isClose ? 'w-60 p-5' : 'w-20 pt-5'} h-screen flex flex-col bg-[url('/images/bgbg.png')] bg-cover bg-center
+         <div className={`${isClose ? 'w-60 p-5' : 'w-0 border-0 md:w-20 md:border'} h-screen flex flex-col bg-[url('/images/bgbg.png')] bg-cover bg-center
                                  bg-opacity-30 sticky left-0 items-center transition-all ease-in-out border border-gray-400 overflow-y-auto overflow-x-hidden scrollbar-thin`}
          >
-            <div className={`${!isClose ? 'justify-center' : 'justify-end'} flex w-full`}>
-                <button 
-                    className='cursor-pointer hover:bg-primary-100 rounded-md p-1 transition-all'
-                    onClick={() => close()}
-                >
-                    <Menu size={30} className='text-primary hover:text-white' />
-                </button>
-            </div>
-            <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3 px-2`}>
+            <div className={`${!isClose && 'hidden'} flex flex-col gap-1 h-fit w-50 rounded-lg mt-3 px-7 md:px-2`}>
                 <div className="flex flex-col items-center w-full">
                     <p className="text-[11px] text-gray-600 mb-1">Welcome,</p>
                     <p className="font-bold text-[17px]">{user.fname} {user.lname}</p>
