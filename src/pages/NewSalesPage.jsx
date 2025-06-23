@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 
 const NewSalesPage = () => {
-    const { user } = useAuth();
+    const { user, isClose } = useAuth();
 
     return (
         <div className="flex h-full w-full">
@@ -20,6 +20,11 @@ const NewSalesPage = () => {
                 <Header />
                 <div className="flex flex-col h-full w-full gap-5">
                     <Breadcrumb />
+                    {isClose && (
+                        <div 
+                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                        />
+                    )}
                     <div className="w-full h-full px-5">
                         <CreateTransaction />
                     </div>

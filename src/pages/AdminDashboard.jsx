@@ -2,7 +2,6 @@ import Header from "../layouts/Header";
 import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Card1 from "../components/Card1";
-import PieChart from "../components/PieChart";
 import { Calculator, Store, Coins, ChartNoAxesCombined, Calendar } from 'lucide-react';
 import SalesGraph from '../components/SalesGraph';
 import Footer from "../layouts/Footer";
@@ -11,8 +10,11 @@ import { useEffect, useState } from "react";
 import Snackbar from '../components/Snackbar';
 import ComponentLoading from "../components/ComponentLoading";
 import AlertPopUp from "../components/AlertPopUp";
+import { useAuth } from "../contexts/AuthContext";
 
 const AdminDashboard = () => {
+    const { isClose } = useAuth();
+
     const [range, setRange] = useState('last_year');
     const [summary, setSummary] = useState([]);
     const [showSnackbar, setShowSnackbar] = useState(false);
@@ -62,10 +64,16 @@ const AdminDashboard = () => {
             )}
             
             <AdminSidemenu />
+
             <div className="h-full w-full overflow-y-auto scrollbar-thin">
                 <Header />
                 <div className="flex flex-col justify-between w-full h-fit gap-5 overflow-x-hidden">
                     <Breadcrumb />
+                    {isClose && (
+                        <div 
+                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                        />
+                    )}
                     <div className="grid grid-cols-4 w-full px-5 gap-5 mb-3">
                         <AlertPopUp />
                         <button 

@@ -3,8 +3,10 @@ import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Footer from "../layouts/Footer";
 import UsersTable from "../components/UsersTable";
+import { useAuth } from "../contexts/AuthContext";
 
 const UsersPage = () => {
+    const { isClose } = useAuth();
 
     return (
         <div className="flex h-full w-full">
@@ -13,6 +15,11 @@ const UsersPage = () => {
             <Header />
             <div className="flex flex-col w-full h-fit">
                 <Breadcrumb />
+                {isClose && (
+                        <div 
+                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                        />
+                    )}
                 <div className="h-full w-full px-5 mb-35 md:mb-5">
                     <UsersTable />
                 </div>

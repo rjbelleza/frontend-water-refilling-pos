@@ -292,7 +292,7 @@ const UsersTable = () => {
         className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
             ${showUpdateModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
-        <form onSubmit={handleSaveChanges} className={`min-w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+        <form onSubmit={handleSaveChanges} className={`w-[90%] md:w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
             ${showUpdateModal ? 'scale-100' : 'scale-95'}`
         }>
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
@@ -307,7 +307,7 @@ const UsersTable = () => {
                     </button>
                 </span>
             </p>
-            <div className='grid grid-cols-2 gap-2 w-full p-5'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-2 w-full p-5'>
               <div>
                 <label htmlFor='fname' className='text-[14px] font-medium text-blue-800'>First Name <span className='text-red-500'>*</span></label>
                 <input 
@@ -400,7 +400,7 @@ const UsersTable = () => {
         >
           <form
             onSubmit={handleDeleteUser} 
-            className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+            className="w-[90%] md:w-[400px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Delete User
               <span className="text-gray-800 hover:text-gray-600 font-normal">

@@ -3,9 +3,11 @@ import AdminSidemenu from "../layouts/AdminSidemenu";
 import Breadcrumb from "../components/Breadcrumb";
 import Footer from "../layouts/Footer";
 import NetProfitTable from "../components/NetProfitTable";
+import { useAuth } from "../contexts/AuthContext";
 
 
 const NetProfit = () => {
+    const  { isClose } = useAuth();
 
     return (
         <div className="flex h-full w-full">
@@ -14,6 +16,11 @@ const NetProfit = () => {
                 <Header />
                 <div className="flex flex-col w-full h-fit">
                     <Breadcrumb />
+                    {isClose && (
+                        <div 
+                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                        />
+                    )}
                     <div className="h-full w-full px-5 mb-5">
                         <NetProfitTable />
                     </div>

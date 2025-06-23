@@ -8,7 +8,7 @@ import Footer from "../layouts/Footer";
 
 
 const SalesPage = () => {
-    const { user } = useAuth();
+    const { user, isClose } = useAuth();
 
     return (
         <div className="flex h-full w-full">
@@ -21,6 +21,11 @@ const SalesPage = () => {
                 <Header />
                 <div className="flex flex-col w-full h-fit">
                     <Breadcrumb />
+                    {isClose && (
+                        <div 
+                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                        />
+                    )}
                     <div className="h-full w-full px-5 mb-25 md:mb-5">
                         <SalesTable />
                     </div>

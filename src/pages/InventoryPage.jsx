@@ -7,7 +7,7 @@ import Footer from "../layouts/Footer";
 import { useAuth } from "../contexts/AuthContext";
 
 const InventoryPage = () => {
-    const { user } = useAuth();
+    const { user, isClose } = useAuth();
 
     return (
         <div className="flex h-full w-full">
@@ -20,6 +20,11 @@ const InventoryPage = () => {
                 <Header />
                 <div className="flex flex-col w-full h-fit gap-3">
                     <Breadcrumb />
+                    {isClose && (
+                        <div 
+                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                        />
+                    )}
                     <div className="h-[800px] md:h-full w-full px-5">
                         <InventoryTable />
                     </div>
