@@ -537,7 +537,7 @@ const CreateTransaction = () => {
                     className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-10 scrollbar-thin pt-30"
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
-                    <div className="receipt-container w-[90%] md:w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
+                    <div className="receipt-container w-[95%] md:w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
                         <div className="receipt-content font-mono">
                             <div className="receipt-header text-center mb-5">
                                 <div className="receipt-title text-sm font-bold uppercase tracking-wider mb-1">receipt of sale</div>

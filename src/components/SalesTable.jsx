@@ -293,7 +293,7 @@ const SalesTable = () => {
       {/* View Modal */}
       {viewModal && selectedRow && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-1000 scrollbar-thin overflow-y-auto pt-40 pb-10"
+          className="fixed inset-0 flex items-center justify-center z-1000 scrollbar-thin overflow-y-auto pt-80 md:pt-40 pb-10"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
           <div className="w-[90%] md:w-[800px] bg-white pb-5 rounded-sm shadow-lg">
