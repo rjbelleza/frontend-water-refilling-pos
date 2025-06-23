@@ -71,7 +71,7 @@ const AdminDashboard = () => {
                     <Breadcrumb />
                     {isClose && (
                         <div 
-                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                            className="block md:hidden h-full w-full fixed bg-white z-8"
                         />
                     )}
                     <div className="grid grid-cols-4 w-full px-5 gap-5 mb-3">

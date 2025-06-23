@@ -22,7 +22,7 @@ const NewSalesPage = () => {
                     <Breadcrumb />
                     {isClose && (
                         <div 
-                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                            className="block md:hidden h-full w-full fixed bg-white z-8"
                         />
                     )}
                     <div className="w-full h-full px-5">

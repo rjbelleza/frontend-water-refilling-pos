@@ -22,7 +22,7 @@ const ExpensesPage = () => {
                     <Breadcrumb />
                     {isClose && (
                         <div 
-                            className="block md:hidden h-full w-full fixed bg-white z-1000"
+                            className="block md:hidden h-full w-full fixed bg-white z-8"
                         />
                     )}
                     <div className="h-full w-full px-5 mb-25 md:mb-5">
