@@ -206,7 +206,7 @@ const CreateTransaction = () => {
     };
 
     return(
-        <div className="grid grid-cols-6 gap-10 w-full pb-3">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 w-full pb-3">
             {showSnackbar && (
                 <Snackbar 
                     message={message}
@@ -219,7 +219,7 @@ const CreateTransaction = () => {
                 <AlertPopUp />
             )}
 
-            <div className="col-span-3 flex flex-col items-center h-full">
+            <div className="md:col-span-3 flex flex-col items-center h-full">
                 <div className="flex justify-between items-center w-full bg-white border border-gray-300 px-3 py-3 mb-10 rounded-lg">
                     <p className="font-bold text-[15px] text-primary">AVAILABLE PRODUCTS</p>
                     <div className="flex gap-2">
@@ -256,19 +256,21 @@ const CreateTransaction = () => {
                         <LoadingAnimation />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-3 gap-8 w-full scrollbar-thin overflow-y-auto sticky top-45">
-                        <Card2 
-                            products={filteredProducts} 
-                            add={handleAddProduct} 
-                            selectedProducts={selectedProduct}
-                        />
+                    <div className="w-full overflow-x-auto">                        
+                        <div className="flex md:grid md:grid-cols-3 gap-8 md:w-full w-[800px] scrollbar-thin overflow-x-auto sticky top-45">
+                            <Card2 
+                                products={filteredProducts} 
+                                add={handleAddProduct} 
+                                selectedProducts={selectedProduct}
+                            />
+                        </div>
                     </div>
                 )}
             </div>
 
             <form 
                 onSubmit={handlePlaceOrder}
-                className="col-span-3 w-full h-fit bg-white rounded-md p-4"
+                className="md:col-span-3 w-full h-fit bg-white rounded-md p-4"
             >
                 <p className="font-medium text-center bg-primary text-gray-200 rounded-sm py-2 mb-1">Current Order</p>
                 <div className="w-full min-h-[20%] bg-gray-200 border-1 border-gray-100 rounded-sm p-3 overflow-auto">
@@ -541,7 +543,7 @@ const CreateTransaction = () => {
                     className="fixed h-screen inset-0 flex flex-col items-center justify-center z-999 overflow-y-auto pb-10 scrollbar-thin pt-30"
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
-                    <div className="receipt-container min-w-[600px] max-w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
+                    <div className="receipt-container w-[90%] md:w-[600px] bg-white py-5 pb-5 rounded-tl-sm rounded-tr-sm px-10">
                         <div className="receipt-content font-mono">
                             <div className="receipt-header text-center mb-5">
                                 <div className="receipt-title text-sm font-bold uppercase tracking-wider mb-1">receipt of sale</div>
@@ -600,7 +602,7 @@ const CreateTransaction = () => {
                             <div className="receipt-footer text-center text-xl font-bold mt-6">THANK YOU!</div>
                         </div>
                     </div>
-                    <div className="no-print w-[600px] flex justify-end gap-2 bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
+                    <div className="no-print w-[90%] md:w-[600px] flex justify-end gap-2 bg-white px-5 pb-5 rounded-bl-sm rounded-br-sm">
                         <button
                             onClick={resetSale}
                             className="flex items-center text-[14px] text-white gap-2 bg-primary-500 px-3 py-1 rounded-sm hover:bg-primary-100 cursor-pointer"
@@ -630,7 +632,7 @@ const Card2 = ({ products, add, selectedProducts }) => {
                 return (
                     <div 
                         key={product.id}
-                        className={`flex flex-col gap-2 h-fit bg-white rounded-lg shadow-sm shadow-gray-400 
+                        className={`flex flex-col gap-2 h-fit w-[400px] md:w-full bg-white rounded-lg shadow-sm shadow-gray-400 
                                    border-2 border-primary-100 border-t-5 ${
                                     product.track_stock === 1 && availableStock <= 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
                                    }`}
@@ -690,37 +692,39 @@ const Card3 = ({ product, onQuantityChange, onRemove, add, minus }) => {
     }, [product.quantity]);
 
     return (
-        <div className="flex items-center min-h-[30px] justify-between gap-15 w-full border-l-5 border-1 border-gray-400 
-        border-l-primary bg-white rounded-sm p-3">
-            <div>
-                <p className="font-medium text-[15px]">{product.name}</p>
-                <p className="text-[14px]">₱{parseFloat(product.price).toFixed(2)}</p>
+        <div className="flex flex-col md:flex-row items-center min-h-[30px] justify-between gap-5 md:gap-15 w-full border-l-5 border-1 border-gray-400 
+                        border-l-primary bg-white rounded-sm py-3 px-5">
+            <div className="flex w-full md:block justify-between items-center ">
+                <p className="font-medium text-[20px] md:text-[15px]">{product.name}</p>
+                <p className="text-[18px] md:text-[14px]">₱{parseFloat(product.price).toFixed(2)}</p>
             </div>
-            <div className="flex items-center gap-3">  
-                <button 
-                    type="button" 
-                    onClick={() => add(product)}
-                    disabled={product.track_stock === 1 && quantity >= product.stock_quantity}
-                    className={product.track_stock === 1 && quantity >= product.stock_quantity ? 'opacity-50 cursor-not-allowed' : ''}
-                >
-                    <Plus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
-                </button> 
-                <input 
-                    id="quantity"
-                    className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm text-center" 
-                    min="1"
-                    max={product.track_stock === 0 ? '' : product.stock_quantity}
-                    value={quantity}
-                    onChange={handleQuantityChange}
-                />
-                <button 
-                    type="button" 
-                    onClick={() => minus(product)}
-                    disabled={quantity <= 1}
-                    className={quantity <= 1 ? 'opacity-50 cursor-not-allowed' : ''}
-                >
-                    <Minus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
-                </button>
+            <div className="flex w-full justify-between items-center gap-3">  
+                <div className="flex items-center gap-3">
+                    <button 
+                        type="button" 
+                        onClick={() => add(product)}
+                        disabled={product.track_stock === 1 && quantity >= product.stock_quantity}
+                        className={product.track_stock === 1 && quantity >= product.stock_quantity ? 'opacity-50 cursor-not-allowed' : ''}
+                    >
+                        <Plus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
+                    </button> 
+                    <input 
+                        id="quantity"
+                        className="h-[40px] w-[80px] px-2 border-1 border-gray-500 rounded-sm text-center" 
+                        min="1"
+                        max={product.track_stock === 0 ? '' : product.stock_quantity}
+                        value={quantity}
+                        onChange={handleQuantityChange}
+                    />
+                    <button 
+                        type="button" 
+                        onClick={() => minus(product)}
+                        disabled={quantity <= 1}
+                        className={quantity <= 1 ? 'opacity-50 cursor-not-allowed' : ''}
+                    >
+                        <Minus size={28} className="p-1 bg-primary hover:bg-primary-100 text-white rounded-full cursor-pointer" />
+                    </button>
+                </div>
                 <button 
                     type="button"
                     onClick={() => onRemove(product.id)}
