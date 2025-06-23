@@ -452,7 +452,7 @@ const handleNewProductChange = (e) => {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
 
       {showSnackbar && (
         <Snackbar 
@@ -466,8 +466,8 @@ const handleNewProductChange = (e) => {
 
       <div className='flex justify-between'>
         <div></div>
-          <div className='w-fit pb-3'>
-            <div className='flex gap-1'>
+          <div className='w-full md:w-fit pb-3'>
+            <div className='flex justify-between md:gap-1'>
                 <div className='flex items-center h-[35px]'>
                     <div className='relative'>
                       <Search size={20} className='absolute top-2 left-2 text-gray-500' />
@@ -491,9 +491,11 @@ const handleNewProductChange = (e) => {
                 </select>
                 <button 
                     onClick={() => setShowModal(true)}
-                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-5 rounded-md cursor-pointer hover:bg-primary-100'>
-                    <CirclePlus size={13} />
-                    Add Product
+                    className='flex items-center gap-2 h-[35px] bg-primary text-white text-[13px] font-medium px-2 md:px-5 rounded cursor-pointer hover:bg-primary-100'>
+                    <CirclePlus className='h-[20px] w-[20px] md:h-[13px] md:w-[13px]' />
+                    <p className='hidden md:block'>
+                      Add Product
+                    </p>
                 </button>
                 <button
                   type="button" 
@@ -521,7 +523,7 @@ const handleNewProductChange = (e) => {
           className="fixed h-screen inset-0 flex flex-col items-center justify-center z-1000"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         >
-          <div className='flex justify-end w-[400px] mb-2'>
+          <div className='flex justify-end w-[90%] md:w-[400px] mb-2'>
             <button 
               onClick={() => setSelectionModal(false)}
               className='bg-gray-700 rounded-full p-1 cursor-pointer'
@@ -529,7 +531,7 @@ const handleNewProductChange = (e) => {
               <X size={18} className='text-gray-200' />
             </button>
           </div>
-          <div className='grid grid-cols-2 gap-3 bg-white w-[400px] h-[200px] p-5 rounded-sm'>
+          <div className='grid grid-cols-2 gap-3 bg-white w-[90%] md:w-[400px] h-[200px] p-5 rounded-sm'>
             <button
               onClick={() => handleUpdateClick(selectRow)}
               type='button' 
@@ -556,7 +558,7 @@ const handleNewProductChange = (e) => {
           className="fixed h-screen inset-0 flex items-center justify-center z-1000 overflow-y-auto pt-40 pb-15 scrollbar-thin"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         >
-          <div className="min-w-[800px] max-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+          <div className="w-[90%] md:w-[800px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Product Details
               <span className="text-gray-800 hover:text-gray-600 font-normal">
@@ -568,7 +570,7 @@ const handleNewProductChange = (e) => {
                 </button>
               </span>
             </p>
-            <div className='grid grid-cols-2 gap-8 w-full px-5 mb-10 text-white'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-8 w-full px-5 mb-10 text-white'>
               <div className='flex flex-col w-full space-y-2'>
                 <label htmlFor="productName" className='text-[14px] font-medium text-blue-800'>Product Name</label>
                 <input 
@@ -627,7 +629,7 @@ const handleNewProductChange = (e) => {
         >
           <form 
             onSubmit={handleSaveChanges}
-            className="min-w-[500px] max-w-[500px] bg-white pb-5 rounded-sm shadow-lg"
+            className="w-[90%] md:w-[500px] bg-white pb-5 rounded-sm shadow-lg"
           >
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Update Product Details
@@ -700,7 +702,7 @@ const handleNewProductChange = (e) => {
           className="fixed inset-0 flex items-center justify-center z-1000"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
-          <form onSubmit={updateStock} className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+          <form onSubmit={updateStock} className="w-[90%] md:w-[400px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Update Stock
               <span className="text-gray-800 hover:text-gray-600 font-normal">
@@ -766,7 +768,7 @@ const handleNewProductChange = (e) => {
         >
           <form
             onSubmit={deleteProduct} 
-            className="min-w-[400px] max-w-[400px] bg-white pb-5 rounded-sm shadow-lg">
+            className="w-[90%] m:w-[400px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Remove Product
               <span className="text-gray-800 hover:text-gray-600 font-normal">
@@ -862,7 +864,7 @@ const handleNewProductChange = (e) => {
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-4 px-1">
-        <div className="flex-1 flex justify-between sm:hidden">
+        <div className="flex-1 flex justify-center md:justify-between sm:hidden">
           <button
             onClick={() => table.previousPage()} 
             disabled={!table.getCanPreviousPage()}
@@ -936,7 +938,7 @@ const handleNewProductChange = (e) => {
         >
             <form 
                 onSubmit={AddProduct}
-                className={`min-w-[700px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+                className={`w-[90%] md:w-[700px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
                 ${showModal ? 'scale-100' : 'scale-95'}`
             }>
                 <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
@@ -951,7 +953,7 @@ const handleNewProductChange = (e) => {
                     </button>
                   </span>
                 </p>
-                <div className='grid grid-cols-2 gap-7 p-5 mb-5'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-7 p-5 mb-5'>
                   <div className='flex flex-col w-full space-y-2 mx-auto'>
                     <label htmlFor="product_name" className='text-[15px] font-medium text-blue-800'>Product Name <span className='text-red-700'>*</span></label>
                     <input

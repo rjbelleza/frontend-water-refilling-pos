@@ -20,7 +20,7 @@ const InventoryPage = () => {
                 <Header />
                 <div className="flex flex-col w-full h-fit gap-3">
                     <Breadcrumb />
-                    <div className="h-full w-full px-5">
+                    <div className="h-[800px] md:h-full w-full px-5">
                         <InventoryTable />
                     </div>
                     <Footer />
