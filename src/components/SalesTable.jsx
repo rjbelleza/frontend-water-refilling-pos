@@ -235,7 +235,7 @@ const SalesTable = () => {
           />
         )}
 
-      {user.role == 'admin' && (
+      {user.role == 'admin' && !showSnackbar && (
           <AlertPopUp />
       )}
 

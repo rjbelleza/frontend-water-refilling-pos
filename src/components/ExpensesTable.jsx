@@ -201,7 +201,9 @@ const ExpensesTable = () => {
         />
       )}
 
-      <AlertPopUp />
+      {!showSnackbar && (
+        <AlertPopUp />
+      )}
 
       {/* Search Controls */}
       <div className="flex flex-col w-full sm:flex-row">

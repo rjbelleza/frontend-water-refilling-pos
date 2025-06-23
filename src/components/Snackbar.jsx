@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle2, XCircle, AlertCircle, Info, X } from 'lucide-react';
 
-const Snackbar = ({ message, type = 'info', duration = 10000, onClose }) => {
+const Snackbar = ({ message, type = 'info', duration = 1000000, onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {

@@ -462,7 +462,11 @@ const handleNewProductChange = (e) => {
         />
       )}
 
-      <AlertPopUp refresh={refreshKey} />
+      {!showSnackbar && (
+        <AlertPopUp 
+          refresh={refreshKey} 
+        />
+      )}
 
       <div className='flex justify-between'>
         <div></div>

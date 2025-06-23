@@ -29,7 +29,6 @@ const UsersTable = () => {
   const [message, setMessage ] = useState('');
   const [responseStatus, setResponseStatus ] = useState('');
   const [refreshKey, setRefreshKey] = useState(0); 
-  const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [newUser, setNewUser] = useState({
@@ -260,7 +259,11 @@ const UsersTable = () => {
         />
       )}
 
-      <AlertPopUp />
+      {!showSnackbar && (
+        <AlertPopUp 
+          refresh={refreshKey} 
+        />
+      )}
 
       <div className='flex justify-between w-full'>
         <div className='flex justify-end w-full py-3'>

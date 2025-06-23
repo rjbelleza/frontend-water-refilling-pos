@@ -57,9 +57,9 @@ const AdminDashboard = () => {
 
             {showSnackbar && (
                 <Snackbar 
-                message={message && message}
-                type={responseStatus}
-                onClose={() => setShowSnackbar(false)}
+                    message={message && message}
+                    type={responseStatus}
+                    onClose={() => setShowSnackbar(false)}
                 />
             )}
             
@@ -75,7 +75,9 @@ const AdminDashboard = () => {
                         />
                     )}
                     <div className="grid grid-cols-4 w-full px-5 gap-5 mb-3">
-                        <AlertPopUp />
+                        {!showSnackbar && (
+                            <AlertPopUp />
+                        )}
                         <button 
                             onClick={() => setRange('last_day')}
                             className={`flex items-center justify-center gap-2 ${range === 'last_day' ? 'bg-primary' : 'bg-gray-500'}  focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer`}>

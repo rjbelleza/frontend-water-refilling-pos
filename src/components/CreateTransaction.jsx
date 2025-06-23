@@ -4,7 +4,6 @@ import { Search, Funnel, Store, X, Plus, Minus, Printer } from "lucide-react";
 import api from "../api/axios";
 import LoadingAnimation from "./LoadingAnimation";
 import { useAuth } from "../contexts/AuthContext";
-import AlertPopUp from "./AlertPopUp";
 
 const CreateTransaction = () => {
     const { user } = useAuth();
@@ -183,7 +182,6 @@ const CreateTransaction = () => {
             setPlaceOrder(true);
             setMessage(response.data?.message);
             setResponseStatus(response.data?.status);
-            setShowSnackbar(true);
             fetchProducts();
             
         } catch (error) {
@@ -213,10 +211,6 @@ const CreateTransaction = () => {
                     type={responseStatus}
                     onClose={() => setShowSnackbar(false)}
                 />
-            )}
-
-            {user.role == 'admin' && (
-                <AlertPopUp />
             )}
 
             <div className="md:col-span-3 flex flex-col items-center h-full">
