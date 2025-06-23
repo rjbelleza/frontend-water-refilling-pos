@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, CircleGauge, Coins, Package, Calculator, Users, ChartNoAxesCombined, Wallet } from 'lucide-react';
+import { CircleGauge, Coins, Package, Calculator, Users, ChartNoAxesCombined, Wallet } from 'lucide-react';
 
 const AdminSidemenu = () => {
-    const { user, loading, isClose, setIsClose } = useAuth();
+    const { user, loading, isClose, setIsClose, close } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -19,6 +19,16 @@ const AdminSidemenu = () => {
     useEffect(() => {
         location.pathname === "/new-sales" && setIsClose(false);
     }, [])
+
+    // Auto close sidemenu for small screens
+    useEffect(() => {
+        const width = window.innerWidth;
+
+        if (width <= 640) {
+            setIsClose(false);
+        }
+
+    }, []);
 
 
     if (loading || !user) {

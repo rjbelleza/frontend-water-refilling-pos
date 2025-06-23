@@ -25,7 +25,7 @@ const NewSalesPage = () => {
                             className="block md:hidden h-full w-full fixed bg-white z-8"
                         />
                     )}
-                    <div className="w-full h-full px-5">
+                    <div className="w-full h-full px-2 md:px-5">
                         <CreateTransaction />
                     </div>
                 </div>

@@ -292,7 +292,7 @@ const UsersTable = () => {
       {showUpdateModal && selectedRow && (
       <div 
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} 
-        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity duration-300 scrollbar-thin overflow-y-auto
+        className={`fixed inset-0 flex items-center justify-center z-1000 transition-opacity pt-80 pb-5 md:pt-0 md:pb-0 duration-300 scrollbar-thin overflow-y-auto
             ${showUpdateModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
         <form onSubmit={handleSaveChanges} className={`w-[90%] md:w-[500px] bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300

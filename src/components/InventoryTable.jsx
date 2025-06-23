@@ -480,7 +480,7 @@ const handleNewProductChange = (e) => {
                           placeholder='Search' 
                           value={nameFilter}
                           onChange={(e) => setNameFilter(e.target.value)}
-                          className='text-[13px] h-[35px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
+                          className='text-[13px] h-[35px] min-w-[100px] max-w-[180px] border border-gray-400 pl-9 pr-2 py-1 rounded-sm' 
                       />
                     </div>
                 </div>

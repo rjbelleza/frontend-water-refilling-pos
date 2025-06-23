@@ -4,14 +4,19 @@ import { useAuth } from '../contexts/AuthContext';
 import { Menu, HandCoins, Package, Wallet } from 'lucide-react';
 
 const StaffSidemenu = () => {
-    const { user, loading, close, isClose, setIsClose } = useAuth();
+    const { user, loading, isClose, setIsClose } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const [isOpen, setIsOpen] = useState(true);
 
+    // Auto close sidemenu for small screens
+    useEffect(() => {
+        const width = window.innerWidth;
 
-    const toggleMenu = () => setIsOpen(!isOpen);
+        if (width <= 640) {
+            setIsClose(false);
+        }
 
+    }, []);
 
     useEffect(() => {
         if (!loading && !user) {
