@@ -287,7 +287,7 @@ const SalesTable = () => {
           className="fixed inset-0 flex items-center justify-center z-1000 scrollbar-thin overflow-y-auto pt-40 pb-10"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
         >
-          <div className="min-w-[800px] bg-white pb-5 rounded-sm shadow-lg">
+          <div className="w-[90%] md:w-[800px] bg-white pb-5 rounded-sm shadow-lg">
             <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-8 p-5">
               Sale Detail
               <span className="text-gray-800 hover:text-gray-600 font-normal">
@@ -299,7 +299,7 @@ const SalesTable = () => {
                 </button>
               </span>
             </p>
-            <div className='flex gap-20 w-full px-5 mb-10'>
+            <div className='flex flex-col md:flex-row gap-10 md:gap-20 w-full px-5 mb-10'>
               <div className='space-y-2'>
                 <p className='text-[14px] font-medium text-blue-600'>Customer</p>
                 <p className='text-[17px] font-bold text-primary'>{capitalize(selectedRow.customer.name || '')}</p>
@@ -336,7 +336,7 @@ const SalesTable = () => {
                 </tbody>
               </table>
               <div className='flex justify-end w-full py-4'>
-                <div className='w-1/2 border border-gray-300 text-[14px] rounded-md'>
+                <div className='w-3/4 md:w-1/2 border border-gray-300 text-[14px] rounded-md'>
                   <div className='flex justify-between p-3'>
                     <p>Subtotal</p>
                     <p>₱{Number(selectedRow.subtotal).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
@@ -373,7 +373,7 @@ const SalesTable = () => {
       >
         <form
             onSubmit={handleDateRangeSubmit}
-            className={`min-w-[400px] max-w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
+            className={`w-[80%] m:w-[400px] flex flex-col items-center bg-white pb-5 rounded-sm shadow-lg transform transition-transform duration-300
             ${showDateRange ? 'scale-100' : 'scale-95'}`}
         >
           <p className="flex justify-between w-full text-[19px] border-b-1 border-dashed border-gray-400 font-medium text-primary mb-5 p-5">
@@ -502,7 +502,7 @@ const SalesTable = () => {
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-4 px-1">
-        <div className="flex-1 flex justify-between sm:hidden">
+        <div className="flex-1 flex justify-center sm:hidden">
           <button
             onClick={() => table.previousPage()} 
             disabled={!table.getCanPreviousPage()}
