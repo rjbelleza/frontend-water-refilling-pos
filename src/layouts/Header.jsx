@@ -2,11 +2,11 @@ import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from "react";
-import { LogOut, Bell } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
-    const { logout } = useAuth();
+    const { logout, close } = useAuth();
     const navigate = useNavigate();
 
 
@@ -23,9 +23,17 @@ const Header = () => {
 
     return (
         <div className="flex items-center justify-between h-13 w-full bg-primary sticky top-0 px-5 z-999">
-            <Link to="/admin-dashboard">
-                <img src="/images/Aqua2.png" alt="Logo" className="h-8 cursor-pointer" />
-            </Link>
+            <div className="flex gap-5">
+                <button 
+                    className='cursor-pointer hover:bg-primary-100 rounded-md p-1 transition-all'
+                    onClick={() => close()}
+                >
+                    <Menu size={30} className='text-white hover:text-white' />
+                </button>
+                <Link to="/admin-dashboard">
+                    <img src="/images/Aqua2.png" alt="Logo" className="h-8 cursor-pointer" />
+                </Link>
+                </div>
             <div>
             <button 
                 onClick={() => setShowModal(true)}

@@ -228,14 +228,16 @@ const SalesGraph = ({ range = 'last_month' }) => {
       <div className='flex border-b-1 border-gray-300 p-5'>
         <p className='text-blue-950 font-medium rounded-sm'>Sales vs Expenses</p>
       </div>
-      <div className="w-full chart-wrapper p-3">
-        <Chart 
-          options={options} 
-          series={options.series} 
-          type="bar"
-          height={400}
-          width="100%"
-        />
+      <div className="w-full overflow-x-auto chart-wrapper p-3">
+        <div className='min-w-[980px] w-full'>
+          <Chart 
+            options={options} 
+            series={options.series} 
+            type="bar"
+            height={400}
+            width="100%"
+          />
+        </div>
       </div>
       <div className="text-right text-xs text-gray-500 p-2">
         Last updated: {chartData.lastUpdated}

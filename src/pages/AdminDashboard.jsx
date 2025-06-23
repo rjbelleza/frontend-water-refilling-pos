@@ -71,25 +71,49 @@ const AdminDashboard = () => {
                         <button 
                             onClick={() => setRange('last_day')}
                             className={`flex items-center justify-center gap-2 ${range === 'last_day' ? 'bg-primary' : 'bg-gray-500'}  focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer`}>
-                            <Calendar size={15} /> Last Day
+                            <Calendar size={15} className="hidden md:block" /> 
+                            <p className="hidden md:block">
+                                Last Day
+                            </p>
+                            <p className="block md:hidden">
+                                LD
+                            </p>
                         </button>
                         <button 
                             onClick={() => setRange('last_week')}
                             className={`flex items-center justify-center gap-2 ${range === 'last_week' ? 'bg-primary' : 'bg-gray-500'}  focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer`}>
-                            <Calendar size={15} /> Last Week
+                            <Calendar size={15} className="hidden md:block" /> 
+                            <p className="hidden md:block">
+                                Last Week
+                            </p>
+                            <p className="block md:hidden">
+                                LW
+                            </p>
                         </button>
                         <button 
                             onClick={() => setRange('last_month')}
                             className={`flex items-center justify-center gap-2 ${range === 'last_month' ? 'bg-primary' : 'bg-gray-500'}  focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer`}>
-                            <Calendar size={15} /> Last Month
+                            <Calendar size={15} className="hidden md:block" /> 
+                            <p className="hidden md:block">
+                                Last Month
+                            </p>
+                            <p className="block md:hidden">
+                                LM
+                            </p>
                         </button>
                         <button 
                             onClick={() => setRange('last_year')}
                             className={`flex items-center justify-center gap-2 ${range === 'last_year' ? 'bg-primary' : 'bg-gray-500'}  focus:bg-primary py-2 rounded-full text-white text-[14px] font-medium shadow-md shadow-gray-900 cursor-pointer`}>
-                            <Calendar size={15} /> Last Year
+                            <Calendar size={15} className="hidden md:block" /> 
+                            <p className="hidden md:block">
+                                Last Year
+                            </p>
+                            <p className="block md:hidden">
+                                LY
+                            </p>
                         </button>
                     </div>
-                    <div className="grid grid-cols-4 gap-5 w-full h-full px-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-5 w-full h-full px-4">
                         <Card1 icon={<Store />} category="Total Transactions" value={loading ? <ComponentLoading /> : summary.sales_count} range="Last Month" />
                         <Card1 icon={<Coins />} category="Total Sales" value={formatCurrency(summary.total_sales)} range="Last Month" />
                         <Card1 icon={<Calculator />} category="Total Expenses" value={formatCurrency(summary.total_expenses)} range="Last Month" />
